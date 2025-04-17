@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>276086092198-jpvgs4i8u9dqurde8vqo6okldlb8dett.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.276086092198-jpvgs4i8u9dqurde8vqo6okldlb8dett</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>276086092198-ev67s7ul86e1qk1b32cai4egsuvvrhvc.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBquW0WNgUKpfTwERh9LUSeTBUVKwzeiYs</string>
+	<key>GCM_SENDER_ID</key>
+	<string>276086092198</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.isoftdesing.blazeDriver</string>
+	<key>PROJECT_ID</key>
+	<string>blaze-taxi-662b8</string>
+	<key>STORAGE_BUCKET</key>
+	<string>blaze-taxi-662b8.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:276086092198:ios:9132a54447ed94bbcb9f67</string>
+	<key>DATABASE_URL</key>
+	<string>https://blaze-taxi-662b8-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>
