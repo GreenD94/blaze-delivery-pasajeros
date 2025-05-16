@@ -59,14 +59,20 @@ class LoginScreenState extends State<LoginScreen> {
       Map req = {
         'email': emailController.text.trim(),
         'password': passController.text.trim(),
-        "player_id": sharedPref.getString(PLAYER_ID).validate(),
+        // "player_id": sharedPref.getString(PLAYER_ID).validate(),
         'user_type': RIDER,
       };
+
+      print(req);
       await logInApi(req).then((value) {
         _userModel = value.data!;
 
-        _auth.signInWithEmailAndPassword(email: emailController.text, password: passController.text).then((value) {
-          launchScreen(context, RiderDashBoardScreen(), isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
+        _auth
+            .signInWithEmailAndPassword(
+                email: emailController.text, password: passController.text)
+            .then((value) {
+          launchScreen(context, RiderDashBoardScreen(),
+              isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
         }).catchError((e) {
           if (e.toString().contains('user-not-found')) {
             authService.signUpWithEmailPassword(
@@ -80,7 +86,8 @@ class LoginScreenState extends State<LoginScreen> {
               userType: RIDER,
             );
           } else {
-            launchScreen(context, RiderDashBoardScreen(), isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
+            launchScreen(context, RiderDashBoardScreen(),
+                isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
           }
           //toast(e.toString());
           log(e.toString());
@@ -132,16 +139,20 @@ class LoginScreenState extends State<LoginScreen> {
                     autoFocus: false,
                     textFieldType: TextFieldType.PASSWORD,
                     errorThisFieldRequired: language.thisFieldRequired,
-                    decoration: inputDecoration(context, label: language.password),
+                    decoration:
+                        inputDecoration(context, label: language.password),
                   ),
                   SizedBox(height: 16),
                   Align(
                     alignment: Alignment.topRight,
                     child: inkWellWidget(
                       onTap: () {
-                        launchScreen(context, ForgotPasswordScreen(), pageRouteAnimation: PageRouteAnimation.SlideBottomTop);
+                        launchScreen(context, ForgotPasswordScreen(),
+                            pageRouteAnimation:
+                                PageRouteAnimation.SlideBottomTop);
                       },
-                      child: Text(language.forgotPassword, style: boldTextStyle()),
+                      child:
+                          Text(language.forgotPassword, style: boldTextStyle()),
                     ),
                   ),
                   SizedBox(height: 20),
@@ -159,12 +170,17 @@ class LoginScreenState extends State<LoginScreen> {
                     padding: EdgeInsets.all(16),
                     child: Row(
                       children: [
-                        Expanded(child: Divider(color: primaryColor.withOpacity(0.5))),
+                        Expanded(
+                            child:
+                                Divider(color: primaryColor.withOpacity(0.5))),
                         Padding(
                           padding: EdgeInsets.only(left: 16, right: 16),
-                          child: Text(language.orLogInWith, style: primaryTextStyle()),
+                          child: Text(language.orLogInWith,
+                              style: primaryTextStyle()),
                         ),
-                        Expanded(child: Divider(color: primaryColor.withOpacity(0.5))),
+                        Expanded(
+                            child:
+                                Divider(color: primaryColor.withOpacity(0.5))),
                       ],
                     ),
                   ),
@@ -183,7 +199,8 @@ class LoginScreenState extends State<LoginScreen> {
                           },
                         );
                       },
-                      child: Image.asset('images/ic_mobile.png', fit: BoxFit.cover, height: 35, width: 35),
+                      child: Image.asset('images/ic_mobile.png',
+                          fit: BoxFit.cover, height: 35, width: 35),
                     ),
                   ),
                   SizedBox(height: 16),
@@ -192,14 +209,18 @@ class LoginScreenState extends State<LoginScreen> {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(language.donHaveAnAccount, style: primaryTextStyle()),
+                        Text(language.donHaveAnAccount,
+                            style: primaryTextStyle()),
                         SizedBox(width: 8),
                         inkWellWidget(
                           onTap: () {
                             hideKeyboard(context);
-                            launchScreen(context, RegisterScreen(), pageRouteAnimation: PageRouteAnimation.SlideBottomTop);
+                            launchScreen(context, RegisterScreen(),
+                                pageRouteAnimation:
+                                    PageRouteAnimation.SlideBottomTop);
                           },
-                          child: Text(language.signUp, style: boldTextStyle(color: primaryColor)),
+                          child: Text(language.signUp,
+                              style: boldTextStyle(color: primaryColor)),
                         ),
                       ],
                     ),

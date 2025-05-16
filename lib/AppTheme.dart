@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:taxibooking/utils/Colors.dart';
 import 'package:taxibooking/utils/Extensions/app_common.dart';
 
-
 class AppTheme {
   //
   AppTheme._();
@@ -14,9 +13,10 @@ class AppTheme {
     primaryColor: primaryColor,
     scaffoldBackgroundColor: Colors.white,
     fontFamily: GoogleFonts.oxygen().fontFamily,
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(backgroundColor: Colors.white),
+    bottomNavigationBarTheme:
+        BottomNavigationBarThemeData(backgroundColor: Colors.white),
     iconTheme: IconThemeData(color: scaffoldSecondaryDark),
-    textTheme: TextTheme(headline6: TextStyle()),
+    textTheme: TextTheme(titleLarge: TextStyle()),
     dialogBackgroundColor: Colors.white,
     unselectedWidgetColor: Colors.black,
     dividerColor: viewLineColor,
@@ -30,23 +30,23 @@ class AppTheme {
       ),
     ),
     useMaterial3: true,
-
     colorScheme: ColorScheme.fromSwatch(
-        primarySwatch: createMaterialColor(primaryColor),
-      ).copyWith(
-      ),
-    ).copyWith(
-      useMaterial3: true,
-    ).copyWith(
-      pageTransitionsTheme: PageTransitionsTheme(
-        builders: <TargetPlatform, PageTransitionsBuilder>{
-          TargetPlatform.android: OpenUpwardsPageTransitionsBuilder(),
-          TargetPlatform.linux: OpenUpwardsPageTransitionsBuilder(),
-          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-        },
-      ),
-    );
-    
+      primarySwatch: createMaterialColor(primaryColor),
+    ).copyWith(),
+  )
+      .copyWith(
+        useMaterial3: true,
+      )
+      .copyWith(
+        pageTransitionsTheme: PageTransitionsTheme(
+          builders: <TargetPlatform, PageTransitionsBuilder>{
+            TargetPlatform.android: OpenUpwardsPageTransitionsBuilder(),
+            TargetPlatform.linux: OpenUpwardsPageTransitionsBuilder(),
+            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+          },
+        ),
+      );
+
   // ).copyWith(
   //   pageTransitionsTheme: PageTransitionsTheme(
   //     builders: <TargetPlatform, PageTransitionsBuilder>{
@@ -62,9 +62,10 @@ class AppTheme {
     primaryColor: primaryColor,
     scaffoldBackgroundColor: scaffoldColorDark,
     fontFamily: GoogleFonts.oxygen().fontFamily,
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(backgroundColor: scaffoldSecondaryDark),
+    bottomNavigationBarTheme:
+        BottomNavigationBarThemeData(backgroundColor: scaffoldSecondaryDark),
     iconTheme: IconThemeData(color: Colors.white),
-    textTheme: TextTheme(headline6: TextStyle(color: textSecondaryColor)),
+    textTheme: TextTheme(titleLarge: TextStyle(color: textSecondaryColor)),
     dialogBackgroundColor: scaffoldSecondaryDark,
     unselectedWidgetColor: Colors.white60,
     dividerColor: Colors.white12,

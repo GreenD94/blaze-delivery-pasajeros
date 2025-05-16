@@ -8,7 +8,10 @@ var errorThisFieldRequired = 'This field is required';
 const googleMapAPIKey = 'AIzaSyD6tYAgVljLJ50H-Ubw5bTjlHWH3z_fUIA';
 const googleMapAutocompleteRadius = 8000;
 
-const DOMAIN_URL = 'https://www.blazetaxi.com'; // Don't add slash at the end of the url
+const DOMAIN_URL =
+    'http://myfirstaplication-env.eba-3qpvzwfc.us-east-1.elasticbeanstalk.com';
+
+//'https://www.blazetaxi.com'; // Don't add slash at the end of the url
 const mBaseUrl = "$DOMAIN_URL/api/";
 
 final client = MqttServerClient.withPort("broker.hivemq.com", "", 1883);
@@ -24,7 +27,8 @@ const mOneSignalAppIdDriver = '147b81d7-b572-444f-ace0-2b2b1ee0640c';
 const mOneSignalRestKeyDriver = '147b81d7-b572-444f-ace0-2b2b1ee0640c';
 
 const String WP_NUMBER = '5804129142512';
-const String WP_MESSAGE = 'Hola, quisiera comunicarme con el equipo de soporte de Blaze';
+const String WP_MESSAGE =
+    'Hola, quisiera comunicarme con el equipo de soporte de Blaze';
 
 const PRESENT_TOP_UP_AMOUNT_CONST = '10|20|30';
 
@@ -48,8 +52,8 @@ double defaultAppButtonElevation = 4.0;
 bool enableAppButtonScaleAnimationGlobal = true;
 int? appButtonScaleAnimationDurationGlobal;
 ShapeBorder? defaultAppButtonShapeBorder = RoundedRectangleBorder(
-	borderRadius: BorderRadius.circular(defaultRadius),
-	side: BorderSide(color: primaryColor),
+  borderRadius: BorderRadius.circular(defaultRadius),
+  side: BorderSide(color: primaryColor),
 );
 
 var customDialogHeight = 140.0;
@@ -149,8 +153,10 @@ const Wallet = 'wallet';
 const CLOCK = 'clock';
 const PRESENT_TOPUP_AMOUNT = 'preset_topup_amount';
 const PRESENT_TIP_AMOUNT = 'preset_tip_amount';
-const MAX_TIME_FOR_RIDER_MINUTE = 'max_time_for_find_drivers_for_regular_ride_in_minute';
-const MAX_TIME_FOR_DRIVER_SECOND = 'ride_accept_decline_duration_for_driver_in_second';
+const MAX_TIME_FOR_RIDER_MINUTE =
+    'max_time_for_find_drivers_for_regular_ride_in_minute';
+const MAX_TIME_FOR_DRIVER_SECOND =
+    'ride_accept_decline_duration_for_driver_in_second';
 const MIN_AMOUNT_TO_ADD = 'min_amount_to_add';
 const MAX_AMOUNT_TO_ADD = 'max_amount_to_add';
 

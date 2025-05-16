@@ -10,13 +10,21 @@ import 'Loader.dart';
 
 enum DialogType { CONFIRMATION, ACCEPT, DELETE, UPDATE, ADD, RETRY }
 
-enum DialogAnimation { DEFAULT, ROTATE, SLIDE_TOP_BOTTOM, SLIDE_BOTTOM_TOP, SLIDE_LEFT_RIGHT, SLIDE_RIGHT_LEFT, SCALE }
+enum DialogAnimation {
+  DEFAULT,
+  ROTATE,
+  SLIDE_TOP_BOTTOM,
+  SLIDE_BOTTOM_TOP,
+  SLIDE_LEFT_RIGHT,
+  SLIDE_RIGHT_LEFT,
+  SCALE
+}
 
 Color getDialogPrimaryColor(
-    BuildContext context,
-    DialogType dialogType,
-    Color? primaryColor,
-    ) {
+  BuildContext context,
+  DialogType dialogType,
+  Color? primaryColor,
+) {
   if (primaryColor != null) return primaryColor;
   Color color;
 
@@ -101,7 +109,8 @@ Widget getIcon(DialogType dialogType, {double? size}) {
       icon = Icon(Icons.done, size: size ?? 20, color: Colors.white);
       break;
     case DialogType.DELETE:
-      icon = Icon(Icons.delete_forever_outlined, size: size ?? 20, color: Colors.white);
+      icon = Icon(Icons.delete_forever_outlined,
+          size: size ?? 20, color: Colors.white);
       break;
     case DialogType.UPDATE:
       icon = Icon(Icons.edit, size: size ?? 20, color: Colors.white);
@@ -113,31 +122,45 @@ Widget getIcon(DialogType dialogType, {double? size}) {
   return icon;
 }
 
-Widget? getCenteredImage(BuildContext context, DialogType dialogType, Color? primaryColor) {
+Widget? getCenteredImage(
+    BuildContext context, DialogType dialogType, Color? primaryColor) {
   Widget? widget;
 
   switch (dialogType) {
     case DialogType.CONFIRMATION:
       widget = Container(
         decoration: BoxDecoration(
-          color: getDialogPrimaryColor(context, dialogType, primaryColor).withOpacity(0.2),
+          color: getDialogPrimaryColor(context, dialogType, primaryColor)
+              .withOpacity(0.2),
           shape: BoxShape.circle,
         ),
-        child: Icon(Icons.warning_amber_rounded, color: getDialogPrimaryColor(context, dialogType, primaryColor), size: 40),
+        child: Icon(Icons.warning_amber_rounded,
+            color: getDialogPrimaryColor(context, dialogType, primaryColor),
+            size: 40),
         padding: EdgeInsets.all(16),
       );
       break;
     case DialogType.DELETE:
       widget = Container(
-        decoration: BoxDecoration(color: getDialogPrimaryColor(context, dialogType, primaryColor).withOpacity(0.2), shape: BoxShape.circle),
-        child: Icon(Icons.close, color: getDialogPrimaryColor(context, dialogType, primaryColor), size: 40),
+        decoration: BoxDecoration(
+            color: getDialogPrimaryColor(context, dialogType, primaryColor)
+                .withOpacity(0.2),
+            shape: BoxShape.circle),
+        child: Icon(Icons.close,
+            color: getDialogPrimaryColor(context, dialogType, primaryColor),
+            size: 40),
         padding: EdgeInsets.all(16),
       );
       break;
     case DialogType.UPDATE:
       widget = Container(
-        decoration: BoxDecoration(color: getDialogPrimaryColor(context, dialogType, primaryColor).withOpacity(0.2), shape: BoxShape.circle),
-        child: Icon(Icons.edit_outlined, color: getDialogPrimaryColor(context, dialogType, primaryColor), size: 40),
+        decoration: BoxDecoration(
+            color: getDialogPrimaryColor(context, dialogType, primaryColor)
+                .withOpacity(0.2),
+            shape: BoxShape.circle),
+        child: Icon(Icons.edit_outlined,
+            color: getDialogPrimaryColor(context, dialogType, primaryColor),
+            size: 40),
         padding: EdgeInsets.all(16),
       );
       break;
@@ -145,20 +168,26 @@ Widget? getCenteredImage(BuildContext context, DialogType dialogType, Color? pri
     case DialogType.ACCEPT:
       widget = Container(
         decoration: BoxDecoration(
-          color: getDialogPrimaryColor(context, dialogType, primaryColor).withOpacity(0.2),
+          color: getDialogPrimaryColor(context, dialogType, primaryColor)
+              .withOpacity(0.2),
           shape: BoxShape.circle,
         ),
-        child: Icon(Icons.done_outline, color: getDialogPrimaryColor(context, dialogType, primaryColor), size: 40),
+        child: Icon(Icons.done_outline,
+            color: getDialogPrimaryColor(context, dialogType, primaryColor),
+            size: 40),
         padding: EdgeInsets.all(16),
       );
       break;
     case DialogType.RETRY:
       widget = Container(
         decoration: BoxDecoration(
-          color: getDialogPrimaryColor(context, dialogType, primaryColor).withOpacity(0.2),
+          color: getDialogPrimaryColor(context, dialogType, primaryColor)
+              .withOpacity(0.2),
           shape: BoxShape.circle,
         ),
-        child: Icon(Icons.refresh_rounded, color: getDialogPrimaryColor(context, dialogType, primaryColor), size: 40),
+        child: Icon(Icons.refresh_rounded,
+            color: getDialogPrimaryColor(context, dialogType, primaryColor),
+            size: 40),
         padding: EdgeInsets.all(16),
       );
       break;
@@ -167,19 +196,20 @@ Widget? getCenteredImage(BuildContext context, DialogType dialogType, Color? pri
 }
 
 Widget defaultPlaceHolder(
-    BuildContext context,
-    DialogType dialogType,
-    double? height,
-    double? width,
-    Color? primaryColor, {
-      Widget? child,
-      ShapeBorder? shape,
-    }) {
+  BuildContext context,
+  DialogType dialogType,
+  double? height,
+  double? width,
+  Color? primaryColor, {
+  Widget? child,
+  ShapeBorder? shape,
+}) {
   return Container(
     height: height,
     width: width,
     decoration: BoxDecoration(
-      color: getDialogPrimaryColor(context, dialogType, primaryColor).withOpacity(0.2),
+      color: getDialogPrimaryColor(context, dialogType, primaryColor)
+          .withOpacity(0.2),
     ),
     alignment: Alignment.center,
     child: child ?? getCenteredImage(context, dialogType, primaryColor),
@@ -187,15 +217,15 @@ Widget defaultPlaceHolder(
 }
 
 Widget buildTitleWidget(
-    BuildContext context,
-    DialogType dialogType,
-    Color? primaryColor,
-    Widget? customCenterWidget,
-    double height,
-    double width,
-    String? centerImage,
-    ShapeBorder? shape,
-    ) {
+  BuildContext context,
+  DialogType dialogType,
+  Color? primaryColor,
+  Widget? customCenterWidget,
+  double height,
+  double width,
+  String? centerImage,
+  ShapeBorder? shape,
+) {
   if (customCenterWidget != null) {
     return Container(
       child: customCenterWidget,
@@ -210,7 +240,9 @@ Widget buildTitleWidget(
         fit: BoxFit.cover,
         errorBuilder: (_, object, stack) {
           log(object.toString());
-          return defaultPlaceHolder(context, dialogType, height, width, primaryColor, shape: shape);
+          return defaultPlaceHolder(
+              context, dialogType, height, width, primaryColor,
+              shape: shape);
         },
         loadingBuilder: (_, child, loadingProgress) {
           if (loadingProgress == null) {
@@ -224,42 +256,47 @@ Widget buildTitleWidget(
             primaryColor,
             shape: shape,
             child: Loader(
-              value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
+              value: loadingProgress.expectedTotalBytes != null
+                  ? loadingProgress.cumulativeBytesLoaded /
+                      loadingProgress.expectedTotalBytes!
+                  : null,
             ),
           );
         },
       );
     } else {
-      return defaultPlaceHolder(context, dialogType, height, width, primaryColor, shape: shape);
+      return defaultPlaceHolder(
+          context, dialogType, height, width, primaryColor,
+          shape: shape);
     }
   }
 }
 
 /// show confirm dialog box
-Future<bool?>  showConfirmDialogCustom(
-    BuildContext context, {
-      required Function(BuildContext) onAccept,
-      String? title,
-      String? subTitle,
-      String? positiveText,
-      String? negativeText,
-      String? centerImage,
-      Widget? customCenterWidget,
-      Color? primaryColor,
-      Color? positiveTextColor,
-      Color? negativeTextColor,
-      ShapeBorder? shape,
-      Function(BuildContext)? onCancel,
-      bool barrierDismissible = true,
-      double? height,
-      double? width,
-      bool cancelable = true,
-      Color? barrierColor,
-      DialogType dialogType = DialogType.CONFIRMATION,
-      DialogAnimation dialogAnimation = DialogAnimation.DEFAULT,
-      Duration? transitionDuration,
-      Curve curve = Curves.easeInBack,
-    }) async {
+Future<bool?> showConfirmDialogCustom(
+  BuildContext context, {
+  required Function(BuildContext) onAccept,
+  String? title,
+  String? subTitle,
+  String? positiveText,
+  String? negativeText,
+  String? centerImage,
+  Widget? customCenterWidget,
+  Color? primaryColor,
+  Color? positiveTextColor,
+  Color? negativeTextColor,
+  ShapeBorder? shape,
+  Function(BuildContext)? onCancel,
+  bool barrierDismissible = true,
+  double? height,
+  double? width,
+  bool cancelable = true,
+  Color? barrierColor,
+  DialogType dialogType = DialogType.CONFIRMATION,
+  DialogAnimation dialogAnimation = DialogAnimation.DEFAULT,
+  Duration? transitionDuration,
+  Curve curve = Curves.easeInBack,
+}) async {
   hideKeyboard(context);
 
   return await showGeneralDialog(
@@ -303,7 +340,9 @@ Future<bool?>  showConfirmDialogCustom(
                   style: boldTextStyle(size: 16),
                   textAlign: TextAlign.center,
                 ),
-                Visibility(visible: subTitle.validate().isNotEmpty, child: SizedBox(height: 8)),
+                Visibility(
+                    visible: subTitle.validate().isNotEmpty,
+                    child: SizedBox(height: 8)),
                 Visibility(
                   visible: subTitle.validate().isNotEmpty,
                   child: Text(
@@ -323,7 +362,8 @@ Future<bool?>  showConfirmDialogCustom(
                           onCancel?.call(_);
                         },
                         style: TextButton.styleFrom(
-                          primary: Theme.of(context).scaffoldBackgroundColor,
+                          foregroundColor:
+                              Theme.of(context).scaffoldBackgroundColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(defaultRadius),
                             side: BorderSide(color: viewLineColor),
@@ -341,7 +381,9 @@ Future<bool?>  showConfirmDialogCustom(
                               SizedBox(width: 6),
                               Text(
                                 negativeText ?? 'Cancelar',
-                                style: boldTextStyle(color: negativeTextColor ?? textPrimaryColorGlobal),
+                                style: boldTextStyle(
+                                    color: negativeTextColor ??
+                                        textPrimaryColorGlobal),
                               ),
                             ],
                           ),
@@ -356,7 +398,10 @@ Future<bool?>  showConfirmDialogCustom(
 
                           if (cancelable) Navigator.pop(context, true);
                         },
-                        style: TextButton.styleFrom(primary: Colors.white,backgroundColor: getDialogPrimaryColor(_, dialogType, primaryColor)),
+                        style: TextButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor: getDialogPrimaryColor(
+                                _, dialogType, primaryColor)),
                         child: FittedBox(
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -393,7 +438,9 @@ Widget dialogAnimatedWrapperWidget({
     case DialogAnimation.ROTATE:
       return Transform.rotate(
         angle: radians(animation.value * 360),
-        child: Opacity(opacity: animation.value, child: FadeTransition(opacity: animation, child: child)),
+        child: Opacity(
+            opacity: animation.value,
+            child: FadeTransition(opacity: animation, child: child)),
       );
 
     case DialogAnimation.SLIDE_TOP_BOTTOM:
@@ -401,28 +448,44 @@ Widget dialogAnimatedWrapperWidget({
 
       return Transform(
         transform: Matrix4.translationValues(0.0, curvedValue * 300, 0.0),
-        child: Opacity(opacity: animation.value, child: FadeTransition(opacity: animation, child: child)),
+        child: Opacity(
+            opacity: animation.value,
+            child: FadeTransition(opacity: animation, child: child)),
       );
 
     case DialogAnimation.SCALE:
-      return Transform.scale(scale: animation.value, child: FadeTransition(opacity: animation, child: child));
+      return Transform.scale(
+          scale: animation.value,
+          child: FadeTransition(opacity: animation, child: child));
 
     case DialogAnimation.SLIDE_BOTTOM_TOP:
       return SlideTransition(
-        position: Tween(begin: Offset(0, 1), end: Offset.zero).chain(CurveTween(curve: curve)).animate(animation),
-        child: Opacity(opacity: animation.value, child: FadeTransition(opacity: animation, child: child)),
+        position: Tween(begin: Offset(0, 1), end: Offset.zero)
+            .chain(CurveTween(curve: curve))
+            .animate(animation),
+        child: Opacity(
+            opacity: animation.value,
+            child: FadeTransition(opacity: animation, child: child)),
       );
 
     case DialogAnimation.SLIDE_LEFT_RIGHT:
       return SlideTransition(
-        position: Tween(begin: Offset(1.0, 0.0), end: Offset.zero).chain(CurveTween(curve: curve)).animate(animation),
-        child: Opacity(opacity: animation.value, child: FadeTransition(opacity: animation, child: child)),
+        position: Tween(begin: Offset(1.0, 0.0), end: Offset.zero)
+            .chain(CurveTween(curve: curve))
+            .animate(animation),
+        child: Opacity(
+            opacity: animation.value,
+            child: FadeTransition(opacity: animation, child: child)),
       );
 
     case DialogAnimation.SLIDE_RIGHT_LEFT:
       return SlideTransition(
-        position: Tween(begin: Offset(-1, 0), end: Offset.zero).chain(CurveTween(curve: curve)).animate(animation),
-        child: Opacity(opacity: animation.value, child: FadeTransition(opacity: animation, child: child)),
+        position: Tween(begin: Offset(-1, 0), end: Offset.zero)
+            .chain(CurveTween(curve: curve))
+            .animate(animation),
+        child: Opacity(
+            opacity: animation.value,
+            child: FadeTransition(opacity: animation, child: child)),
       );
 
     case DialogAnimation.DEFAULT:
