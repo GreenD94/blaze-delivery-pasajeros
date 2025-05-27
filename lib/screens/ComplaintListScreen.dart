@@ -8,7 +8,6 @@ import '../network/RestApis.dart';
 import '../utils/Colors.dart';
 import '../utils/Common.dart';
 import '../utils/Constants.dart';
-import '../utils/DataProvider.dart';
 import '../utils/Extensions/app_common.dart';
 
 class ComplaintListScreen extends StatefulWidget {

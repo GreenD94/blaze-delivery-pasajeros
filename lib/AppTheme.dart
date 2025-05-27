@@ -35,7 +35,7 @@ class AppTheme {
     ).copyWith(),
   )
       .copyWith(
-        useMaterial3: true,
+        
       )
       .copyWith(
         pageTransitionsTheme: PageTransitionsTheme(

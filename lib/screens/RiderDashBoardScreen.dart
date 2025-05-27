@@ -128,11 +128,7 @@ class RiderDashBoardScreenState extends State<RiderDashBoardScreen> {
                 .value ??
             '4');
 
-        appStore.setAuctionEnabled(value.rideSetting!
-                .firstWhere(
-                    (element) => element.key == 'RIDE_MODALITY_AUCTION')
-                .value == '1');
-
+        appStore.setAuctionEnabled(false);
         appStore.setExpressEnabled(value.rideSetting!
                 .firstWhere(
                     (element) => element.key == 'RIDE_MODALITY_EXPRESS')
@@ -176,12 +172,10 @@ class RiderDashBoardScreenState extends State<RiderDashBoardScreen> {
           placemarks[0].isoCountryCode.validate(value: defaultCountry));
 
       Placemark place = placemarks[0];
-      if (place != null) {
-        sourceLocationTitle =
-            "${place.name != null ? place.name : place.subThoroughfare}, ${place.subLocality}, ${place.locality}, ${place.administrativeArea} ${place.postalCode}, ${place.country}";
-        polylineSource = LatLng(geoPosition.latitude, geoPosition.longitude);
-      }
-      markers.add(
+      sourceLocationTitle =
+          "${place.name != null ? place.name : place.subThoroughfare}, ${place.subLocality}, ${place.locality}, ${place.administrativeArea} ${place.postalCode}, ${place.country}";
+      polylineSource = LatLng(geoPosition.latitude, geoPosition.longitude);
+          markers.add(
         Marker(
           markerId: MarkerId('Order Detail'),
           position: sourceLocation!,

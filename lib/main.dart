@@ -11,7 +11,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:taxibooking/service/UpgraderService.dart';
 import 'package:taxibooking/utils/Extensions/StringExtensions.dart';
 
 import '/model/FileModel.dart';
@@ -62,13 +61,16 @@ Future<void> initialize({
   String? defaultLanguage,
 }) async {
   localeLanguageList = aLocaleLanguageList ?? [];
-  selectedLanguageDataModel = getSelectedLanguageModel(defaultLanguage: default_Language);
+  selectedLanguageDataModel =
+      getSelectedLanguageModel(defaultLanguage: default_Language);
 }
 
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
-    return super.createHttpClient(context)..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }
 
@@ -80,18 +82,20 @@ void main() async {
   await initialize(aLocaleLanguageList: languageList());
   appStore.setLanguage(default_Language);
 
-  await appStore.setLoggedIn(sharedPref.getBool(IS_LOGGED_IN) ?? false, isInitializing: true);
-  await appStore.setUserEmail(sharedPref.getString(USER_EMAIL) ?? '', isInitialization: true);
+  await appStore.setLoggedIn(sharedPref.getBool(IS_LOGGED_IN) ?? false,
+      isInitializing: true);
+  await appStore.setUserEmail(sharedPref.getString(USER_EMAIL) ?? '',
+      isInitialization: true);
   await appStore.setUserProfile(sharedPref.getString(USER_PROFILE_PHOTO) ?? '');
 
   await OneSignal.shared.setAppId(mOneSignalAppIdRider);
   OneSignal.shared.sendTag("segment", "riders");
   OneSignal.shared.consentGranted(true);
   OneSignal.shared.promptUserForPushNotificationPermission();
-  OneSignal.shared.setNotificationWillShowInForegroundHandler((OSNotificationReceivedEvent event) {
+  OneSignal.shared.setNotificationWillShowInForegroundHandler(
+      (OSNotificationReceivedEvent event) {
     event.complete(event.notification);
   });
-
   // toast(await getCurrentVersion());
   runApp(const MyApp());
 }
@@ -124,7 +128,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       if (e == ConnectivityResult.none) {
         log('not connected');
         isCurrentlyOnNoInternet = true;
-        launchScreen(navigatorKey.currentState!.overlay!.context, NoInternetScreen());
+        launchScreen(
+            navigatorKey.currentState!.overlay!.context, NoInternetScreen());
       } else {
         if (isCurrentlyOnNoInternet) {
           Navigator.pop(navigatorKey.currentState!.overlay!.context);
@@ -158,7 +163,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           GlobalCupertinoLocalizations.delegate,
         ],
         localeResolutionCallback: (locale, supportedLocales) => locale,
-        locale: Locale(appStore.selectedLanguage.validate(value: default_Language)),
+        locale:
+            Locale(appStore.selectedLanguage.validate(value: default_Language)),
       );
     });
   }
@@ -199,7 +205,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
 class MyBehavior extends ScrollBehavior {
   @override
-  Widget buildOverscrollIndicator(BuildContext context, Widget child, ScrollableDetails details) {
+  Widget buildOverscrollIndicator(
+      BuildContext context, Widget child, ScrollableDetails details) {
     return child;
   }
 }

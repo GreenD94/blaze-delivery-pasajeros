@@ -1014,7 +1014,7 @@ class NewEstimateRideListWidgetState extends State<NewEstimateRideListWidget> {
                                           _stepTitles[0] = servicesListData!.name!;
                                           break;
                                         case 1:
-                                          _stepTitles[1] = modality == "auction" ? "¡Elige la tarifa!" : "Express";
+                                         _stepTitles[1] = "Express";
                                           break;
                                         default:
                                       }

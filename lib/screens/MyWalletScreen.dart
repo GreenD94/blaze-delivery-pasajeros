@@ -5,16 +5,13 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:taxibooking/utils/Colors.dart';
 import 'package:taxibooking/utils/Common.dart';
-import 'package:taxibooking/utils/Extensions/AppButtonWidget.dart';
 import 'package:taxibooking/utils/Extensions/app_common.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../main.dart';
 import '../../model/WalletListModel.dart';
 import '../../network/RestApis.dart';
-import '../../screens/PaymentScreen.dart';
 import '../../utils/Constants.dart';
-import '../../utils/Extensions/app_textfield.dart';
 
 class MyWalletScreen extends StatefulWidget {
   @override

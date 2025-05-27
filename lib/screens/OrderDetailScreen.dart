@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:lottie/lottie.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:taxibooking/screens/RiderDashBoardScreen.dart';
 import 'package:taxibooking/utils/Common.dart';
@@ -18,7 +17,6 @@ import '../../screens/RideHistoryScreen.dart';
 import '../../utils/Colors.dart';
 import '../../utils/Constants.dart';
 import '../../utils/Extensions/AppButtonWidget.dart';
-import '../utils/images.dart';
 
 class OrderDetailScreen extends StatefulWidget {
   final int? rideId;

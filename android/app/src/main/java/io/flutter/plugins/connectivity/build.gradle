@@ -1,0 +1,3 @@
+android {
+    namespace "io.flutter.plugins.connectivity"
+} 

@@ -37,21 +37,20 @@ class DrawerWidgetState extends State<ModalitySelectorWidget> {
   }
 
   void initModality() {
-
     modalityList.clear();
 
-    if (appStore.auctionEnabled) {
-      modalityList.add({'title': '¡Elige la tarifa!', 'name': 'auction', 'description': 'Nulla ea excepteur irure fugiat laborum nulla et esse quis velit.'});
-    }
-
     if (appStore.expressEnabled) {
-      modalityList.add({'title': 'Express', 'name': 'express', 'description': 'Nulla ea excepteur irure fugiat laborum nulla et esse quis velit.'});
+      modalityList.add({
+        'title': 'Express', 
+        'name': 'express', 
+        'description': 'Pago Rápido.'
+      });
     }
 
-    log('[modality] ${appStore.auctionEnabled} ${appStore.expressEnabled}');
-
-    selectedIndex = 0;
-    appStore.setRideModality(modalityList[0]['name'].toString());
+    if (modalityList.isNotEmpty) {
+      selectedIndex = 0;
+      appStore.setRideModality(modalityList[0]['name'].toString());
+    }
 
     setState(() {});
   }

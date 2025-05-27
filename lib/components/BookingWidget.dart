@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:taxibooking/utils/Extensions/AppButtonWidget.dart';
-import 'package:taxibooking/utils/Extensions/ConformationDialog.dart';
 import 'package:taxibooking/utils/Extensions/app_common.dart';
 
 import '../main.dart';

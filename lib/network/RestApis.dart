@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
 import 'package:taxibooking/model/CouponListModel.dart';
@@ -9,7 +8,6 @@ import 'package:taxibooking/model/CurrentRequestModel.dart';
 import 'package:taxibooking/model/EstimatePriceModel.dart';
 import 'package:taxibooking/model/GooglePlaceIdModel.dart';
 import 'package:taxibooking/model/LDBaseResponse.dart';
-import 'package:taxibooking/model/NearByDriverListModel.dart';
 import 'package:taxibooking/model/NearByDriverModel.dart';
 import 'package:taxibooking/model/ReferCodeResponse.dart';
 import 'package:taxibooking/utils/Extensions/StringExtensions.dart';

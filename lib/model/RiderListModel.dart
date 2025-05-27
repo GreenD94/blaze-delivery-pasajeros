@@ -1,7 +1,6 @@
 import 'package:taxibooking/model/OrderHistory.dart';
 import 'package:taxibooking/model/RiderModel.dart';
 
-import 'CouponData.dart';
 import 'PaginationModel.dart';
 
 class RiderListModel {
