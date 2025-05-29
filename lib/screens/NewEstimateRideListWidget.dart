@@ -73,14 +73,14 @@ class NewEstimateRideListWidgetState extends State<NewEstimateRideListWidget> {
   int selectedIndex = 0;
   int rideRequestId = 0;
 
-  List<String> cashList = ['cash', 'wallet', 'mobile-payment'];
+  List<String> cashList = ['wallet'];
   late BitmapDescriptor sourceIcon;
   late BitmapDescriptor destinationIcon;
   late BitmapDescriptor driverIcon;
 
   LatLng? driverLatitudeLocation;
 
-  String paymentMethodType = '';
+  String paymentMethodType = 'wallet';
   String modality = '';
 
   ServicesListData? servicesListData;
@@ -98,9 +98,9 @@ class NewEstimateRideListWidgetState extends State<NewEstimateRideListWidget> {
   bool isPaymentTypeConfirmed = false;
 
   List<Map<String, String>> paymentMethods = [
-    {'key': 'cash', 'name': 'Efectivo'},
     {'key': 'wallet', 'name': 'Billetera'},
-    {'key': 'mobile-payment', 'name': 'Pago Móvil al Conductor'}
+    // {'key': 'cash', 'name': 'Efectivo'},
+    // {'key': 'mobile-payment', 'name': 'Pago Móvil al Conductor'}
   ];
 
   int _currentStep = 0;
@@ -601,7 +601,9 @@ class NewEstimateRideListWidgetState extends State<NewEstimateRideListWidget> {
                                     title: Text(_stepTitles[0], style: TextStyle(color: primaryColor),),
                                     content:
                                         Column(
-                                    children: serviceList.map((e) {
+                                    children: serviceList
+                                      .where((e) => e.name != 'Moto Taxi Bqto')
+                                      .map((e) {
                                       return GestureDetector(
                                         onTap: () {
                                           selectedIndex = serviceList.indexOf(e);
@@ -783,53 +785,19 @@ class NewEstimateRideListWidgetState extends State<NewEstimateRideListWidget> {
                                                       Text(language.chooseYouPaymentLate, style: secondaryTextStyle()),
                                                       SizedBox(height: 16),
                                                       Column(
-                                                        children: cashList.map((e) {
-                                                          return RadioListTile(
-                                                            contentPadding: EdgeInsets.zero,
-                                                            controlAffinity: ListTileControlAffinity.trailing,
-                                                            activeColor: primaryColor,
-                                                            value: e,
-                                                            groupValue:
-                                                                paymentMethodType == 'cash_wallet' ? 'cash' : paymentMethodType,
-                                                            title: Text(getPaymentMethodNameByKey(e), style: boldTextStyle()),
-                                                            onChanged: (String? val) {
-                                                              // paymentMethodType = getPaymentMethodNameByKey(val!);
-                                                              paymentMethodType = val!;
-                                                              setState(() {});
+                                                        children: paymentMethods.map((method) {
+                                                          return RadioListTile<String>(
+                                                            value: method['key']!,
+                                                            groupValue: paymentMethodType,
+                                                            onChanged: (val) {
+                                                              setState(() {
+                                                                paymentMethodType = val!;
+                                                              });
                                                             },
+                                                            title: Text(method['name']!, style: boldTextStyle(size: 18)),
+                                                            activeColor: primaryColor,
                                                           );
                                                         }).toList(),
-                                                      ),
-                                                      SizedBox(height: 16),
-                                                      AppTextField(
-                                                        controller: promoCode,
-                                                        autoFocus: false,
-                                                        textFieldType: TextFieldType.EMAIL,
-                                                        keyboardType: TextInputType.emailAddress,
-                                                        errorThisFieldRequired: language.thisFieldRequired,
-                                                        readOnly: false,
-                                                        // onTap: () async {
-                                                        //   var data = await showModalBottomSheet(
-                                                        //     context: context,
-                                                        //     builder: (_) {
-                                                        //       return CouPonWidget();
-                                                        //     },
-                                                        //   );
-                                                        //   if (data != null) {
-                                                        //     promoCode.text = data;
-                                                        //   }
-                                                        // },
-                                                        decoration: inputDecoration(context,
-                                                            label: language.enterPromoCode,
-                                                            suffixIcon: promoCode.text.isNotEmpty
-                                                                ? inkWellWidget(
-                                                                    onTap: () {
-                                                                      promoCode.clear();
-                                                                      getNewService(coupon: false);
-                                                                    },
-                                                                    child: Icon(Icons.close, color: Colors.black, size: 25),
-                                                                  )
-                                                                : null),
                                                       ),
                                                       SizedBox(height: 16),
                                                       AppButtonWidget(
@@ -838,13 +806,7 @@ class NewEstimateRideListWidgetState extends State<NewEstimateRideListWidget> {
                                                         textStyle: boldTextStyle(color: Colors.white),
                                                         color: primaryColor,
                                                         onTap: () {
-                                                          if (promoCode.text.isNotEmpty) {
-                                                            getCouponNewService();
-                                                            //getNewService(coupon: true);
-                                                          } else {
-                                                            // getNewService();
-                                                            Navigator.pop(context);
-                                                          }
+                                                          Navigator.pop(context);
                                                         },
                                                       )
                                                     ],
@@ -891,12 +853,8 @@ class NewEstimateRideListWidgetState extends State<NewEstimateRideListWidget> {
                                                     Column(
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
-                                                        // Text(paymentMethodType == 'cash_wallet' ? 'Efectivo' : paymentMethodType,
-                                                        //     style: boldTextStyle()),
                                                         Text(
-                                                            paymentMethodType == 'cash_wallet'
-                                                                ? 'Efectivo'
-                                                                : getPaymentMethodNameByKey(paymentMethodType),
+                                                            getPaymentMethodNameByKey(paymentMethodType),
                                                             style: boldTextStyle()),
                                                         SizedBox(height: 4),
                                                         Text(language.forInstantPayment, style: secondaryTextStyle(size: 12)),
@@ -920,22 +878,22 @@ class NewEstimateRideListWidgetState extends State<NewEstimateRideListWidget> {
                                           children: [
 
                                                                                 // cash
-                                  if (paymentMethodType == 'cash_wallet' || paymentMethodType == 'cash')
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 16, right: 16, top: 16),
-                                      child: Column(
-                                        children: [
-                                          AppTextField(
-                                            controller: cashInHandController,
-                                            autoFocus: false,
-                                            textFieldType: TextFieldType.PHONE,
-                                            keyboardType: TextInputType.number,
-                                            errorThisFieldRequired: errorThisFieldRequired,
-                                            decoration: inputDecoration(context, label: 'Efectivo en mano*'),
-                                          )
-                                        ],
-                                      ),
-                                    ),
+                                  // if (paymentMethodType == 'cash_wallet' || paymentMethodType == 'cash')
+                                  //   Padding(
+                                  //     padding: EdgeInsets.only(left: 16, right: 16, top: 16),
+                                  //     child: Column(
+                                  //       children: [
+                                  //         AppTextField(
+                                  //           controller: cashInHandController,
+                                  //           autoFocus: false,
+                                  //           textFieldType: TextFieldType.PHONE,
+                                  //           keyboardType: TextInputType.number,
+                                  //           errorThisFieldRequired: errorThisFieldRequired,
+                                  //           decoration: inputDecoration(context, label: 'Efectivo en mano*'),
+                                  //         )
+                                  //       ],
+                                  //     ),
+                                  //   ),
 
                                   //
                                   SizedBox(height: 16),
