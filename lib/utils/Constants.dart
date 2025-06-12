@@ -9,7 +9,7 @@ const googleMapAPIKey = 'AIzaSyD6tYAgVljLJ50H-Ubw5bTjlHWH3z_fUIA';
 const googleMapAutocompleteRadius = 8000;
 
 const DOMAIN_URL =
-    'http://myfirstaplication-env.eba-3qpvzwfc.us-east-1.elasticbeanstalk.com';
+    'http://blaze-taxi-aplication-env.eba-hqymajv2.us-east-2.elasticbeanstalk.com';
 
 //'https://www.blazetaxi.com'; // Don't add slash at the end of the url
 const mBaseUrl = "$DOMAIN_URL/api/";
