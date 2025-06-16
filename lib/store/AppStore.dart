@@ -78,7 +78,7 @@ abstract class _AppStore with Store {
   bool auctionEnabled = false;
 
   @observable
-  bool expressEnabled = false;
+  bool expressEnabled = true;
   
   @observable
   String selectedRideModality = '';
