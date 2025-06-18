@@ -1,8 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
 import 'dart:async';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -78,7 +80,9 @@ void main() async {
   HttpOverrides.global = new MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   sharedPref = await SharedPreferences.getInstance();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await initialize(aLocaleLanguageList: languageList());
   appStore.setLanguage(default_Language);
 
