@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabla de Comparación - Blaze Rider vs Driver</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+        }
+        
+        .header h1 {
+            font-size: 2.8em;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header .subtitle {
+            font-size: 1.2em;
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+        
+        .comparison-section {
+            margin-bottom: 50px;
+            page-break-inside: avoid;
+        }
+        
+        .section-title {
+            font-size: 2em;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            color: white;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .comparison-table th {
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        
+        .comparison-table td {
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            text-align: center;
+            vertical-align: middle;
+        }
+        
+        .rider-cell {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .driver-cell {
+            background-color: #fff3e0;
+            border-left: 4px solid #ff9800;
+        }
+        
+        .common-cell {
+            background-color: #f1f8e9;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .key-highlight {
+            background-color: #ffeb3b;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .info-box {
+            background-color: #e3f2fd;
+            border-left: 5px solid #2196f3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .warning-box {
+            background-color: #fff3e0;
+            border-left: 5px solid #ff9800;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .success-box {
+            background-color: #e8f5e8;
+            border-left: 5px solid #4caf50;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .arch-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .arch-card h3 {
+            margin: 0 0 15px 0;
+            font-size: 1.4em;
+        }
+        
+        .flow-diagram {
+            text-align: center;
+            margin: 30px 0;
+            padding: 25px;
+            background-color: #f8f9fa;
+            border-radius: 15px;
+            border: 2px solid #e9ecef;
+        }
+        
+        .flow-step {
+            display: inline-block;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 15px 25px;
+            margin: 8px;
+            border-radius: 25px;
+            font-weight: bold;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .flow-step::after {
+            content: "→";
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5em;
+            color: #3498db;
+            font-weight: bold;
+        }
+        
+        .flow-step:last-child::after {
+            display: none;
+        }
+        
+        .toc {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+        
+        .toc h3 {
+            margin: 0 0 20px 0;
+            text-align: center;
+            font-size: 1.5em;
+        }
+        
+        .toc ul {
+            list-style-type: none;
+            padding-left: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+        }
+        
+        .toc li {
+            margin: 8px 0;
+            padding: 10px 15px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .toc li:hover {
+            background-color: rgba(255,255,255,0.2);
+            transform: translateX(5px);
+        }
+        
+        .toc a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .version-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin: 5px;
+        }
+        
+        .rider-badge {
+            background-color: #2196f3;
+            color: white;
+        }
+        
+        .driver-badge {
+            background-color: #ff9800;
+            color: white;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+        }
+        
+        @media print {
+            body {
+                background-color: white;
+                margin: 0;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+            
+            .flow-diagram, .architecture-grid {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Tabla de Comparación</h1>
+            <div class="subtitle">Blaze Rider vs Driver - Configuraciones Técnicas</div>
+            <div style="margin-top: 20px;">
+                <span class="version-badge rider-badge">Rider: 2.1.0+31</span>
+                <span class="version-badge driver-badge">Driver: 1.1.8+12</span>
+            </div>
+        </div>
+
+        <div class="toc">
+            <h3>📋 Índice de Comparaciones</h3>
+            <ul>
+                <li><a href="#firebase">🔥 Firebase Configuration</a></li>
+                <li><a href="#onesignal">📱 OneSignal Setup</a></li>
+                <li><a href="#mqtt">📡 MQTT Configuration</a></li>
+                <li><a href="#architecture">🏗️ System Architecture</a></li>
+                <li><a href="#functionality">⚙️ Functionality Comparison</a></li>
+                <li><a href="#security">🔒 Security Considerations</a></li>
+                <li><a href="#troubleshooting">🔧 Troubleshooting Guide</a></li>
+            </ul>
+        </div>
+
+        <div class="comparison-section" id="firebase">
+            <h2 class="section-title">🔥 Firebase Configuration</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Configuración</th>
+                        <th>Rider App</th>
+                        <th>Driver App</th>
+                        <th>Común</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Project ID</strong></td>
+                        <td class="rider-cell">blaze-taxi-662b8</td>
+                        <td class="driver-cell">blaze-taxi-662b8</td>
+                        <td class="common-cell">✅ Mismo proyecto</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Package Name (Android)</strong></td>
+                        <td class="rider-cell">com.isoftdesing.blaze</td>
+                        <td class="driver-cell">com.isoftdesing.blazeDriver</td>
+                        <td class="common-cell">❌ Diferentes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bundle ID (iOS)</strong></td>
+                        <td class="rider-cell">com.isoftdesing.blazeDriver</td>
+                        <td class="driver-cell">com.mighty.taxidriver</td>
+                        <td class="common-cell">❌ Diferentes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>API Key (Android)</strong></td>
+                        <td class="rider-cell"><span class="key-highlight">AIzaSyA8zG9ZLnejAVVwCwBRa-i0eBK0YRDRCww</span></td>
+                        <td class="driver-cell"><span class="key-highlight">AIzaSyA8zG9ZLnejAVVwCwBRa-i0eBK0YRDRCww</span></td>
+                        <td class="common-cell">✅ Misma clave</td>
+                    </tr>
+                    <tr>
+                        <td><strong>API Key (iOS)</strong></td>
+                        <td class="rider-cell"><span class="key-highlight">AIzaSyBquW0WNgUKpfTwERh9LUSeTBUVKwzeiYs</span></td>
+                        <td class="driver-cell"><span class="key-highlight">AIzaSyBX8XjmaGyakRzXdsWR5Ro-MH4wgBIg4gs</span></td>
+                        <td class="common-cell">❌ Diferentes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Client ID (Android)</strong></td>
+                        <td class="rider-cell">276086092198-ev67s7ul86e1qk1b32cai4egsuvvrhvc.apps.googleusercontent.com</td>
+                        <td class="driver-cell">276086092198-fcc53l7lrpe8dj0oplk6gm32cclurebs.apps.googleusercontent.com</td>
+                        <td class="common-cell">❌ Diferentes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Firebase URL</strong></td>
+                        <td class="rider-cell">https://blaze-taxi-662b8-default-rtdb.firebaseio.com</td>
+                        <td class="driver-cell">https://blaze-taxi-662b8-default-rtdb.firebaseio.com</td>
+                        <td class="common-cell">✅ Misma URL</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Storage Bucket</strong></td>
+                        <td class="rider-cell">blaze-taxi-662b8.appspot.com</td>
+                        <td class="driver-cell">blaze-taxi-662b8.appspot.com</td>
+                        <td class="common-cell">✅ Mismo bucket</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box">
+                <strong>💡 Nota:</strong> Ambas aplicaciones comparten el mismo proyecto Firebase pero tienen configuraciones específicas para cada plataforma y tipo de usuario.
+            </div>
+        </div>
+
+        <div class="comparison-section" id="onesignal">
+            <h2 class="section-title">📱 OneSignal Configuration</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Configuración</th>
+                        <th>Rider App</th>
+                        <th>Driver App</th>
+                        <th>Diferencias</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>App ID</strong></td>
+                        <td class="rider-cell"><span class="key-highlight">9d5b281c-d8ff-4ace-ab70-b106d1d7b8e1</span></td>
+                        <td class="driver-cell"><span class="key-highlight">147b81d7-b572-444f-ace0-2b2b1ee0640c</span></td>
+                        <td class="common-cell">❌ Apps separadas</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Rest Key</strong></td>
+                        <td class="rider-cell">9d5b281c-d8ff-4ace-ab70-b106d1d7b8e1</td>
+                        <td class="driver-cell">147b81d7-b572-444f-ace0-2b2b1ee0640c</td>
+                        <td class="common-cell">❌ Claves diferentes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Channel ID</strong></td>
+                        <td class="rider-cell">blaze_taxi_notifications</td>
+                        <td class="driver-cell">633149d9-ac48-432c-8fab-6f529f4017de</td>
+                        <td class="common-cell">❌ Canales diferentes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Segment Tag</strong></td>
+                        <td class="rider-cell">"riders"</td>
+                        <td class="driver-cell">"drivers"</td>
+                        <td class="common-cell">❌ Segmentación por rol</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Notification Types</strong></td>
+                        <td class="rider-cell">Ride status updates, Driver location, Payment confirmations</td>
+                        <td class="driver-cell">New ride requests, Ride cancellations, Payment notifications</td>
+                        <td class="common-cell">❌ Tipos específicos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>iOS Extension</strong></td>
+                        <td class="rider-cell">OneSignalNotificationServiceExtension</td>
+                        <td class="driver-cell">OneSignalNotificationServiceExtension</td>
+                        <td class="common-cell">✅ Misma extensión</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="success-box">
+                <strong>✅ Ventaja:</strong> La separación de apps permite un mejor control de notificaciones y segmentación de usuarios por rol.
+            </div>
+        </div>
+
+        <div class="comparison-section" id="mqtt">
+            <h2 class="section-title">📡 MQTT Configuration</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Configuración</th>
+                        <th>Rider App</th>
+                        <th>Driver App</th>
+                        <th>Común</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Broker</strong></td>
+                        <td class="rider-cell">broker.hivemq.com</td>
+                        <td class="driver-cell">broker.hivemq.com</td>
+                        <td class="common-cell">✅ Mismo broker</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Puerto</strong></td>
+                        <td class="rider-cell">1883</td>
+                        <td class="driver-cell">1883</td>
+                        <td class="common-cell">✅ Mismo puerto</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Protocolo</strong></td>
+                        <td class="rider-cell">MQTT v3.1.1</td>
+                        <td class="driver-cell">MQTT v3.1.1</td>
+                        <td class="common-cell">✅ Mismo protocolo</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Keep Alive</strong></td>
+                        <td class="rider-cell">120 segundos</td>
+                        <td class="driver-cell">120 segundos</td>
+                        <td class="common-cell">✅ Misma configuración</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Auto Reconnect</strong></td>
+                        <td class="rider-cell">✅ Habilitado</td>
+                        <td class="driver-cell">✅ Habilitado</td>
+                        <td class="common-cell">✅ Misma configuración</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Topics Suscritos</strong></td>
+                        <td class="rider-cell">ride_request_status_{USER_ID}</td>
+                        <td class="driver-cell">new_ride_request_{USER_ID}<br>ride_request_status_{USER_ID}</td>
+                        <td class="common-cell">❌ Topics diferentes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>QoS Level</strong></td>
+                        <td class="rider-cell">AtLeastOnce</td>
+                        <td class="driver-cell">AtLeastOnce</td>
+                        <td class="common-cell">✅ Mismo QoS</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="warning-box">
+                <strong>⚠️ Consideración:</strong> El broker HiveMQ es público. Para producción, considerar migración a un broker privado con autenticación.
+            </div>
+        </div>
+
+        <div class="comparison-section" id="architecture">
+            <h2 class="section-title">🏗️ System Architecture</h2>
+            
+            <div class="architecture-grid">
+                <div class="arch-card">
+                    <h3>🔥 Firebase Services</h3>
+                    <p><strong>Auth:</strong> Autenticación de usuarios</p>
+                    <p><strong>Firestore:</strong> Base de datos en tiempo real</p>
+                    <p><strong>Storage:</strong> Almacenamiento de archivos</p>
+                    <p><strong>Crashlytics:</strong> Monitoreo de errores</p>
+                </div>
+                
+                <div class="arch-card">
+                    <h3>📱 OneSignal Services</h3>
+                    <p><strong>Push Notifications:</strong> Notificaciones push</p>
+                    <p><strong>Segmentation:</strong> Segmentación por rol</p>
+                    <p><strong>Analytics:</strong> Métricas de envío</p>
+                    <p><strong>iOS Extension:</strong> Procesamiento background</p>
+                </div>
+                
+                <div class="arch-card">
+                    <h3>📡 MQTT Services</h3>
+                    <p><strong>Real-time Communication:</strong> Mensajería instantánea</p>
+                    <p><strong>Topic Management:</strong> Gestión de canales</p>
+                    <p><strong>Auto Reconnect:</strong> Reconexión automática</p>
+                    <p><strong>Message Routing:</strong> Enrutamiento de mensajes</p>
+                </div>
+                
+                <div class="arch-card">
+                    <h3>🌐 Backend Services</h3>
+                    <p><strong>AWS Elastic Beanstalk:</strong> API REST</p>
+                    <p><strong>Database:</strong> MySQL/PostgreSQL</p>
+                    <p><strong>Load Balancer:</strong> Distribución de carga</p>
+                    <p><strong>Auto Scaling:</strong> Escalado automático</p>
+                </div>
+            </div>
+
+            <div class="flow-diagram">
+                <h3>🔄 Flujo de Comunicación del Sistema</h3>
+                <div class="flow-step">Rider Request</div>
+                <div class="flow-step">Backend API</div>
+                <div class="flow-step">MQTT Broker</div>
+                <div class="flow-step">Driver App</div>
+                <div class="flow-step">OneSignal</div>
+                <div class="flow-step">Push Notification</div>
+            </div>
+        </div>
+
+        <div class="comparison-section" id="functionality">
+            <h2 class="section-title">⚙️ Functionality Comparison</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Funcionalidad</th>
+                        <th>Rider App</th>
+                        <th>Driver App</th>
+                        <th>Común</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Autenticación</strong></td>
+                        <td class="rider-cell">Login/Registro de pasajeros</td>
+                        <td class="driver-cell">Login/Registro de conductores</td>
+                        <td class="common-cell">✅ Firebase Auth</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Perfil de Usuario</strong></td>
+                        <td class="rider-cell">Datos personales, historial de viajes</td>
+                        <td class="driver-cell">Datos del vehículo, licencias, ganancias</td>
+                        <td class="common-cell">❌ Campos diferentes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Solicitud de Viaje</strong></td>
+                        <td class="rider-cell">✅ Crear solicitud</td>
+                        <td class="driver-cell">❌ No aplica</td>
+                        <td class="common-cell">❌ Funcionalidad específica</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Aceptación de Viaje</strong></td>
+                        <td class="rider-cell">❌ No aplica</td>
+                        <td class="driver-cell">✅ Aceptar/Rechazar</td>
+                        <td class="common-cell">❌ Funcionalidad específica</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Seguimiento GPS</strong></td>
+                        <td class="rider-cell">Ver ubicación del conductor</td>
+                        <td class="driver-cell">Navegación y actualización de ubicación</td>
+                        <td class="common-cell">✅ Geolocalización</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Chat</strong></td>
+                        <td class="rider-cell">Chat con conductor</td>
+                        <td class="driver-cell">Chat con pasajero</td>
+                        <td class="common-cell">✅ Firebase Realtime</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pagos</strong></td>
+                        <td class="rider-cell">Métodos de pago, historial</td>
+                        <td class="driver-cell">Ganancias, retiros</td>
+                        <td class="common-cell">❌ Funcionalidad diferente</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Calificaciones</strong></td>
+                        <td class="rider-cell">Calificar conductor</td>
+                        <td class="driver-cell">Calificar pasajero</td>
+                        <td class="common-cell">✅ Sistema de ratings</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Notificaciones</strong></td>
+                        <td class="rider-cell">Estado del viaje, conductor asignado</td>
+                        <td class="driver-cell">Nuevas solicitudes, cancelaciones</td>
+                        <td class="common-cell">✅ OneSignal Push</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="comparison-section" id="security">
+            <h2 class="section-title">🔒 Security Considerations</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Aspecto de Seguridad</th>
+                        <th>Rider App</th>
+                        <th>Driver App</th>
+                        <th>Recomendaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Firebase Auth</strong></td>
+                        <td class="rider-cell">JWT tokens, email/password</td>
+                        <td class="driver-cell">JWT tokens, email/password</td>
+                        <td class="common-cell">✅ Configurar reglas de seguridad</td>
+                    </tr>
+                    <tr>
+                        <td><strong>API Keys</strong></td>
+                        <td class="rider-cell">Exposición en código</td>
+                        <td class="driver-cell">Exposición en código</td>
+                        <td class="common-cell">⚠️ Usar variables de entorno</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OneSignal Keys</strong></td>
+                        <td class="rider-cell">Rest key en servidor</td>
+                        <td class="driver-cell">Rest key en servidor</td>
+                        <td class="common-cell">✅ Manejo seguro en backend</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MQTT Security</strong></td>
+                        <td class="rider-cell">Broker público</td>
+                        <td class="driver-cell">Broker público</td>
+                        <td class="common-cell">⚠️ Migrar a broker privado</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Data Encryption</strong></td>
+                        <td class="rider-cell">HTTPS, TLS</td>
+                        <td class="driver-cell">HTTPS, TLS</td>
+                        <td class="common-cell">✅ Implementar SSL/TLS</td>
+                    </tr>
+                    <tr>
+                        <td><strong>User Permissions</strong></td>
+                        <td class="rider-cell">Permisos de ubicación</td>
+                        <td class="driver-cell">Permisos de ubicación + cámara</td>
+                        <td class="common-cell">⚠️ Solicitar solo necesarios</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="warning-box">
+                <strong>🔐 Recomendaciones de Seguridad:</strong>
+                <ul>
+                    <li>Implementar autenticación de dos factores</li>
+                    <li>Usar variables de entorno para claves sensibles</li>
+                    <li>Migrar MQTT a broker privado con autenticación</li>
+                    <li>Implementar rate limiting en APIs</li>
+                    <li>Configurar Firebase Security Rules apropiadamente</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="comparison-section" id="troubleshooting">
+            <h2 class="section-title">🔧 Troubleshooting Guide</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Problema</th>
+                        <th>Rider App</th>
+                        <th>Driver App</th>
+                        <th>Solución</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Firebase Init Error</strong></td>
+                        <td class="rider-cell">Verificar google-services.json</td>
+                        <td class="driver-cell">Verificar google-services.json</td>
+                        <td class="common-cell">✅ Verificar archivos de configuración</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OneSignal No Notifications</strong></td>
+                        <td class="rider-cell">Verificar App ID: 9d5b281c-d8ff-4ace-ab70-b106d1d7b8e1</td>
+                        <td class="driver-cell">Verificar App ID: 147b81d7-b572-444f-ace0-2b2b1ee0640c</td>
+                        <td class="common-cell">✅ Verificar App ID y permisos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MQTT Connection Failed</strong></td>
+                        <td class="rider-cell">Verificar conectividad de red</td>
+                        <td class="driver-cell">Verificar conectividad de red</td>
+                        <td class="common-cell">✅ Verificar broker.hivemq.com:1883</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Location Services</strong></td>
+                        <td class="rider-cell">Permisos de ubicación</td>
+                        <td class="driver-cell">Permisos de ubicación + background</td>
+                        <td class="common-cell">⚠️ Configurar permisos específicos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Payment Issues</strong></td>
+                        <td class="rider-cell">Verificar métodos de pago</td>
+                        <td class="driver-cell">Verificar cuenta bancaria</td>
+                        <td class="common-cell">❌ Problemas específicos por app</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Chat Not Working</strong></td>
+                        <td class="rider-cell">Verificar Firebase Realtime</td>
+                        <td class="driver-cell">Verificar Firebase Realtime</td>
+                        <td class="common-cell">✅ Verificar reglas de Firestore</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="success-box">
+                <strong>🛠️ Comandos de Depuración Comunes:</strong>
+                <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 10px;">
+                    <code>flutter clean && flutter pub get</code><br>
+                    <code>flutter doctor</code><br>
+                    <code>flutter run --debug</code><br>
+                    <code>firebase crashlytics:log</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <h3>📊 Resumen de Comparación</h3>
+            <p><strong>Rider App:</strong> Enfocada en solicitar viajes, seguimiento y pagos</p>
+            <p><strong>Driver App:</strong> Enfocada en recibir solicitudes, navegación y ganancias</p>
+            <p><strong>Infraestructura:</strong> Comparten Firebase y MQTT, OneSignal separado</p>
+            <p><strong>Seguridad:</strong> Mismas consideraciones, diferentes permisos</p>
+            <p style="margin-top: 20px;"><strong>Documento generado:</strong> Diciembre 2024</p>
+        </div>
+    </div>
+</body>
+</html>
