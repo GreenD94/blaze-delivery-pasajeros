@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Diagnóstico de Problemas MQTT - Backend</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f7f7fa;
+      color: #222;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px #0001;
+      padding: 32px 40px;
+    }
+    h1, h2, h3 {
+      color: #1a73e8;
+    }
+    h1 {
+      border-bottom: 2px solid #1a73e8;
+      padding-bottom: 8px;
+    }
+    ul, ol {
+      margin-bottom: 18px;
+    }
+    code, pre {
+      background: #f1f3f4;
+      color: #d6336c;
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-size: 1em;
+    }
+    pre {
+      display: block;
+      padding: 12px;
+      overflow-x: auto;
+      color: #333;
+    }
+    .alert {
+      background: #ffe082;
+      color: #795548;
+      border-left: 6px solid #ffb300;
+      padding: 12px 18px;
+      margin: 18px 0;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+    .success {
+      background: #c8e6c9;
+      color: #256029;
+      border-left: 6px solid #43a047;
+      padding: 12px 18px;
+      margin: 18px 0;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+    .flow {
+      margin: 32px 0;
+      text-align: center;
+    }
+    .step {
+      display: inline-block;
+      background: #e3f2fd;
+      color: #1565c0;
+      border-radius: 8px;
+      padding: 10px 18px;
+      margin: 0 8px;
+      font-weight: bold;
+      box-shadow: 0 2px 6px #90caf980;
+    }
+    .arrow {
+      display: inline-block;
+      font-size: 2em;
+      color: #90caf9;
+      vertical-align: middle;
+      margin: 0 8px;
+    }
+    .field-table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 18px 0;
+    }
+    .field-table th, .field-table td {
+      border: 1px solid #bdbdbd;
+      padding: 8px 10px;
+      text-align: left;
+    }
+    .field-table th {
+      background: #e3f2fd;
+      color: #1565c0;
+    }
+    .field-table tr:nth-child(even) {
+      background: #f7f7fa;
+    }
+    @media print {
+      body, .container {
+        background: #fff !important;
+        color: #000 !important;
+        box-shadow: none !important;
+      }
+      .alert, .success {
+        color: #000 !important;
+        border-left: 6px solid #888 !important;
+        background: #eee !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Diagnóstico de Problemas MQTT - Backend</h1>
+    <div class="alert">
+      <strong>Importante:</strong> El problema <u>NO</u> está en el frontend. El frontend está correctamente suscrito y esperando mensajes.
+    </div>
+    <h2>Resumen del Problema</h2>
+    <ul>
+      <li>El frontend (Flutter) se conecta y suscribe correctamente al topic MQTT.</li>
+      <li>No recibe mensajes de datos de viaje cuando un conductor acepta el viaje.</li>
+      <li>Sólo se reciben mensajes de tipo ping/keep-alive.</li>
+    </ul>
+    <div class="flow">
+      <div class="step">Conductor acepta viaje</div>
+      <span class="arrow">&#8594;</span>
+      <div class="step">Backend envía mensaje MQTT<br><code>ride_request_status_{user_id}</code></div>
+      <span class="arrow">&#8594;</span>
+      <div class="step">Frontend recibe mensaje<br>y actualiza UI</div>
+    </div>
+    <h2>¿Qué debe revisar el equipo Backend/MQTT?</h2>
+    <ol>
+      <li>
+        <strong>¿Se está enviando el mensaje MQTT al topic correcto?</strong><br>
+        Debe ser exactamente: <code>ride_request_status_{user_id}</code> (por ejemplo, <code>ride_request_status_34</code>).
+      </li>
+      <li>
+        <strong>¿El mensaje tiene el formato correcto?</strong><br>
+        Debe tener un campo <code>success_type</code> con valor <code>accepted</code>, <code>arriving</code>, <code>arrived</code> o <code>in_progress</code>.
+      </li>
+      <li>
+        <strong>¿El backend realmente ejecuta el envío MQTT cuando el conductor acepta el viaje?</strong><br>
+        Revisar el código backend y los logs del servidor MQTT.
+      </li>
+      <li>
+        <strong>Prueba manual:</strong> Usar una herramienta como MQTT Explorer o un script para publicar un mensaje de prueba al topic correspondiente y verificar si el frontend lo recibe.
+      </li>
+    </ol>
+    <h2 style="color:#388e3c;">¿Cuál es el mensaje MQTT correcto?</h2>
+    <h3>Topic a utilizar:</h3>
+    <pre><code>ride_request_status_{user_id}</code></pre>
+    <h3>Ejemplo de mensaje JSON:</h3>
+    <pre>
+{
+  "success_type": "accepted",
+  "result": {
+    "id": 12345,
+    "driver_name": "Carlos López",
+    "driver_phone": "+1234567890",
+    "vehicle_info": "Toyota Camry - ABC123",
+    "estimated_arrival": "5 minutos",
+    "driver_rating": 4.8
+  }
+}
+    </pre>
+    <h3>Descripción de los campos:</h3>
+    <table class="field-table">
+      <tr>
+        <th>Campo</th>
+        <th>Tipo</th>
+        <th>Descripción</th>
+        <th>Ejemplo</th>
+      </tr>
+      <tr>
+        <td>success_type</td>
+        <td>string</td>
+        <td>Estado del viaje. Debe ser uno de: <code>accepted</code>, <code>arriving</code>, <code>arrived</code>, <code>in_progress</code></td>
+        <td>accepted</td>
+      </tr>
+      <tr>
+        <td>result.id</td>
+        <td>int</td>
+        <td>ID del viaje</td>
+        <td>12345</td>
+      </tr>
+      <tr>
+        <td>result.driver_name</td>
+        <td>string</td>
+        <td>Nombre del conductor asignado</td>
+        <td>Carlos López</td>
+      </tr>
+      <tr>
+        <td>result.driver_phone</td>
+        <td>string</td>
+        <td>Teléfono del conductor</td>
+        <td>+1234567890</td>
+      </tr>
+      <tr>
+        <td>result.vehicle_info</td>
+        <td>string</td>
+        <td>Información del vehículo</td>
+        <td>Toyota Camry - ABC123</td>
+      </tr>
+      <tr>
+        <td>result.estimated_arrival</td>
+        <td>string</td>
+        <td>Tiempo estimado de llegada</td>
+        <td>5 minutos</td>
+      </tr>
+      <tr>
+        <td>result.driver_rating</td>
+        <td>float</td>
+        <td>Calificación del conductor</td>
+        <td>4.8</td>
+      </tr>
+    </table>
+    <h3>Buenas prácticas:</h3>
+    <ul>
+      <li>El <strong>topic</strong> debe ser único por usuario pasajero.</li>
+      <li>El <strong>mensaje</strong> debe ser JSON válido y contener todos los campos requeridos.</li>
+      <li>El campo <code>success_type</code> debe coincidir exactamente con los valores esperados por el frontend.</li>
+      <li>Verifica en los logs del backend que el mensaje se publica correctamente.</li>
+    </ul>
+    <div class="success">
+      <strong>Conclusión:</strong> El frontend está correctamente implementado y listo para recibir mensajes. El equipo backend debe asegurarse de que el mensaje MQTT se envía al topic correcto y con el formato adecuado cuando el conductor acepta el viaje.
+    </div>
+  </div>
+</body>
+</html> 

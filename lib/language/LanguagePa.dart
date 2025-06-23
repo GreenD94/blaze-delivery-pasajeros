@@ -549,4 +549,7 @@ class LanguagePa extends BaseLanguage {
 
   @override
   String get moneyDebit => 'ਪੈਸਾ ਡੈਬਿਟ';
+
+  @override
+  String get tasaDeCambio => 'ਵਟਾਂਦਰੇ ਦੀ ਦਰ';
 }

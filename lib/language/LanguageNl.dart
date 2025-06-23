@@ -550,4 +550,7 @@ class LanguageNl extends BaseLanguage {
 
   @override
   String get moneyDebit => 'Geldbasis';
+
+  @override
+  String get tasaDeCambio => 'Wisselkoers';
 }

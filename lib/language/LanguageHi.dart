@@ -550,4 +550,7 @@ class LanguageHi extends BaseLanguage {
 
   @override
   String get moneyDebit => 'मनी डेबिट';
+
+  @override
+  String get tasaDeCambio => 'विनिमय दर';
 }

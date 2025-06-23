@@ -565,4 +565,7 @@ class LanguagePt extends BaseLanguage {
 
   @override
   String get moneyDebit => 'Débito de dinheiro';
+
+  @override
+  String get tasaDeCambio => 'Taxa de câmbio';
 }

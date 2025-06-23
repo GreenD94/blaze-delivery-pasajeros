@@ -569,4 +569,7 @@ class LanguageFr extends BaseLanguage {
 
   @override
   String get moneyDebit => 'Débit monétaire';
+
+  @override
+  String get tasaDeCambio => 'Taux de change';
 }

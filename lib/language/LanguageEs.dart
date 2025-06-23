@@ -552,4 +552,10 @@ class LanguageEs extends BaseLanguage {
 
   @override
   String get moneyDebit => 'Débito de dinero';
+
+  @override
+  String get recargar => 'Recargar';
+
+  @override
+  String get tasaDeCambio => 'Tasa de cambio';
 }

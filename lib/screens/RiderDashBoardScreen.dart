@@ -353,448 +353,313 @@ class RiderDashBoardScreenState extends State<RiderDashBoardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    LiveStream().on(CHANGE_LANGUAGE, (p0) {
-      setState(() {});
-    });
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      key: _scaffoldKey,
-      drawer: Drawer(
-        backgroundColor: primaryColor,
-        child: SingleChildScrollView(
-          padding: EdgeInsets.only(left: 16, right: 16, top: 40, bottom: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: Icon(Icons.arrow_back, color: Colors.white),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 16, bottom: 16, right: 8),
-                decoration: BoxDecoration(
-                    color: Colors.white10,
-                    borderRadius: BorderRadius.circular(defaultRadius)),
-                child: Row(
-                  children: [
-                    Observer(builder: (context) {
-                      return Expanded(
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        key: _scaffoldKey,
+        drawer: Drawer(
+          backgroundColor: primaryColor,
+          child: SingleChildScrollView(
+            padding: EdgeInsets.only(left: 16, right: 16, top: 40, bottom: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(Icons.arrow_back, color: Colors.white),
+                ),
+                Container(
+                  padding: EdgeInsets.only(top: 16, bottom: 16, right: 8),
+                  decoration: BoxDecoration(
+                      color: Colors.white10,
+                      borderRadius: BorderRadius.circular(defaultRadius)),
+                  child: Row(
+                    children: [
+                      Observer(builder: (context) {
+                        return Expanded(
+                          child: Column(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(30),
+                                child: commonCachedNetworkImage(
+                                    appStore.userProfile.validate().validate(),
+                                    height: 60,
+                                    width: 60,
+                                    fit: BoxFit.cover),
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
+                      SizedBox(width: 4),
+                      Expanded(
+                        flex: 2,
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(30),
-                              child: commonCachedNetworkImage(
-                                  appStore.userProfile.validate().validate(),
-                                  height: 60,
-                                  width: 60,
-                                  fit: BoxFit.cover),
-                            ),
+                            sharedPref.getString(LOGIN_TYPE) != 'mobile' &&
+                                    sharedPref.getString(LOGIN_TYPE) != null
+                                ? Text(sharedPref.getString(USER_NAME).validate(),
+                                    style: boldTextStyle(color: Colors.white))
+                                : Text(
+                                    sharedPref.getString(FIRST_NAME).validate(),
+                                    style: boldTextStyle(color: Colors.white)),
+                            SizedBox(height: 4),
+                            Text(appStore.userEmail,
+                                style: secondaryTextStyle(color: Colors.white)),
                           ],
                         ),
-                      );
-                    }),
-                    SizedBox(width: 4),
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          sharedPref.getString(LOGIN_TYPE) != 'mobile' &&
-                                  sharedPref.getString(LOGIN_TYPE) != null
-                              ? Text(sharedPref.getString(USER_NAME).validate(),
-                                  style: boldTextStyle(color: Colors.white))
-                              : Text(
-                                  sharedPref.getString(FIRST_NAME).validate(),
-                                  style: boldTextStyle(color: Colors.white)),
-                          SizedBox(height: 4),
-                          Text(appStore.userEmail,
-                              style: secondaryTextStyle(color: Colors.white)),
-                        ],
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(height: 20),
-              DrawerWidget(
-                title: language.myProfile,
-                iconData: 'images/ic_my_profile.png',
-                onTap: () {
-                  Navigator.pop(context);
-                  launchScreen(context, EditProfileScreen(),
-                      pageRouteAnimation: PageRouteAnimation.Slide);
-                },
-              ),
-              DrawerWidget(
-                  title: language.myRides,
-                  iconData: 'images/ic_my_rides.png',
+                SizedBox(height: 20),
+                DrawerWidget(
+                  title: language.myProfile,
+                  iconData: 'images/ic_my_profile.png',
                   onTap: () {
                     Navigator.pop(context);
-                    launchScreen(context, MyRidesScreen(),
+                    launchScreen(context, EditProfileScreen(),
                         pageRouteAnimation: PageRouteAnimation.Slide);
-                  }),
-              DrawerWidget(
-                  title: language.myWallet,
-                  iconData: 'images/my_wallet.png',
-                  onTap: () {
-                    Navigator.pop(context);
-                    launchScreen(context, MyWalletScreen(),
-                        pageRouteAnimation: PageRouteAnimation.Slide);
-                  }),
-              DrawerWidget(
-                  title: language.emergencyContacts,
-                  iconData: 'images/ic_emergency_contact.png',
-                  onTap: () {
-                    Navigator.pop(context);
-                    launchScreen(context, EmergencyContactScreen(),
-                        pageRouteAnimation: PageRouteAnimation.Slide);
-                  }),
-              DrawerWidget(
-                  title: language.setting,
-                  iconData: 'images/ic_setting.png',
-                  onTap: () {
-                    launchScreen(context, SettingScreen(),
-                        pageRouteAnimation: PageRouteAnimation.Slide);
-                  }),
-              SizedBox(height: 16),
-              Center(
-                child: AppButtonWidget(
-                  text: language.logOut,
-                  textStyle: boldTextStyle(color: primaryColor),
-                  onTap: () async {
-                    await showConfirmDialogCustom(
-                        _scaffoldKey.currentState!.context,
-                        primaryColor: primaryColor,
-                        dialogType: DialogType.CONFIRMATION,
-                        title: language.areYouSureYouWantToLogoutThisApp,
-                        positiveText: language.yes,
-                        negativeText: language.no, onAccept: (v) async {
-                      await appStore.setLoggedIn(true);
-                      await Future.delayed(Duration(milliseconds: 500));
-                      await logout();
-                    });
                   },
                 ),
-              )
-            ],
+                DrawerWidget(
+                    title: language.myRides,
+                    iconData: 'images/ic_my_rides.png',
+                    onTap: () {
+                      Navigator.pop(context);
+                      launchScreen(context, MyRidesScreen(),
+                          pageRouteAnimation: PageRouteAnimation.Slide);
+                    }),
+                DrawerWidget(
+                    title: language.myWallet,
+                    iconData: 'images/my_wallet.png',
+                    onTap: () {
+                      Navigator.pop(context);
+                      launchScreen(context, MyWalletScreen(),
+                          pageRouteAnimation: PageRouteAnimation.Slide);
+                    }),
+                DrawerWidget(
+                    title: language.emergencyContacts,
+                    iconData: 'images/ic_emergency_contact.png',
+                    onTap: () {
+                      Navigator.pop(context);
+                      launchScreen(context, EmergencyContactScreen(),
+                          pageRouteAnimation: PageRouteAnimation.Slide);
+                    }),
+                DrawerWidget(
+                    title: language.setting,
+                    iconData: 'images/ic_setting.png',
+                    onTap: () {
+                      launchScreen(context, SettingScreen(),
+                          pageRouteAnimation: PageRouteAnimation.Slide);
+                    }),
+                SizedBox(height: 16),
+                Center(
+                  child: AppButtonWidget(
+                    text: language.logOut,
+                    textStyle: boldTextStyle(color: primaryColor),
+                    onTap: () async {
+                      await showConfirmDialogCustom(
+                          _scaffoldKey.currentState!.context,
+                          primaryColor: primaryColor,
+                          dialogType: DialogType.CONFIRMATION,
+                          title: language.areYouSureYouWantToLogoutThisApp,
+                          positiveText: language.yes,
+                          negativeText: language.no, onAccept: (v) async {
+                        await appStore.setLoggedIn(true);
+                        await Future.delayed(Duration(milliseconds: 500));
+                        await logout();
+                      });
+                    },
+                  ),
+                )
+              ],
+            ),
           ),
         ),
-      ),
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   actions: [
-      //     Padding(
-      //       padding: EdgeInsets.only(right: 16),
-      //       child: IconButton(
-      //         onPressed: () {
-      //           launchScreen(context, NotificationScreen(), pageRouteAnimation: PageRouteAnimation.Slide);
-      //         },
-      //         icon: Icon(Icons.notifications_active_outlined),
-      //       ),
-      //     ),
-      //   ],
-      // ),
-      body: sourceLocation != null
-          ? Stack(
-              children: [
-                GoogleMap(
-                  zoomControlsEnabled: true,
-                  markers: markers,
-                  polylines: _polyLines,
-                  padding: EdgeInsets.all(0),
-                  initialCameraPosition: CameraPosition(
-                    target: sourceLocation!,
-                    zoom: cameraZoom,
-                    tilt: cameraTilt,
-                    bearing: cameraBearing,
-                  ),
-                  onMapCreated: (controller) async => {
-                    _darkMapStyle = await rootBundle
-                        .loadString('assets/json/dark_mode_style.json'),
-                    // _controller.complete(controller),
-                    controller.setMapStyle(_darkMapStyle)
-                  },
-                ),
-                Positioned(
-                  top:
-                      42, // Ajusta esto para mover el botón hacia arriba o hacia abajo
-                  right:
-                      10, // Ajusta esto para mover el botón hacia la izquierda o la derecha
-                  child: FloatingActionButton(
-                    onPressed: () {
-                      launchScreen(context, NotificationScreen(),
-                          pageRouteAnimation: PageRouteAnimation.Slide);
+        body: sourceLocation != null
+            ? Stack(
+                children: [
+                  GoogleMap(
+                    zoomControlsEnabled: true,
+                    markers: markers,
+                    polylines: _polyLines,
+                    padding: EdgeInsets.all(0),
+                    initialCameraPosition: CameraPosition(
+                      target: sourceLocation!,
+                      zoom: cameraZoom,
+                      tilt: cameraTilt,
+                      bearing: cameraBearing,
+                    ),
+                    onMapCreated: (controller) async => {
+                      _darkMapStyle = await rootBundle
+                          .loadString('assets/json/dark_mode_style.json'),
+                      // _controller.complete(controller),
+                      controller.setMapStyle(_darkMapStyle)
                     },
-                    child: Icon(Icons.notifications_active_outlined),
                   ),
-                ),
-                Positioned(
-                  top:
-                      40, // Ajusta esto para mover el botón hacia arriba o hacia abajo
-                  left:
-                      10, // Ajusta esto para mover el botón hacia la izquierda o la derecha
-                  child: Builder(
-                    builder: (context) => FloatingActionButton(
-                      onPressed: () {
-                        Scaffold.of(context).openDrawer();
-                      },
-                      child: Icon(Icons.menu),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: 40,
-                  left: 72,
-                  child: Card(
-                    clipBehavior: Clip.hardEdge,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(defaultRadius),
-                    ),
-                    // add padding inside card
-                    child: InkWell(
-                      splashColor: primaryColor,
-                      onTap: () {
-                        // debugPrint('Card tapped.');
-                      },
-                      child: SizedBox(
-                        width: 240,
-                        // height: 100,
-                        // child: Text('A card that can be tapped'),
-                        child: Padding(
-                          padding: const EdgeInsets.all(2),
-                          child: AppTextField(
-                            autoFocus: false,
-                            readOnly: true,
-                            onTap: () async {
-                              if (await checkPermission()) {
-                                showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(defaultRadius),
-                                        topRight:
-                                            Radius.circular(defaultRadius)),
-                                  ),
-                                  context: context,
-                                  builder: (_) {
-                                    return RiderWidget(
-                                        title: sourceLocationTitle,
-                                        coordinates: sourceLocation);
-                                  },
-                                );
-                              }
-                            },
-                            textFieldType: TextFieldType.EMAIL,
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.search),
-                              filled: true,
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.transparent)),
-                              // isDense: true,
-                              contentPadding: EdgeInsets.only(
-                                  top: 10, bottom: 10, left: 10, right: 10),
-                              border: InputBorder.none,
-                              hintText: language.enterYourDestination,
+                  Positioned(
+                    top: height * 0.03,
+                    left: width * 0.03,
+                    right: width * 0.03,
+                    child: Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.menu, size: width * 0.08),
+                          onPressed: () {
+                            Scaffold.of(context).openDrawer();
+                          },
+                        ),
+                        SizedBox(width: 8),
+                        Expanded(
+                          child: Container(
+                            height: height * 0.055,
+                            child: TextField(
+                              decoration: InputDecoration(
+                                hintText: language.enterYourDestination,
+                                contentPadding: EdgeInsets.symmetric(
+                                  vertical: height * 0.012,
+                                  horizontal: 12,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                filled: true,
+                                fillColor: Colors.white,
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                        SizedBox(width: 8),
+                        IconButton(
+                          icon: Icon(Icons.search, size: width * 0.08),
+                          onPressed: () async {
+                            if (await checkPermission()) {
+                              showModalBottomSheet(
+                                isScrollControlled: true,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(defaultRadius),
+                                      topRight:
+                                          Radius.circular(defaultRadius)),
+                                ),
+                                context: context,
+                                builder: (_) {
+                                  return RiderWidget(
+                                      title: sourceLocationTitle,
+                                      coordinates: sourceLocation);
+                                },
+                              );
+                            }
+                          },
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                if(bottomBannerUrl.isNotEmpty)
-                Positioned(
-                  bottom: 5,
-                  left: 2,
-                  child: Card(
-                    clipBehavior: Clip.hardEdge,
-                    child: InkWell(
-                      splashColor: primaryColor.withAlpha(30),
-                      onTap: () {
-                        // debugPrint('Card tapped.');
-                      },
-                      child: SizedBox(
-                        width: 120,
-                        height: 100,
-                        child: CachedNetworkImage(
-                            imageUrl:
-                                bottomBannerUrl,
-                            fit: BoxFit.cover),
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                    bottom: 5,
-                    left: 160,
-                    child: FloatingActionButton(
-                      onPressed: () async {
-                        if (await checkPermission()) {
-                          showModalBottomSheet(
-                            isScrollControlled: true,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(defaultRadius),
-                                  topRight: Radius.circular(defaultRadius)),
+                  Positioned(
+                    bottom: height * 0.03,
+                    left: width * 0.03,
+                    right: width * 0.03,
+                    child: Row(
+                      children: [
+                        FloatingActionButton(
+                          mini: true,
+                          onPressed: () async {
+                            if (await checkPermission()) {
+                              showModalBottomSheet(
+                                isScrollControlled: true,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(defaultRadius),
+                                      topRight:
+                                          Radius.circular(defaultRadius)),
+                                ),
+                                context: context,
+                                builder: (_) {
+                                  return RiderWidget(
+                                      title: sourceLocationTitle,
+                                      coordinates: sourceLocation);
+                                },
+                              );
+                            }
+                          },
+                          child: Icon(Icons.my_location),
+                        ),
+                        SizedBox(width: 12),
+                        Expanded(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.symmetric(
+                                vertical: height * 0.018,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
                             ),
-                            context: context,
-                            builder: (_) {
-                              return RiderWidget(
-                                  title: sourceLocationTitle,
-                                  coordinates: sourceLocation);
+                            onPressed: () async {
+                              // go to wallet screen
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MyWalletScreen(),
+                                ),
+                              );
                             },
-                          );
-                        }
-                      },
-                      child: Icon(Icons.location_on_outlined),
-                    )),
-                    if (usdRate != null)
-                Positioned(
-                  bottom: 60,
-                  right: 2,
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(defaultRadius),
+                            child: Text(
+                              language.recargar,
+                              style: TextStyle(
+                                fontSize: width * 0.045,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    clipBehavior: Clip.hardEdge,
-                    child: InkWell(
-                      splashColor: primaryColor.withAlpha(30),
-                      onTap: () {
-                        // debugPrint('Card tapped.');
-                      },
-                      child: SizedBox(
-                        width: 135,
-                        height: 50,
+                  ),
+                  if (usdRate != null)
+                    Positioned(
+                      bottom: height * 0.12,
+                      right: width * 0.03,
+                      child: Card(
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
                         child: Padding(
-                          padding: const EdgeInsets.all(4.0),
+                          padding: EdgeInsets.symmetric(
+                            vertical: height * 0.012,
+                            horizontal: width * 0.04,
+                          ),
                           child: Column(
                             children: [
-                              Row(
-                                children: [Text('Tasa de cambio', style: TextStyle(fontSize: 12))],
+                              Text(
+                                language.tasaDeCambio,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: width * 0.035,
+                                ),
                               ),
-                              Row(
-                                children: [
-                                    Text('\$1.00'),
-                                    Icon(Icons.arrow_forward),
-                                    Text('Bs.$usdRate')
-                                ],
+                              Text(
+                                '\$1.00 → Bs.$usdRate',
+                                style: TextStyle(
+                                  fontSize: width * 0.04,
+                                ),
                               ),
                             ],
                           ),
                         ),
-                        // child:  CachedNetworkImage( imageUrl: 'https://picsum.photos/200/300', fit: BoxFit.cover),
                       ),
                     ),
-                  ),
-                ),
-                Positioned(
-                    bottom: 5,
-                    right: 5,
-                    child: SizedBox(
-                      width: 135,
-                      height: 50,
-                      child: ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: primaryColor,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(defaultRadius),
-                          ),
-                          // textStyle: TextStyle(fontSize: 20),
-                          // backgroundColor: Colors.green,
-                          // foregroundColor: Colors.white,
-                          // minimumSize: const Size.fromHeight(50)
-                        ),
-                        onPressed: () async {
-                          // go to wallet screen
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MyWalletScreen(),
-                            ),
-                          );
-                        },
-                        label: const Text('Recargar'),
-                        icon: const Icon(Icons.wallet),
-                      ),
-                      // child:  CachedNetworkImage( imageUrl: 'https://picsum.photos/200/300', fit: BoxFit.cover),
-                    )),
-              ],
-
-              // SlidingUpPanel(
-              //   padding: EdgeInsets.all(16),
-              //   borderRadius: BorderRadius.only(topLeft: Radius.circular(defaultRadius), topRight: Radius.circular(defaultRadius)),
-              //   backdropColor: primaryColor,
-              //   backdropTapClosesPanel: true,
-              //   minHeight: 150,
-              //   maxHeight: 150,
-              //   panel: Column(
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: []
-              //     ),
-              // )
-              // SlidingUpPanel(
-              //   padding: EdgeInsets.all(16),
-              //   borderRadius: BorderRadius.only(topLeft: Radius.circular(defaultRadius), topRight: Radius.circular(defaultRadius)),
-              //   backdropColor: primaryColor,
-              //   backdropTapClosesPanel: true,
-              //   minHeight: 150,
-              //   maxHeight: 150,
-              //   panel: Column(
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: [
-              //       Center(
-              //         child: Container(
-              //           alignment: Alignment.center,
-              //           margin: EdgeInsets.only(bottom: 16),
-              //           height: 5,
-              //           width: 70,
-              //           decoration: BoxDecoration(color: primaryColor, borderRadius: BorderRadius.circular(defaultRadius)),
-              //         ),
-              //       ),
-              //       Text(language.whatWouldYouLikeToGo, style: primaryTextStyle()),
-              //       SizedBox(height: 16),
-              //       AppTextField(
-              //         autoFocus: false,
-              //         readOnly: true,
-              //         onTap: () async {
-              //           if (await checkPermission()) {
-              //             showModalBottomSheet(
-              //               isScrollControlled: true,
-              //               shape: RoundedRectangleBorder(
-              //                 borderRadius: BorderRadius.only(topLeft: Radius.circular(defaultRadius), topRight: Radius.circular(defaultRadius)),
-              //               ),
-              //               context: context,
-              //               builder: (_) {
-              //                 return RiderWidget(title: sourceLocationTitle, coordinates: sourceLocation);
-              //               },
-              //             );
-              //           }
-              //         },
-              //         textFieldType: TextFieldType.EMAIL,
-              //         keyboardType: TextInputType.emailAddress,
-              //         decoration: InputDecoration(
-              //           prefixIcon: Icon(Icons.search),
-              //           filled: true,
-              //           focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-              //           isDense: true,
-              //           contentPadding: EdgeInsets.zero,
-              //           border: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-              //           hintText: language.enterYourDestination,
-              //         ),
-              //       ),
-              //       SizedBox(height: 16),
-              //     ],
-              //   ),
-              // ),
-              // ],
-            )
-          : loaderWidget(),
+                ],
+              )
+            : loaderWidget(),
+      ),
     );
   }
 }
