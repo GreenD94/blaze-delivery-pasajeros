@@ -565,4 +565,7 @@ class LanguageTr extends BaseLanguage {
 
   @override
   String get moneyDebit => 'Para Borç';
+
+  @override
+  String get tasaDeCambio => 'Döviz kuru';
 }

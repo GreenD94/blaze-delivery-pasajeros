@@ -368,4 +368,8 @@ abstract class BaseLanguage {
   String get pleaseSelectRating;
 
   String get moneyDebit;
+
+  String get tasaDeCambio;
+
+  String get recargar;
 }

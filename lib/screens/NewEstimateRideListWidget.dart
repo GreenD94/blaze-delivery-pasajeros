@@ -99,8 +99,8 @@ class NewEstimateRideListWidgetState extends State<NewEstimateRideListWidget> {
 
   List<Map<String, String>> paymentMethods = [
     {'key': 'wallet', 'name': 'Billetera'},
-    // {'key': 'cash', 'name': 'Efectivo'},
-    // {'key': 'mobile-payment', 'name': 'Pago Móvil al Conductor'}
+    {'key': 'cash', 'name': 'Efectivo'},
+    {'key': 'mobile-payment', 'name': 'Pago Móvil al Conductor'}
   ];
 
   int _currentStep = 0;
@@ -138,7 +138,6 @@ class NewEstimateRideListWidgetState extends State<NewEstimateRideListWidget> {
       rideRequest = value.rideRequest ?? value.onRideRequest;
       driverData = value.driver!;
       if (rideRequest != null) {
-        //getUserDetailLocation();
         setState(() {});
         if (driverData != null) {
           timer = Timer.periodic(Duration(seconds: 10), (Timer t) => getUserDetailLocation());
@@ -148,6 +147,8 @@ class NewEstimateRideListWidgetState extends State<NewEstimateRideListWidget> {
         launchScreen(context, ReviewScreen(rideRequest: rideRequest!, driverData: driverData),
             pageRouteAnimation: PageRouteAnimation.SlideBottomTop, isNewTask: true);
       }
+      print('Estado del viaje: ${rideRequest?.status}');
+      print('Datos del conductor: ${driverData}');
     }).catchError((error) {
       log(error.toString());
     });
@@ -209,7 +210,7 @@ class NewEstimateRideListWidgetState extends State<NewEstimateRideListWidget> {
 
       serviceList.addAll(value.data!);
       if (serviceList.isNotEmpty) servicesListData = serviceList[0];
-      if (serviceList.isNotEmpty) paymentMethodType = serviceList[0].paymentMethod!;
+      paymentMethodType = 'wallet';
       if (serviceList.isNotEmpty)
         cashList =
             paymentMethodType == 'cash_wallet' ? cashList = ['cash', 'wallet', 'mobile-payment'] : cashList = [paymentMethodType];
@@ -349,24 +350,25 @@ class NewEstimateRideListWidgetState extends State<NewEstimateRideListWidget> {
 
     client.updates!.listen((List<MqttReceivedMessage<MqttMessage?>>? c) {
       final MqttPublishMessage recMess = c![0].payload as MqttPublishMessage;
-
       final pt = MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
-      if (jsonDecode(pt)['success_type'] == ACCEPTED ||
-          jsonDecode(pt)['success_type'] == ARRIVING ||
-          jsonDecode(pt)['success_type'] == ARRIVED ||
-          jsonDecode(pt)['success_type'] == IN_PROGRESS) {
+      print('MQTT recibido: $pt');
+      String successType = jsonDecode(pt)['success_type'].toString().toLowerCase();
+      if (successType == ACCEPTED.toLowerCase() ||
+          successType == ARRIVING.toLowerCase() ||
+          successType == ARRIVED.toLowerCase() ||
+          successType == IN_PROGRESS.toLowerCase()) {
         isBooking = true;
         getCurrentRequest();
-      } else if (jsonDecode(pt)['success_type'] == CANCELED) {
+      } else if (successType == CANCELED) {
         launchScreen(context, RiderDashBoardScreen(), isNewTask: true);
-      } else if (jsonDecode(pt)['success_type'] == COMPLETED) {
+      } else if (successType == COMPLETED) {
         getCurrentRequest();
-      } else if (jsonDecode(pt)['success_type'] == 'driver_offer') {
+      } else if (successType == 'driver_offer') {
         setState(() {
           rideRequests.add(jsonDecode(pt)['result']);
         });
         playNotificationSound();
-      } else if (jsonDecode(pt)['success_type'] == 'proposal_canceled') {
+      } else if (successType == 'proposal_canceled') {
         setState(() {
           int requestIndex = rideRequests.indexWhere((element) => element['id'] == jsonDecode(pt)['result']['id']);
           rideRequests.removeAt(requestIndex);
@@ -847,7 +849,15 @@ class NewEstimateRideListWidgetState extends State<NewEstimateRideListWidget> {
                                                       padding: EdgeInsets.all(4),
                                                       decoration: BoxDecoration(
                                                           color: primaryColor, borderRadius: BorderRadius.circular(defaultRadius)),
-                                                      child: Icon(Icons.wallet_outlined, size: 20, color: Colors.white),
+                                                      child: Icon(
+                                                        paymentMethodType == 'cash' 
+                                                          ? Icons.money 
+                                                          : paymentMethodType == 'mobile-payment' 
+                                                            ? Icons.phone_android 
+                                                            : Icons.wallet_outlined, 
+                                                        size: 20, 
+                                                        color: Colors.white
+                                                      ),
                                                     ),
                                                     SizedBox(width: 16),
                                                     Column(
@@ -877,56 +887,57 @@ class NewEstimateRideListWidgetState extends State<NewEstimateRideListWidget> {
                                         child: Column(
                                           children: [
 
-                                                                                // cash
-                                  // if (paymentMethodType == 'cash_wallet' || paymentMethodType == 'cash')
+                                                // cash
+                                  if (paymentMethodType == 'cash_wallet' || paymentMethodType == 'cash')
+                                    Padding(
+                                          padding: EdgeInsets.only(left: 16, right: 16, top: 16),
+                                          child: Column(
+                                            children: [
+                                              AppTextField(
+                                                controller: cashInHandController,
+                                                autoFocus: false,
+                                                textFieldType: TextFieldType.PHONE,
+                                                keyboardType: TextInputType.number,
+                                                errorThisFieldRequired: errorThisFieldRequired,
+                                                decoration: inputDecoration(context, label: 'Efectivo en mano*'),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+
+                                  //
+
+                                  SizedBox(height: 16),
+
+                                  // proposal fee
+                                  // Observer(builder: (_) =>
+                                  // Visibility( 
+                                  //   visible: appStore.selectedRideModality == 'auction',
+                                  //   child:
                                   //   Padding(
-                                  //     padding: EdgeInsets.only(left: 16, right: 16, top: 16),
+                                  //     padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
                                   //     child: Column(
                                   //       children: [
+                                  //         Text("Propón tu tarifa", style: secondaryTextStyle()),
+                                  //         SizedBox(height: 2),
+                                  //         if (servicesListData != null && servicesListData!.totalAmount != null)
+                                  //           Text("Sugerido: " + toCurrency(double.parse(servicesListData!.totalAmount.toString())),
+                                  //               style: secondaryTextStyle()),
+                                  //         SizedBox(height: 16),
                                   //         AppTextField(
-                                  //           controller: cashInHandController,
+                                  //           controller: proposedFeeController,
+                                  //           // focus: emailFocus,
+                                  //           // nextFocus: phoneFocus,
                                   //           autoFocus: false,
                                   //           textFieldType: TextFieldType.PHONE,
                                   //           keyboardType: TextInputType.number,
                                   //           errorThisFieldRequired: errorThisFieldRequired,
-                                  //           decoration: inputDecoration(context, label: 'Efectivo en mano*'),
+                                  //           decoration: inputDecoration(context, label: 'Tarifa propuesta*'),
                                   //         )
                                   //       ],
                                   //     ),
                                   //   ),
-
-                                  //
-                                  SizedBox(height: 16),
-
-                                  // proposal fee
-                                  Observer(builder: (_) =>
-                                  Visibility( 
-                                    visible: appStore.selectedRideModality == 'auction',
-                                    child:
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                                      child: Column(
-                                        children: [
-                                          Text("Propón tu tarifa", style: secondaryTextStyle()),
-                                          SizedBox(height: 2),
-                                          if (servicesListData != null && servicesListData!.totalAmount != null)
-                                            Text("Sugerido: " + toCurrency(double.parse(servicesListData!.totalAmount.toString())),
-                                                style: secondaryTextStyle()),
-                                          SizedBox(height: 16),
-                                          AppTextField(
-                                            controller: proposedFeeController,
-                                            // focus: emailFocus,
-                                            // nextFocus: phoneFocus,
-                                            autoFocus: false,
-                                            textFieldType: TextFieldType.PHONE,
-                                            keyboardType: TextInputType.number,
-                                            errorThisFieldRequired: errorThisFieldRequired,
-                                            decoration: inputDecoration(context, label: 'Tarifa propuesta*'),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  )),
+                                  // )),
                                   //
 
                                         ]),
@@ -946,8 +957,7 @@ class NewEstimateRideListWidgetState extends State<NewEstimateRideListWidget> {
                                       onTap: () {
                                         bool isCash = ['cash_wallet', 'cash'].contains(paymentMethodType);
                                   
-                                        if (proposedFeeController.text.isNotEmpty &&
-                                            ((isCash && cashInHandController.text.isNotEmpty) || !isCash)) {
+                                        if (((isCash && cashInHandController.text.isNotEmpty) || !isCash)) {
                                           saveBookingData();
                                         } else {
                                           toast('Rellena todos los campos requeridos');

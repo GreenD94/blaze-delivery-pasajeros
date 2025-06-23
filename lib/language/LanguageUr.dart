@@ -550,4 +550,7 @@ class LanguageUr extends BaseLanguage {
 
   @override
   String get moneyDebit => 'منی ڈیبٹ';
+
+  @override
+  String get tasaDeCambio => 'زر مبادلہ کی شرح';
 }

@@ -218,7 +218,7 @@ class LanguageAf extends BaseLanguage {
   String get wallet => 'Beursie';
 
   @override
-  String get forInstantPayment => 'Vir onmiddellike betaling';
+  String get forInstantPayment => 'Vir onmiddellige betaling';
 
   @override
   String get bookNow => 'Bespreek nou';
@@ -563,4 +563,7 @@ class LanguageAf extends BaseLanguage {
 
   @override
   String get moneyDebit => 'Geld debiet';
+
+  @override
+  String get tasaDeCambio => 'Wisselkoers';
 }

@@ -549,4 +549,7 @@ class LanguageVi extends BaseLanguage {
 
   @override
   String get moneyDebit => 'Nợ tiền';
+
+  @override
+  String get tasaDeCambio => 'Tỷ giá';
 }

@@ -567,4 +567,7 @@ class LanguageDe extends BaseLanguage {
 
   @override
   String get moneyDebit => 'Geldanlage';
+
+  @override
+  String get tasaDeCambio => 'Wechselkurs';
 }
