@@ -154,6 +154,52 @@ IconButton(
                         📋 Formato de Jira
                     </button>
                 </div>
+
+                <div class="problem-section">
+                    <h4>🔀 Estándares de Git para este Issue</h4>
+                    <ul>
+                        <li><strong>Nombre de la rama:</strong> <code>juan/scaffold-context-error-fix</code></li>
+                        <li><strong>Commit sugerido:</strong> <code>Corrige error de contexto de Scaffold usando GlobalKey en RiderDashBoardScreen</code></li>
+                    </ul>
+                    <h5>Comandos recomendados:</h5>
+                    <div class="code-block"><pre>
+# Crear y cambiar a la nueva rama
+git checkout -b juan/scaffold-context-error-fix
+
+# Agregar los cambios y hacer commit
+git add .
+git commit -m "Corrige error de contexto de Scaffold usando GlobalKey en RiderDashBoardScreen"
+# Subir los cambios a la rama remota
+git push --set-upstream origin juan/scaffold-context-error-fix
+                    </pre></div>
+                    <h5>Pasos para merge a develop:</h5>
+                    <div class="code-block"><pre>
+# 1. Cambia a develop y actualiza
+git checkout develop
+git pull origin develop
+
+# 2. Cambia a tu rama de trabajo
+git checkout juan/scaffold-context-error-fix
+
+# 3. Trae los últimos cambios de develop a tu rama
+git merge develop
+# o si prefieres rebase:
+# git rebase develop
+
+# 4. Resuelve conflictos si los hay, luego:
+git add .
+git commit -m "Resuelve conflictos con develop"
+
+# 5. Sube tu rama actualizada
+git push
+
+# 6. Haz el merge a develop (por PR/MR o desde consola)
+git checkout develop
+git merge juan/scaffold-context-error-fix
+git push
+                    </pre></div>
+                    <p>Consulta los <a href="../estandares-documentacion.html" target="_blank">estándares de documentación</a> para más detalles.</p>
+                </div>
             </div>
         </div>
 

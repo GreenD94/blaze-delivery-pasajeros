@@ -218,6 +218,66 @@ issues/[problema].html
             </ul>
         </div>
 
+        <div class="section">
+            <h2>🔀 Estándares para ramas, commits y merge en Git</h2>
+            <h3>📌 Nombres de ramas</h3>
+            <ul>
+                <li>El nombre de la rama debe seguir el formato: <code>nombre-del-programador/nombre-de-la-caracteristica-o-problema</code></li>
+                <li>Ejemplo: <code>juan/scaffold-context-error-fix</code></li>
+            </ul>
+            <div class="code-block"><pre>
+# Crear y cambiar a la nueva rama
+git checkout -b juan/scaffold-context-error-fix
+            </pre></div>
+            <h3>✍️ Commits</h3>
+            <ul>
+                <li>Los mensajes de commit deben ser resumidos y concisos, describiendo claramente el cambio realizado.</li>
+                <li>Ejemplo: <code>Corrige error de contexto de Scaffold usando GlobalKey en RiderDashBoardScreen</code></li>
+            </ul>
+            <div class="code-block"><pre>
+# Agregar los cambios y hacer commit
+git add .
+git commit -m "Corrige error de contexto de Scaffold usando GlobalKey en RiderDashBoardScreen"
+# Subir los cambios a la rama remota
+git push --set-upstream origin juan/scaffold-context-error-fix
+            </pre></div>
+            <h3>🔀 Merge a develop</h3>
+            <ul>
+                <li>El merge debe hacerse siempre a la rama <code>develop</code>.</li>
+                <li>Antes de hacer merge, asegúrate de actualizar tu rama local con los últimos cambios de <code>develop</code> para evitar conflictos.</li>
+                <li>Pasos recomendados:</li>
+            </ul>
+            <div class="code-block"><pre>
+# 1. Cambia a develop y actualiza
+git checkout develop
+git pull origin develop
+
+# 2. Cambia a tu rama de trabajo
+git checkout juan/scaffold-context-error-fix
+
+# 3. Trae los últimos cambios de develop a tu rama
+git merge develop
+# o si prefieres rebase:
+# git rebase develop
+
+# 4. Resuelve conflictos si los hay, luego:
+git add .
+git commit -m "Resuelve conflictos con develop"
+
+# 5. Sube tu rama actualizada
+git push
+
+# 6. Haz el merge a develop (por PR/MR o desde consola)
+# Ejemplo por consola:
+git checkout develop
+git merge juan/scaffold-context-error-fix
+git push
+            </pre></div>
+            <ul>
+                <li>Si trabajas en equipo, se recomienda hacer el merge mediante Pull Request (PR) o Merge Request (MR) para revisión de código.</li>
+            </ul>
+        </div>
+
         <div class="footer">
             <p>📚 Estándares de Documentación - Blaze Delivery Pasajeros</p>
             <p>Última actualización: 24 de Junio, 2025</p>
