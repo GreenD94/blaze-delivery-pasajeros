@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estándares de Documentación - Blaze Delivery Pasajeros</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Estándares de Documentación</h1>
+            <p>Guía para documentar problemas y soluciones en Blaze Delivery Pasajeros</p>
+        </div>
+        
+        <!-- Navegación -->
+        <div class="section">
+            <h2>🧭 Navegación</h2>
+            <p>📋 <a href="lista-problemas.html">Ver lista completa de problemas</a></p>
+        </div>
+
+        <!-- Estructura de la Documentación -->
+        <div class="section">
+            <h2>📁 Estructura de la Documentación</h2>
+            <p>La documentación de problemas está organizada de la siguiente manera:</p>
+            
+            <div class="rules-grid">
+                <div class="rule-card">
+                    <h4>📋 lista-problemas.html</h4>
+                    <p>Archivo principal que muestra una vista general de todos los problemas identificados, con estadísticas y enlaces a cada issue individual.</p>
+                </div>
+                <div class="rule-card">
+                    <h4>📋 estandares-documentacion.html</h4>
+                    <p>Este archivo que contiene las reglas y estándares para documentar problemas correctamente.</p>
+                </div>
+                <div class="rule-card">
+                    <h4>📁 issues/</h4>
+                    <p>Carpeta que contiene cada problema documentado en archivos HTML individuales.</p>
+                </div>
+                <div class="rule-card">
+                    <h4>🎨 styles.css</h4>
+                    <p>Archivo de estilos compartido por todos los documentos para mantener consistencia visual.</p>
+                </div>
+            </div>
+
+            <h3>📂 Organización de Archivos</h3>
+            <div class="code-block">
+<pre>
+documentation/issues-to-resolve/
+├── lista-problemas.html          # Vista general de problemas
+├── estandares-documentacion.html # Este archivo
+├── styles.css                    # Estilos compartidos
+└── issues/                       # Carpeta de problemas individuales
+    ├── scaffold-context-error.html
+    ├── [nuevo-problema].html
+    └── [mas-problemas].html
+</pre>
+            </div>
+        </div>
+
+        <!-- Reglas de Navegación -->
+        <div class="section">
+            <h2>🧭 Reglas de Navegación</h2>
+            <p>Cada archivo de la documentación debe incluir enlaces de navegación apropiados:</p>
+            
+            <div class="rules-grid">
+                <div class="rule-card">
+                    <h4>📋 lista-problemas.html</h4>
+                    <p>Debe incluir enlaces a:</p>
+                    <ul>
+                        <li>✅ estandares-documentacion.html</li>
+                        <li>✅ Cada issue individual en issues/</li>
+                    </ul>
+                </div>
+                <div class="rule-card">
+                    <h4>📋 estandares-documentacion.html</h4>
+                    <p>Debe incluir enlaces a:</p>
+                    <ul>
+                        <li>✅ lista-problemas.html</li>
+                    </ul>
+                </div>
+                <div class="rule-card">
+                    <h4>📁 issues/[problema].html</h4>
+                    <p>Cada issue individual debe incluir enlaces a:</p>
+                    <ul>
+                        <li>✅ lista-problemas.html</li>
+                        <li>✅ estandares-documentacion.html</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>🔗 Rutas Relativas</h3>
+            <p>Usar las rutas relativas correctas según la ubicación del archivo:</p>
+            <div class="code-block">
+<pre>
+# Desde issues/[problema].html:
+../lista-problemas.html
+../estandares-documentacion.html
+../styles.css
+
+# Desde archivos en la raíz:
+lista-problemas.html
+estandares-documentacion.html
+styles.css
+issues/[problema].html
+</pre>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📊 Estados de los Problemas</h2>
+            <p>Cada problema documentado debe tener uno de los siguientes estados:</p>
+            <div class="status-grid">
+                <div class="status-card status-pending">
+                    <h4>🔄 Pendiente</h4>
+                    <p>Problema identificado pero aún no se ha iniciado el trabajo</p>
+                </div>
+                <div class="status-card status-todo">
+                    <h4>📝 Por Hacer</h4>
+                    <p>Problema planificado y listo para ser trabajado</p>
+                </div>
+                <div class="status-card status-in-progress">
+                    <h4>⚡ En Curso</h4>
+                    <p>Problema actualmente siendo trabajado por un desarrollador</p>
+                </div>
+                <div class="status-card status-review">
+                    <h4>👀 En Revisión</h4>
+                    <p>Solución implementada y pendiente de revisión</p>
+                </div>
+                <div class="status-card status-done">
+                    <h4>✅ Listo</h4>
+                    <p>Problema resuelto y verificado</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>¿Cómo documentar un problema?</h2>
+            <div class="rules-grid">
+                <div class="rule-card">
+                    <h4>1. Ubicación del Problema</h4>
+                    <p>Especificar exactamente dónde se encuentra el problema: archivo, línea, función, etc.</p>
+                </div>
+                <div class="rule-card">
+                    <h4>2. Descripción Detallada</h4>
+                    <p>Explicar claramente de qué se trata el problema y qué comportamiento se espera vs. el actual.</p>
+                </div>
+                <div class="rule-card">
+                    <h4>3. Solución Recomendada</h4>
+                    <p>Proporcionar una solución específica con código de ejemplo cuando sea posible.</p>
+                </div>
+                <div class="rule-card">
+                    <h4>4. Ventajas de la Solución</h4>
+                    <p>Listar los beneficios y mejoras que aporta la solución propuesta.</p>
+                </div>
+                <div class="rule-card">
+                    <h4>5. Código de Ejemplo</h4>
+                    <p>Incluir bloques de código que muestren el problema y la solución.</p>
+                </div>
+                <div class="rule-card">
+                    <h4>6. Diagramas/Visualizaciones</h4>
+                    <p>Usar diagramas cuando sea necesario para explicar conceptos complejos.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📝 Estructura de un Issue Individual</h2>
+            <p>Cada archivo de issue en la carpeta <code>issues/</code> debe seguir esta estructura:</p>
+            
+            <div class="code-block">
+<pre>
+1. Header con título del problema
+2. Enlaces de navegación (lista-problemas.html y estandares-documentacion.html)
+3. Ubicación del problema (archivo, línea, función)
+4. Descripción detallada del problema
+5. Solución recomendada con código
+6. Ventajas de la solución
+7. Diagramas o visualizaciones (si aplica)
+8. Fecha de identificación y reportero
+9. Botón de formato Jira
+10. Modal de formato Jira
+</pre>
+            </div>
+
+            <h3>📋 Campos Obligatorios</h3>
+            <ul>
+                <li><strong>Título del problema:</strong> Descriptivo y específico</li>
+                <li><strong>Estado:</strong> Uno de los 5 estados definidos</li>
+                <li><strong>Ubicación:</strong> Archivo, línea y función específica</li>
+                <li><strong>Descripción:</strong> Explicación clara del problema</li>
+                <li><strong>Solución:</strong> Código y explicación de la corrección</li>
+                <li><strong>Enlaces de navegación:</strong> A lista-problemas.html y estandares-documentacion.html</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🪟 Modal de Formato Jira</h2>
+            <p>Para cada problema documentado, se debe incluir un botón que abra un <strong>modal de formato Jira</strong> con la siguiente funcionalidad:</p>
+            <ul>
+                <li>Mostrar el título y la descripción del problema de forma separada.</li>
+                <li>Botón para copiar solo el título.</li>
+                <li>Botón para copiar solo la descripción.</li>
+                <li>Visualización de los campos sugeridos para Jira (sin botón de copiado).</li>
+                <li>El modal debe poder cerrarse con el botón de cierre, la tecla Escape o clic fuera (light dismiss).</li>
+                <li>El modal debe estar implementado usando el elemento <code>&lt;dialog&gt;</code> nativo de HTML.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🎨 Estilos y Consistencia Visual</h2>
+            <p>Todos los archivos deben usar el archivo <code>styles.css</code> compartido para mantener:</p>
+            <ul>
+                <li><strong>Consistencia visual:</strong> Mismos colores, fuentes y espaciado</li>
+                <li><strong>Responsive design:</strong> Funcionamiento en móviles y desktop</li>
+                <li><strong>Reutilización de código:</strong> Evitar duplicación de estilos</li>
+                <li><strong>Mantenibilidad:</strong> Cambios centralizados en un solo archivo</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p>📚 Estándares de Documentación - Blaze Delivery Pasajeros</p>
+            <p>Última actualización: 24 de Junio, 2025</p>
+        </div>
+    </div>
+</body>
+</html> 

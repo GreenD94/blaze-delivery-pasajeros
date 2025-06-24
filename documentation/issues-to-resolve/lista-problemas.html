@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Problemas - Blaze Delivery Pasajeros</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📋 Lista de Problemas</h1>
+            <p>Vista general de todos los problemas identificados en Blaze Delivery Pasajeros</p>
+        </div>
+
+        <!-- Enlace a Estándares -->
+        <div class="section">
+            <p>Consulta los <a href="estandares-documentacion.html" target="_blank">estándares de documentación</a> para saber cómo documentar problemas y el uso del modal de formato Jira.</p>
+        </div>
+
+        <!-- Estadísticas -->
+        <div class="stats-section">
+            <h2>📊 Estadísticas</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalIssues">1</div>
+                    <div class="stat-label">Total</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="pendingIssues">1</div>
+                    <div class="stat-label">Pendientes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="inProgressIssues">0</div>
+                    <div class="stat-label">En Curso</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="reviewIssues">0</div>
+                    <div class="stat-label">En Revisión</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="doneIssues">0</div>
+                    <div class="stat-label">Listos</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lista de Problemas -->
+        <div class="section">
+            <h2>🔍 Problemas Identificados</h2>
+            <div class="issues-list" id="issuesList">
+                <!-- Los problemas se cargarán dinámicamente -->
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>📚 Lista de Problemas - Blaze Delivery Pasajeros</p>
+            <p>Última actualización: 24 de Junio, 2025</p>
+        </div>
+    </div>
+
+    <script>
+        // Datos de los problemas
+        const issues = [
+            {
+                id: 'scaffold-context-error',
+                title: 'Error: Scaffold.of() llamado con un contexto que no contiene un Scaffold',
+                status: 'pending',
+                statusText: 'Pendiente',
+                file: 'lib/screens/RiderDashBoardScreen.dart',
+                line: 516,
+                date: '24 de Junio, 2025',
+                reporter: 'Juan (Desarrollador)',
+                description: 'Problema de contexto del Scaffold en el dashboard del rider'
+            }
+            // Aquí se pueden agregar más problemas conforme se documenten
+        ];
+
+        // Función para renderizar la lista de problemas
+        function renderIssues() {
+            const issuesList = document.getElementById('issuesList');
+            
+            if (issues.length === 0) {
+                issuesList.innerHTML = `
+                    <div class="no-issues">
+                        <h3>🎉 ¡No hay problemas pendientes!</h3>
+                        <p>Todos los problemas han sido resueltos.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            issuesList.innerHTML = issues.map(issue => `
+                <div class="issue-item">
+                    <div class="issue-header">
+                        <a href="issues/${issue.id}.html" class="issue-title">
+                            ${issue.title}
+                        </a>
+                        <span class="issue-status status-${issue.status}">
+                            ${issue.statusText}
+                        </span>
+                    </div>
+                    <div class="issue-meta">
+                        <span>📁 ${issue.file}:${issue.line}</span>
+                        <span>📅 ${issue.date}</span>
+                        <span>👤 ${issue.reporter}</span>
+                    </div>
+                    <p style="margin-top: 10px; color: #4a5568;">${issue.description}</p>
+                </div>
+            `).join('');
+        }
+
+        // Función para actualizar estadísticas
+        function updateStats() {
+            const stats = {
+                total: issues.length,
+                pending: issues.filter(i => i.status === 'pending').length,
+                todo: issues.filter(i => i.status === 'todo').length,
+                inProgress: issues.filter(i => i.status === 'in-progress').length,
+                review: issues.filter(i => i.status === 'review').length,
+                done: issues.filter(i => i.status === 'done').length
+            };
+
+            document.getElementById('totalIssues').textContent = stats.total;
+            document.getElementById('pendingIssues').textContent = stats.pending + stats.todo;
+            document.getElementById('inProgressIssues').textContent = stats.inProgress;
+            document.getElementById('reviewIssues').textContent = stats.review;
+            document.getElementById('doneIssues').textContent = stats.done;
+        }
+
+        // Inicializar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            renderIssues();
+            updateStats();
+        });
+    </script>
+</body>
+</html> 

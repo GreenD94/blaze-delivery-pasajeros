@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problemas por Resolver - Blaze Delivery Pasajeros</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🚨 Problemas por Resolver</h1>
+            <p>Documentación de problemas encontrados en Blaze Delivery Pasajeros</p>
+        </div>
+
+        <!-- Estándares de Documentación -->
+        <div class="section">
+            <h2>📋 Estándares de Documentación</h2>
+            <p>Consulta los <a href="../estandares-documentacion.html" target="_blank">estándares de documentación</a> para saber cómo documentar problemas y el uso del modal de formato Jira.</p>
+            <p>📋 <a href="../lista-problemas.html">Ver lista completa de problemas</a></p>
+        </div>
+
+        <!-- Lista de Problemas -->
+        <div class="section">
+            <h2>🔍 Problemas Identificados</h2>
+            
+            <!-- Problema 1: Scaffold.of(context) -->
+            <div class="problem-card">
+                <div class="problem-header">
+                    <div class="problem-title">Error: Scaffold.of() llamado con un contexto que no contiene un Scaffold</div>
+                    <div class="problem-status">PENDIENTE</div>
+                </div>
+
+                <div class="problem-section">
+                    <h4>📍 Ubicación del Problema</h4>
+                    <div class="file-path">lib/screens/RiderDashBoardScreen.dart</div>
+                    <p><strong>Línea:</strong> 516</p>
+                    <p><strong>Función:</strong> IconButton onPressed callback</p>
+                </div>
+
+                <div class="problem-section">
+                    <h4>📝 Descripción del Problema</h4>
+                    <p>Al intentar abrir el menú principal (drawer) desde el botón de menú en la pantalla del dashboard del rider, se produce el siguiente error:</p>
+                    
+                    <div class="error-message">
+════════ Exception caught by gesture ═══════════════════════════════════════════
+Scaffold.of() called with a context that does not contain a Scaffold.
+════════════════════════════════════════════════════════════════════════════════
+                    </div>
+
+                    <p>El problema ocurre porque se está intentando acceder al Scaffold desde un contexto que no tiene acceso directo al Scaffold padre. Esto sucede cuando se usa Scaffold.of(context) desde dentro de un Stack que está en el body del Scaffold.</p>
+                </div>
+
+                <div class="problem-section">
+                    <h4>🔧 Solución Recomendada</h4>
+                    <div class="solution-card">
+                        <p><strong>Usar el GlobalKey del Scaffold en lugar de Scaffold.of(context)</strong></p>
+                    </div>
+                    
+                    <p>El código actual:</p>
+                    <div class="code-block">
+IconButton(
+  icon: Icon(Icons.menu, size: width * 0.08),
+  onPressed: () {
+    Scaffold.of(context).openDrawer();
+  },
+),
+                    </div>
+
+                    <p>Debe cambiarse por:</p>
+                    <div class="code-block">
+IconButton(
+  icon: Icon(Icons.menu, size: width * 0.08),
+  onPressed: () {
+    _scaffoldKey.currentState!.openDrawer();
+  },
+),
+                    </div>
+
+                    <p><strong>Explicación:</strong> La clase ya tiene definido un GlobalKey<ScaffoldState> _scaffoldKey que debe usarse para acceder al Scaffold desde cualquier parte del widget tree.</p>
+                </div>
+
+                <div class="problem-section">
+                    <h4>✅ Ventajas de la Solución</h4>
+                    <div class="advantages-list">
+                        <ul>
+                            <li><strong>Elimina el error de compilación:</strong> Resuelve completamente el problema de contexto del Scaffold</li>
+                            <li><strong>Mejor práctica:</strong> Usar GlobalKey es la forma recomendada para acceder al Scaffold desde widgets anidados</li>
+                            <li><strong>Funcionalidad restaurada:</strong> El menú principal funcionará correctamente</li>
+                            <li><strong>Mantenibilidad:</strong> El código es más claro y fácil de mantener</li>
+                            <li><strong>Consistencia:</strong> Mantiene consistencia con el resto del código que ya usa _scaffoldKey</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="problem-section">
+                    <h4>📊 Diagrama del Problema</h4>
+                    <div class="diagram">
+                        <svg width="600" height="340" viewBox="0 0 600 340">
+                          <!-- Scaffold -->
+                          <rect x="40" y="30" width="520" height="280" fill="#e2e8f0" stroke="#4a5568" stroke-width="2"/>
+                          <text x="300" y="55" text-anchor="middle" fill="#4a5568" font-size="20" font-weight="bold">Scaffold</text>
+                          
+                          <!-- Body -->
+                          <rect x="70" y="80" width="460" height="80" fill="#fef5e7" stroke="#ed8936" stroke-width="2"/>
+                          <text x="300" y="105" text-anchor="middle" fill="#c05621" font-size="16" font-weight="bold">Body</text>
+                          
+                          <!-- Stack -->
+                          <rect x="100" y="110" width="400" height="40" fill="#fff" stroke="#e53e3e" stroke-width="2" stroke-dasharray="6,3"/>
+                          <text x="300" y="135" text-anchor="middle" fill="#e53e3e" font-size="14" font-weight="bold">Stack</text>
+                          
+                          <!-- IconButton Problemático -->
+                          <rect x="120" y="120" width="90" height="30" fill="#fed7d7" stroke="#e53e3e" stroke-width="2"/>
+                          <text x="165" y="140" text-anchor="middle" fill="#c53030" font-size="13" font-weight="bold">IconButton</text>
+                          <text x="165" y="153" text-anchor="middle" fill="#c53030" font-size="10">✖ Scaffold.of(context)</text>
+                          
+                          <!-- Flecha y texto de solución -->
+                          <line x1="210" y1="135" x2="370" y2="135" stroke="#4a5568" stroke-width="2" marker-end="url(#arrowhead)"/>
+                          <text x="290" y="125" text-anchor="middle" fill="#4a5568" font-size="12" font-weight="bold">Solución: Usar _scaffoldKey</text>
+                          
+                          <!-- _scaffoldKey -->
+                          <rect x="370" y="120" width="90" height="30" fill="#c6f6d5" stroke="#38a169" stroke-width="2"/>
+                          <text x="415" y="140" text-anchor="middle" fill="#22543d" font-size="13" font-weight="bold">_scaffoldKey</text>
+                          <text x="415" y="153" text-anchor="middle" fill="#22543d" font-size="10">✔ Acceso correcto</text>
+                          
+                          <!-- GlobalKey Section -->
+                          <rect x="40" y="200" width="520" height="50" fill="#e6fffa" stroke="#319795" stroke-width="2"/>
+                          <text x="300" y="225" text-anchor="middle" fill="#234e52" font-size="16" font-weight="bold">GlobalKey&lt;ScaffoldState&gt; _scaffoldKey</text>
+                          <text x="300" y="245" text-anchor="middle" fill="#234e52" font-size="12">Acceso directo al Scaffold desde cualquier parte</text>
+                          
+                          <!-- Definición de flecha -->
+                          <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                              <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+                            </marker>
+                          </defs>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="problem-section">
+                    <h4>📅 Fecha de Identificación</h4>
+                    <p>24 de Junio, 2025</p>
+                </div>
+
+                <div class="problem-section">
+                    <h4>👤 Reportado por</h4>
+                    <p>Juan (Desarrollador)</p>
+                </div>
+
+                <div class="problem-actions">
+                    <button class="jira-button" onclick="openJiraModal('scaffold-error')">
+                        📋 Formato de Jira
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>📚 Documentación de Problemas - Blaze Delivery Pasajeros</p>
+            <p>Última actualización: 24 de Junio, 2025</p>
+        </div>
+    </div>
+
+    <!-- Modal para Formato de Jira -->
+    <dialog id="jiraModal" closedby="any">
+        <div class="modal-header">
+            <h2>📋 Formato de Jira</h2>
+            <button class="close" onclick="closeJiraModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="jira-section">
+                <h3>📋 Campos Sugeridos para Jira</h3>
+                <div class="jira-fields">
+                    <div class="field-suggestion">
+                        <h4>👤 Persona Asignada</h4>
+                        <div class="suggested-value">Sin asignar</div>
+                        <div class="field-description">Asignar al desarrollador responsable de la corrección</div>
+                    </div>
+                    
+                    <div class="field-suggestion">
+                        <h4>🏷️ Etiquetas</h4>
+                        <div class="suggested-value">bug, flutter, ui, scaffold</div>
+                        <div class="field-description">Etiquetas para categorizar y filtrar el problema</div>
+                    </div>
+                    
+                    <div class="field-suggestion">
+                        <h4>⏱️ Tiempo Estimado</h4>
+                        <div class="suggested-value">2h</div>
+                        <div class="field-description">Tiempo estimado para resolver el problema</div>
+                    </div>
+                    
+                    <div class="field-suggestion">
+                        <h4>📅 Fecha de Vencimiento</h4>
+                        <div class="suggested-value">Próxima sprint</div>
+                        <div class="field-description">Fecha límite para completar la tarea</div>
+                    </div>
+                    
+                    <div class="field-suggestion">
+                        <h4>🎯 Prioridad</h4>
+                        <div class="suggested-value priority-medium">Media</div>
+                        <div class="field-description">Nivel de urgencia del problema</div>
+                    </div>
+                    
+                    <div class="field-suggestion">
+                        <h4>🏢 Equipo</h4>
+                        <div class="suggested-value">Desarrollo Frontend</div>
+                        <div class="field-description">Equipo responsable de la implementación</div>
+                    </div>
+                    
+                    <div class="field-suggestion">
+                        <h4>📂 Componente</h4>
+                        <div class="suggested-value">Rider Dashboard</div>
+                        <div class="field-description">Componente específico afectado</div>
+                    </div>
+                    
+                    <div class="field-suggestion">
+                        <h4>🔧 Tipo de Issue</h4>
+                        <div class="suggested-value">Bug</div>
+                        <div class="field-description">Tipo de problema reportado</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="jira-section">
+                <h3>📝 Contenido para Jira</h3>
+                <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px;">
+                    <div class="jira-title" id="jiraTitleContent"></div>
+                    <button class="copy-button" onclick="copyTitle()">📋 Copiar Título</button>
+                </div>
+                <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px;">
+                    <div class="jira-description" id="jiraDescriptionContent"></div>
+                    <button class="copy-button" onclick="copyDescription()">📋 Copiar Descripción</button>
+                </div>
+                <div class="copy-success" id="copySuccess">
+                    ✅ ¡Copiado al portapapeles!
+                </div>
+            </div>
+        </div>
+    </dialog>
+
+    <script>
+        // Datos de los problemas en formato Jira
+        const jiraData = {
+            'scaffold-error': {
+                title: 'Error: Scaffold.of() llamado con un contexto que no contiene un Scaffold',
+                description: `**Ubicación del Problema:**
+Archivo: lib/screens/RiderDashBoardScreen.dart
+Línea: 516
+Función: IconButton onPressed callback
+
+**Descripción Detallada:**
+Al intentar abrir el menú principal (drawer) desde el botón de menú en la pantalla del dashboard del rider, se produce el siguiente error:
+
+════════ Exception caught by gesture ═══════════════════════════════════════════
+Scaffold.of() called with a context that does not contain a Scaffold.
+════════════════════════════════════════════════════════════════════════════════
+
+El problema ocurre porque se está intentando acceder al Scaffold desde un contexto que no tiene acceso directo al Scaffold padre. Esto sucede cuando se usa Scaffold.of(context) desde dentro de un Stack que está en el body del Scaffold.
+
+**Solución Recomendada:**
+Usar el GlobalKey del Scaffold en lugar de Scaffold.of(context)
+
+El código actual:
+IconButton(
+  icon: Icon(Icons.menu, size: width * 0.08),
+  onPressed: () {
+    Scaffold.of(context).openDrawer();
+  },
+),
+
+Debe cambiarse por:
+IconButton(
+  icon: Icon(Icons.menu, size: width * 0.08),
+  onPressed: () {
+    _scaffoldKey.currentState!.openDrawer();
+  },
+),
+
+Explicación: La clase ya tiene definido un GlobalKey<ScaffoldState> _scaffoldKey que debe usarse para acceder al Scaffold desde cualquier parte del widget tree.
+
+**Ventajas de la Solución:**
+• Elimina el error de compilación: Resuelve completamente el problema de contexto del Scaffold
+• Mejor práctica: Usar GlobalKey es la forma recomendada para acceder al Scaffold desde widgets anidados
+• Funcionalidad restaurada: El menú principal funcionará correctamente
+• Mantenibilidad: El código es más claro y fácil de mantener
+• Consistencia: Mantiene consistencia con el resto del código que ya usa _scaffoldKey
+
+**Código de Ejemplo:**
+El problema se encuentra en la línea 516 del archivo RiderDashBoardScreen.dart, donde se debe reemplazar Scaffold.of(context).openDrawer() por _scaffoldKey.currentState!.openDrawer().
+
+**Fecha de Identificación:** 24 de Junio, 2025
+**Reportado por:** Juan (Desarrollador)`,
+                fields: {
+                    assignee: 'Sin asignar',
+                    labels: 'bug, flutter, ui, scaffold, context-error',
+                    timeEstimate: '2h',
+                    dueDate: 'Próxima sprint',
+                    priority: 'Media',
+                    team: 'Desarrollo Frontend',
+                    component: 'Rider Dashboard',
+                    issueType: 'Bug'
+                }
+            }
+        };
+
+        function openJiraModal(problemId) {
+            const modal = document.getElementById('jiraModal');
+            const titleDiv = document.getElementById('jiraTitleContent');
+            const descDiv = document.getElementById('jiraDescriptionContent');
+            const data = jiraData[problemId];
+            
+            if (data) {
+                // Actualizar campos sugeridos dinámicamente
+                updateSuggestedFields(data.fields);
+                
+                titleDiv.textContent = data.title;
+                descDiv.textContent = data.description;
+                modal.showModal(); // ¡Solo una línea para abrir!
+            }
+        }
+
+        function updateSuggestedFields(fields) {
+            if (!fields) return;
+            
+            // Actualizar cada campo sugerido
+            const fieldMappings = {
+                'assignee': '👤 Persona Asignada',
+                'labels': '🏷️ Etiquetas',
+                'timeEstimate': '⏱️ Tiempo Estimado',
+                'dueDate': '📅 Fecha de Vencimiento',
+                'priority': '🎯 Prioridad',
+                'team': '🏢 Equipo',
+                'component': '📂 Componente',
+                'issueType': '🔧 Tipo de Issue'
+            };
+
+            Object.keys(fieldMappings).forEach(fieldKey => {
+                const fieldElements = document.querySelectorAll('.field-suggestion h4');
+                fieldElements.forEach(element => {
+                    if (element.textContent === fieldMappings[fieldKey]) {
+                        const suggestedValue = element.nextElementSibling;
+                        if (suggestedValue && suggestedValue.classList.contains('suggested-value')) {
+                            suggestedValue.textContent = fields[fieldKey] || 'Sin especificar';
+                            
+                            // Aplicar clase de prioridad si es necesario
+                            if (fieldKey === 'priority') {
+                                suggestedValue.className = 'suggested-value';
+                                if (fields[fieldKey] === 'Alta') {
+                                    suggestedValue.classList.add('priority-high');
+                                } else if (fields[fieldKey] === 'Media') {
+                                    suggestedValue.classList.add('priority-medium');
+                                } else if (fields[fieldKey] === 'Baja') {
+                                    suggestedValue.classList.add('priority-low');
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+        }
+
+        function closeJiraModal() {
+            document.getElementById('jiraModal').close(); // ¡Solo una línea para cerrar!
+        }
+
+        function copyTitle() {
+            const titleElement = document.querySelector('.jira-title');
+            const title = titleElement ? titleElement.textContent : '';
+            
+            navigator.clipboard.writeText(title).then(function() {
+                const success = document.getElementById('copySuccess');
+                success.style.display = 'block';
+                setTimeout(function() {
+                    success.style.display = 'none';
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Error al copiar: ', err);
+                // Fallback para navegadores que no soportan clipboard API
+                const textArea = document.createElement('textarea');
+                textArea.value = title;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                const success = document.getElementById('copySuccess');
+                success.style.display = 'block';
+                setTimeout(function() {
+                    success.style.display = 'none';
+                }, 2000);
+            });
+        }
+
+        function copyDescription() {
+            const descriptionElement = document.querySelector('.jira-description');
+            const description = descriptionElement ? descriptionElement.textContent : '';
+            
+            navigator.clipboard.writeText(description).then(function() {
+                const success = document.getElementById('copySuccess');
+                success.style.display = 'block';
+                setTimeout(function() {
+                    success.style.display = 'none';
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Error al copiar: ', err);
+                // Fallback para navegadores que no soportan clipboard API
+                const textArea = document.createElement('textarea');
+                textArea.value = description;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                const success = document.getElementById('copySuccess');
+                success.style.display = 'block';
+                setTimeout(function() {
+                    success.style.display = 'none';
+                }, 2000);
+            });
+        }
+
+        // Event listener para limpiar contenido cuando se cierra el modal
+        document.getElementById('jiraModal').addEventListener('close', function() {
+            // El modal se cierra automáticamente con Escape y clic fuera
+            // Aquí puedes agregar lógica adicional si es necesario
+        });
+    </script>
+</body>
+</html>
