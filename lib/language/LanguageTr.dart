@@ -568,4 +568,7 @@ class LanguageTr extends BaseLanguage {
 
   @override
   String get tasaDeCambio => 'Döviz kuru';
+
+  @override
+  String get recargar => 'Yenile';
 }

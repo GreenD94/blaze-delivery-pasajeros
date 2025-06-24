@@ -887,23 +887,23 @@ class NewEstimateRideListWidgetState extends State<NewEstimateRideListWidget> {
                                         child: Column(
                                           children: [
 
-                                                // cash
+                                                                                // cash
                                   if (paymentMethodType == 'cash_wallet' || paymentMethodType == 'cash')
                                     Padding(
                                           padding: EdgeInsets.only(left: 16, right: 16, top: 16),
-                                          child: Column(
-                                            children: [
-                                              AppTextField(
+                                      child: Column(
+                                        children: [
+                                          AppTextField(
                                                 controller: cashInHandController,
-                                                autoFocus: false,
-                                                textFieldType: TextFieldType.PHONE,
-                                                keyboardType: TextInputType.number,
-                                                errorThisFieldRequired: errorThisFieldRequired,
+                                            autoFocus: false,
+                                            textFieldType: TextFieldType.PHONE,
+                                            keyboardType: TextInputType.number,
+                                            errorThisFieldRequired: errorThisFieldRequired,
                                                 decoration: inputDecoration(context, label: 'Efectivo en mano*'),
-                                              )
-                                            ],
-                                          ),
-                                        ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
 
                                   //
 

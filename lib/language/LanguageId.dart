@@ -567,4 +567,7 @@ class LanguageId extends BaseLanguage {
 
   @override
   String get tasaDeCambio => 'Kurs';
+
+  @override
+  String get recargar => 'Isi ulang';
 }

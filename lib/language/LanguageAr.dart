@@ -551,5 +551,8 @@ class LanguageAr extends BaseLanguage {
   String get moneyDebit => 'خصم المال';
 
   @override
+  String get recargar => 'إعادة شحن';
+
+  @override
   String get tasaDeCambio => 'سعر الصرف';
 }

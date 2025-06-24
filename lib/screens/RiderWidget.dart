@@ -23,8 +23,9 @@ import 'NewGoogleMapScreen.dart';
 class RiderWidget extends StatefulWidget {
   final String title;
   final LatLng? coordinates;
+  final String? destination;
 
-  RiderWidget({required this.title, this.coordinates});
+  RiderWidget({required this.title, this.coordinates, this.destination});
 
   @override
   RiderWidgetState createState() => RiderWidgetState();
@@ -59,6 +60,9 @@ class RiderWidgetState extends State<RiderWidget> {
 
   void init() async {
     sourceLocation.text = widget.title;
+    if (widget.destination != null && widget.destination!.isNotEmpty) {
+      destinationLocation.text = widget.destination!;
+    }
     await getServices().then((value) {
       list.addAll(value.data!);
       setState(() {});

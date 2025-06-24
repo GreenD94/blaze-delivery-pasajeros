@@ -79,6 +79,8 @@ class RiderDashBoardScreenState extends State<RiderDashBoardScreen> {
   double? usdRate;
   String bottomBannerUrl = '';
 
+  TextEditingController searchController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -358,264 +360,434 @@ class RiderDashBoardScreenState extends State<RiderDashBoardScreen> {
 
     return SafeArea(
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        key: _scaffoldKey,
-        drawer: Drawer(
-          backgroundColor: primaryColor,
-          child: SingleChildScrollView(
-            padding: EdgeInsets.only(left: 16, right: 16, top: 40, bottom: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(Icons.arrow_back, color: Colors.white),
+      resizeToAvoidBottomInset: false,
+      key: _scaffoldKey,
+      drawer: Drawer(
+        backgroundColor: primaryColor,
+        child: SingleChildScrollView(
+          padding: EdgeInsets.only(left: 16, right: 16, top: 40, bottom: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(Icons.arrow_back, color: Colors.white),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 16, bottom: 16, right: 8),
+                decoration: BoxDecoration(
+                    color: Colors.white10,
+                    borderRadius: BorderRadius.circular(defaultRadius)),
+                child: Row(
+                  children: [
+                    Observer(builder: (context) {
+                      return Expanded(
+                        child: Column(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(30),
+                              child: commonCachedNetworkImage(
+                                  appStore.userProfile.validate().validate(),
+                                  height: 60,
+                                  width: 60,
+                                  fit: BoxFit.cover),
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
+                    SizedBox(width: 4),
+                    Expanded(
+                      flex: 2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          sharedPref.getString(LOGIN_TYPE) != 'mobile' &&
+                                  sharedPref.getString(LOGIN_TYPE) != null
+                              ? Text(sharedPref.getString(USER_NAME).validate(),
+                                  style: boldTextStyle(color: Colors.white))
+                              : Text(
+                                  sharedPref.getString(FIRST_NAME).validate(),
+                                  style: boldTextStyle(color: Colors.white)),
+                          SizedBox(height: 4),
+                          Text(appStore.userEmail,
+                              style: secondaryTextStyle(color: Colors.white)),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                Container(
-                  padding: EdgeInsets.only(top: 16, bottom: 16, right: 8),
-                  decoration: BoxDecoration(
-                      color: Colors.white10,
-                      borderRadius: BorderRadius.circular(defaultRadius)),
-                  child: Row(
-                    children: [
-                      Observer(builder: (context) {
-                        return Expanded(
+              ),
+              SizedBox(height: 20),
+              DrawerWidget(
+                title: language.myProfile,
+                iconData: 'images/ic_my_profile.png',
+                onTap: () {
+                  Navigator.pop(context);
+                  launchScreen(context, EditProfileScreen(),
+                      pageRouteAnimation: PageRouteAnimation.Slide);
+                },
+              ),
+              DrawerWidget(
+                  title: language.myRides,
+                  iconData: 'images/ic_my_rides.png',
+                  onTap: () {
+                    Navigator.pop(context);
+                    launchScreen(context, MyRidesScreen(),
+                        pageRouteAnimation: PageRouteAnimation.Slide);
+                  }),
+              DrawerWidget(
+                  title: language.myWallet,
+                  iconData: 'images/my_wallet.png',
+                  onTap: () {
+                    Navigator.pop(context);
+                    launchScreen(context, MyWalletScreen(),
+                        pageRouteAnimation: PageRouteAnimation.Slide);
+                  }),
+              DrawerWidget(
+                  title: language.emergencyContacts,
+                  iconData: 'images/ic_emergency_contact.png',
+                  onTap: () {
+                    Navigator.pop(context);
+                    launchScreen(context, EmergencyContactScreen(),
+                        pageRouteAnimation: PageRouteAnimation.Slide);
+                  }),
+              DrawerWidget(
+                  title: language.setting,
+                  iconData: 'images/ic_setting.png',
+                  onTap: () {
+                    launchScreen(context, SettingScreen(),
+                        pageRouteAnimation: PageRouteAnimation.Slide);
+                  }),
+              SizedBox(height: 16),
+              Center(
+                child: AppButtonWidget(
+                  text: language.logOut,
+                  textStyle: boldTextStyle(color: primaryColor),
+                  onTap: () async {
+                    await showConfirmDialogCustom(
+                        _scaffoldKey.currentState!.context,
+                        primaryColor: primaryColor,
+                        dialogType: DialogType.CONFIRMATION,
+                        title: language.areYouSureYouWantToLogoutThisApp,
+                        positiveText: language.yes,
+                        negativeText: language.no, onAccept: (v) async {
+                      await appStore.setLoggedIn(true);
+                      await Future.delayed(Duration(milliseconds: 500));
+                      await logout();
+                    });
+                  },
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+      body: sourceLocation != null
+          ? Stack(
+              children: [
+                GoogleMap(
+                    zoomControlsEnabled: false,
+                  markers: markers,
+                  polylines: _polyLines,
+                  padding: EdgeInsets.all(0),
+                  initialCameraPosition: CameraPosition(
+                    target: sourceLocation!,
+                    zoom: cameraZoom,
+                    tilt: cameraTilt,
+                    bearing: cameraBearing,
+                  ),
+                  onMapCreated: (controller) async => {
+                    _darkMapStyle = await rootBundle
+                        .loadString('assets/json/dark_mode_style.json'),
+                      controller.setMapStyle(_darkMapStyle),
+                      _controller.complete(controller),
+                    },
+                    compassEnabled: false,
+                  ),
+                  Positioned(
+                    top: MediaQuery.of(context).viewPadding.top,
+                    left: 0,
+                    right: 0,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        children: [
+                          Builder(
+                            builder: (context) => Container(
+                              decoration: BoxDecoration(
+                                color: primaryColor,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: IconButton(
+                                icon: Icon(Icons.menu, color: Colors.white),
+                      onPressed: () {
+                        Scaffold.of(context).openDrawer();
+                      },
+                    ),
+                  ),
+                ),
+                          SizedBox(width: 8),
+                          Expanded(
+                            child: Container(
+                              height: 48,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(
+                                  color: Colors.grey[300]!,
+                                  width: 1,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black12,
+                                    blurRadius: 2,
+                                    offset: Offset(0, 1),
+                                  ),
+                                ],
+                              ),
+                              alignment: Alignment.center,
+                              child: TextField(
+                                controller: searchController,
+                                textAlignVertical: TextAlignVertical.center,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.grey[800],
+                                  fontWeight: FontWeight.normal,
+                                ),
+                                decoration: InputDecoration(
+                                  hintText: language.enterYourDestination,
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey[400],
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                  border: InputBorder.none,
+                                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(Icons.search, color: Colors.grey[600]),
+                                    onPressed: () async {
+                              if (await checkPermission()) {
+                                showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(defaultRadius),
+                                                topRight: Radius.circular(defaultRadius)),
+                                  ),
+                                  context: context,
+                                  builder: (_) {
+                                    return RiderWidget(
+                                        title: sourceLocationTitle,
+                                                coordinates: sourceLocation,
+                                                destination: searchController.text);
+                                          },
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ),
+                                onSubmitted: (value) async {
+                                  if (await checkPermission()) {
+                                    showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(defaultRadius),
+                                            topRight: Radius.circular(defaultRadius)),
+                                      ),
+                                      context: context,
+                                      builder: (_) {
+                                        return RiderWidget(
+                                            title: sourceLocationTitle,
+                                            coordinates: sourceLocation,
+                                            destination: value);
+                                  },
+                                );
+                              }
+                            },
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: primaryColor,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: IconButton(
+                              icon: Icon(Icons.notifications, color: Colors.white),
+                              onPressed: () {
+                                launchScreen(context, NotificationScreen());
+                              },
+                            ),
+                          ),
+                        ],
+                    ),
+                  ),
+                ),
+                Positioned(
+                    bottom: 100,
+                    left: 16,
+                    child: FloatingActionButton(
+                      backgroundColor: Colors.white,
+                      mini: true,
+                      onPressed: () async {
+                        if (await checkPermission()) {
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(defaultRadius),
+                                  topRight: Radius.circular(defaultRadius)),
+                            ),
+                            context: context,
+                            builder: (_) {
+                              return RiderWidget(
+                                  title: searchController.text.isNotEmpty ? searchController.text : sourceLocationTitle,
+                                  coordinates: sourceLocation,
+                                  destination: searchController.text);
+                            },
+                          );
+                        }
+                      },
+                      child: Icon(Icons.my_location, color: primaryColor),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 100,
+                    right: 16,
                           child: Column(
                             children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(30),
-                                child: commonCachedNetworkImage(
-                                    appStore.userProfile.validate().validate(),
-                                    height: 60,
-                                    width: 60,
-                                    fit: BoxFit.cover),
+                        FloatingActionButton(
+                          heroTag: 'zoom_in',
+                          mini: true,
+                          backgroundColor: Colors.white,
+                          onPressed: () async {
+                            final controller = await _controller.future;
+                            controller.animateCamera(CameraUpdate.zoomIn());
+                          },
+                          child: Icon(Icons.add, color: primaryColor),
+                        ),
+                        SizedBox(height: 8),
+                        FloatingActionButton(
+                          heroTag: 'zoom_out',
+                          mini: true,
+                          backgroundColor: Colors.white,
+                          onPressed: () async {
+                            final controller = await _controller.future;
+                            controller.animateCamera(CameraUpdate.zoomOut());
+                          },
+                          child: Icon(Icons.remove, color: primaryColor),
                               ),
                             ],
                           ),
-                        );
-                      }),
-                      SizedBox(width: 4),
-                      Expanded(
-                        flex: 2,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            sharedPref.getString(LOGIN_TYPE) != 'mobile' &&
-                                    sharedPref.getString(LOGIN_TYPE) != null
-                                ? Text(sharedPref.getString(USER_NAME).validate(),
-                                    style: boldTextStyle(color: Colors.white))
-                                : Text(
-                                    sharedPref.getString(FIRST_NAME).validate(),
-                                    style: boldTextStyle(color: Colors.white)),
-                            SizedBox(height: 4),
-                            Text(appStore.userEmail,
-                                style: secondaryTextStyle(color: Colors.white)),
-                          ],
                         ),
+                  Positioned(
+                    top: MediaQuery.of(context).size.height / 2 - 28,
+                    right: 16,
+                    child: Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 4,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20),
-                DrawerWidget(
-                  title: language.myProfile,
-                  iconData: 'images/ic_my_profile.png',
-                  onTap: () {
-                    Navigator.pop(context);
-                    launchScreen(context, EditProfileScreen(),
-                        pageRouteAnimation: PageRouteAnimation.Slide);
-                  },
-                ),
-                DrawerWidget(
-                    title: language.myRides,
-                    iconData: 'images/ic_my_rides.png',
-                    onTap: () {
-                      Navigator.pop(context);
-                      launchScreen(context, MyRidesScreen(),
-                          pageRouteAnimation: PageRouteAnimation.Slide);
-                    }),
-                DrawerWidget(
-                    title: language.myWallet,
-                    iconData: 'images/my_wallet.png',
-                    onTap: () {
-                      Navigator.pop(context);
-                      launchScreen(context, MyWalletScreen(),
-                          pageRouteAnimation: PageRouteAnimation.Slide);
-                    }),
-                DrawerWidget(
-                    title: language.emergencyContacts,
-                    iconData: 'images/ic_emergency_contact.png',
-                    onTap: () {
-                      Navigator.pop(context);
-                      launchScreen(context, EmergencyContactScreen(),
-                          pageRouteAnimation: PageRouteAnimation.Slide);
-                    }),
-                DrawerWidget(
-                    title: language.setting,
-                    iconData: 'images/ic_setting.png',
-                    onTap: () {
-                      launchScreen(context, SettingScreen(),
-                          pageRouteAnimation: PageRouteAnimation.Slide);
-                    }),
-                SizedBox(height: 16),
-                Center(
-                  child: AppButtonWidget(
-                    text: language.logOut,
-                    textStyle: boldTextStyle(color: primaryColor),
-                    onTap: () async {
-                      await showConfirmDialogCustom(
-                          _scaffoldKey.currentState!.context,
-                          primaryColor: primaryColor,
-                          dialogType: DialogType.CONFIRMATION,
-                          title: language.areYouSureYouWantToLogoutThisApp,
-                          positiveText: language.yes,
-                          negativeText: language.no, onAccept: (v) async {
-                        await appStore.setLoggedIn(true);
-                        await Future.delayed(Duration(milliseconds: 500));
-                        await logout();
-                      });
-                    },
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-        body: sourceLocation != null
-            ? Stack(
-                children: [
-                  GoogleMap(
-                    zoomControlsEnabled: true,
-                    markers: markers,
-                    polylines: _polyLines,
-                    padding: EdgeInsets.all(0),
-                    initialCameraPosition: CameraPosition(
-                      target: sourceLocation!,
-                      zoom: cameraZoom,
-                      tilt: cameraTilt,
-                      bearing: cameraBearing,
+                      child: IconButton(
+                        icon: Icon(Icons.explore, color: primaryColor),
+                        onPressed: () async {
+                          final controller = await _controller.future;
+                          controller.animateCamera(CameraUpdate.newCameraPosition(
+                            CameraPosition(
+                              target: sourceLocation!,
+                              zoom: cameraZoom,
+                              tilt: 0,
+                              bearing: 0,
+                            ),
+                          ));
+                        },
+                      ),
                     ),
-                    onMapCreated: (controller) async => {
-                      _darkMapStyle = await rootBundle
-                          .loadString('assets/json/dark_mode_style.json'),
-                      // _controller.complete(controller),
-                      controller.setMapStyle(_darkMapStyle)
-                    },
                   ),
                   Positioned(
-                    top: height * 0.03,
-                    left: width * 0.03,
-                    right: width * 0.03,
+                    bottom: 24,
+                    left: 16,
+                    right: 16,
                     child: Row(
                       children: [
-                        IconButton(
-                          icon: Icon(Icons.menu, size: width * 0.08),
-                          onPressed: () {
-                            Scaffold.of(context).openDrawer();
-                          },
-                        ),
-                        SizedBox(width: 8),
                         Expanded(
                           child: Container(
-                            height: height * 0.055,
-                            child: TextField(
-                              decoration: InputDecoration(
-                                hintText: language.enterYourDestination,
-                                contentPadding: EdgeInsets.symmetric(
-                                  vertical: height * 0.012,
-                                  horizontal: 12,
+                            height: 48,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: Colors.grey[300]!,
+                                width: 1,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 2,
+                                  offset: Offset(0, 1),
                                 ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                                filled: true,
-                                fillColor: Colors.white,
+                              ],
+                            ),
+                            child: Center(
+                              child: Text(
+                                language.tasaDeCambio + '\n' + (usdRate != null ? '\$1.00 → Bs.$usdRate' : ''),
+                                style: TextStyle(fontSize: 14, color: Colors.grey[800]),
+                                textAlign: TextAlign.center,
                               ),
                             ),
                           ),
                         ),
-                        SizedBox(width: 8),
-                        IconButton(
-                          icon: Icon(Icons.search, size: width * 0.08),
-                          onPressed: () async {
-                            if (await checkPermission()) {
-                              showModalBottomSheet(
-                                isScrollControlled: true,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(defaultRadius),
-                                      topRight:
-                                          Radius.circular(defaultRadius)),
-                                ),
-                                context: context,
-                                builder: (_) {
-                                  return RiderWidget(
-                                      title: sourceLocationTitle,
-                                      coordinates: sourceLocation);
-                                },
-                              );
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  Positioned(
-                    bottom: height * 0.03,
-                    left: width * 0.03,
-                    right: width * 0.03,
-                    child: Row(
-                      children: [
-                        FloatingActionButton(
-                          mini: true,
-                          onPressed: () async {
-                            if (await checkPermission()) {
-                              showModalBottomSheet(
-                                isScrollControlled: true,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(defaultRadius),
-                                      topRight:
-                                          Radius.circular(defaultRadius)),
-                                ),
-                                context: context,
-                                builder: (_) {
-                                  return RiderWidget(
-                                      title: sourceLocationTitle,
-                                      coordinates: sourceLocation);
-                                },
-                              );
-                            }
-                          },
-                          child: Icon(Icons.my_location),
-                        ),
                         SizedBox(width: 12),
-                        Expanded(
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(
-                                vertical: height * 0.018,
+                        Container(
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: primaryColor,
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 2,
+                                offset: Offset(0, 1),
                               ),
+                            ],
+                          ),
+                          child: TextButton(
+                            style: TextButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(16),
                               ),
+                              padding: EdgeInsets.symmetric(horizontal: 24),
+                              backgroundColor: Colors.transparent,
+                        ),
+                        onPressed: () async {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MyWalletScreen(),
                             ),
-                            onPressed: () async {
-                              // go to wallet screen
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MyWalletScreen(),
-                                ),
-                              );
-                            },
+                          );
+                        },
                             child: Text(
                               language.recargar,
                               style: TextStyle(
-                                fontSize: width * 0.045,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
                               ),
                             ),
                           ),
@@ -623,42 +795,9 @@ class RiderDashBoardScreenState extends State<RiderDashBoardScreen> {
                       ],
                     ),
                   ),
-                  if (usdRate != null)
-                    Positioned(
-                      bottom: height * 0.12,
-                      right: width * 0.03,
-                      child: Card(
-                        elevation: 4,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: height * 0.012,
-                            horizontal: width * 0.04,
-                          ),
-                          child: Column(
-                            children: [
-                              Text(
-                                language.tasaDeCambio,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: width * 0.035,
-                                ),
-                              ),
-                              Text(
-                                '\$1.00 → Bs.$usdRate',
-                                style: TextStyle(
-                                  fontSize: width * 0.04,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
                 ],
-              )
-            : loaderWidget(),
+            )
+          : loaderWidget(),
       ),
     );
   }

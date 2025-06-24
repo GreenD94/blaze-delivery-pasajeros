@@ -570,4 +570,7 @@ class LanguageDe extends BaseLanguage {
 
   @override
   String get tasaDeCambio => 'Wechselkurs';
+
+  @override
+  String get recargar => 'Aufladen';
 }

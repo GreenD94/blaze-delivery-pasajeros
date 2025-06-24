@@ -479,7 +479,7 @@ class LanguagePa extends BaseLanguage {
   String get account => 'ਖਾਤਾ';
 
   @override
-  String get areYouSureYouWantPleaseReadAffect => 'ਕੀ ਤੁਸੀਂ ਯਕੀਨਨ ਆਪਣਾ ਖਾਤਾ ਮਿਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ? ਕਿਰਪਾ ਕਰਕੇ ਪੜ੍ਹੋ ਕਿ ਖਾਤਾ ਮਿਟਾਉਣ ਦਾ ਕਿਵੇਂ ਪ੍ਰਭਾਵ ਪਾਓ.';
+  String get areYouSureYouWantPleaseReadAffect => 'ਕੀ ਤੁਸੀਂ ਯਕੀਨਨ ਆਪਣਾ ਖਾਤਾ ਮਿਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ? ਕਿਰਪਾ ਕਰਕੇ ਪੜ੍ਹੋ ਕਿ ਖਾਤਾ ਮਿਟਾਉਣ ਦਾ ਕਿൻਵੇਂ ਪ੍ਰਭਾਵ ਪਾਓ.';
 
   @override
   String get deletingAccountEmail => 'ਤੁਹਾਡਾ ਖਾਤਾ ਮਿਟਾਉਣਾ ਸਾਡੇ ਡੇਟਾਬੇਸ ਤੋਂ ਨਿੱਜੀ ਜਾਣਕਾਰੀ ਨੂੰ ਹਟਾਉਂਦਾ ਹੈ. ਤੁਹਾਡੀ ਈਮੇਲ ਸਥਾਈ ਤੌਰ ਤੇ ਰਾਖਵੀਂ ਅਤੇ ਈਮੇਲ ਨੂੰ ਨਵਾਂ ਖਾਤਾ ਰਜਿਸਟਰ ਕਰਨ ਲਈ ਦੁਬਾਰਾ ਨਹੀਂ ਵਰਤਿਆ ਜਾ ਸਕਦਾ';
@@ -552,4 +552,7 @@ class LanguagePa extends BaseLanguage {
 
   @override
   String get tasaDeCambio => 'ਵਟਾਂਦਰੇ ਦੀ ਦਰ';
+
+  @override
+  String get recargar => 'ریچارج';
 }

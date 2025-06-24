@@ -553,4 +553,7 @@ class LanguageHi extends BaseLanguage {
 
   @override
   String get tasaDeCambio => 'विनिमय दर';
+
+  @override
+  String get recargar => 'रिचार्ज करें';
 }

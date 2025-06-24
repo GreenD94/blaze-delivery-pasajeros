@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Nueva Vista - Últimas 30 Carreras del Conductor</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f7f7fa;
+      color: #222;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 30px auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px #0001;
+      padding: 32px 40px;
+    }
+    h1, h2, h3 {
+      color: #1a73e8;
+    }
+    h1 {
+      border-bottom: 2px solid #1a73e8;
+      padding-bottom: 8px;
+    }
+    ul, ol {
+      margin: 16px 0;
+      padding-left: 24px;
+    }
+    li {
+      margin: 8px 0;
+    }
+    .code-block {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 6px;
+      padding: 16px;
+      margin: 16px 0;
+      overflow-x: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+    }
+    .success {
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+      padding: 12px;
+      border-radius: 6px;
+      margin: 16px 0;
+    }
+    .warning {
+      background: #fff3cd;
+      border: 1px solid #ffeaa7;
+      color: #856404;
+      padding: 12px;
+      border-radius: 6px;
+      margin: 16px 0;
+    }
+    .info {
+      background: #d1ecf1;
+      border: 1px solid #bee5eb;
+      color: #0c5460;
+      padding: 12px;
+      border-radius: 6px;
+      margin: 16px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    th {
+      background: #f8f9fa;
+      font-weight: 600;
+    }
+    .flow-diagram {
+      text-align: center;
+      margin: 24px 0;
+    }
+    .flow-diagram svg {
+      max-width: 100%;
+      height: auto;
+    }
+    
+    /* Estilos para la interfaz de ejemplo */
+    .interface-preview {
+      background: #fff;
+      border: 2px solid #e9ecef;
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .interface-header {
+      background: #1a73e8;
+      color: white;
+      padding: 16px 24px;
+      border-radius: 8px 8px 0 0;
+      margin: -24px -24px 24px -24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .interface-controls {
+      background: #f8f9fa;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .interface-controls select, .interface-controls input {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .interface-controls button {
+      background: #1a73e8;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .interface-controls button:hover {
+      background: #1557b0;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .data-table th {
+      background: #f8f9fa;
+      padding: 12px 8px;
+      border: 1px solid #e9ecef;
+      font-weight: 600;
+      text-align: center;
+    }
+    .data-table td {
+      padding: 8px;
+      border: 1px solid #e9ecef;
+      text-align: center;
+    }
+    .data-table tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+    .data-table tr:hover {
+      background: #e3f2fd;
+    }
+    .payment-cash {
+      background: #d4edda;
+      color: #155724;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 11px;
+    }
+    .payment-wallet {
+      background: #cce5ff;
+      color: #004085;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 11px;
+    }
+    .payment-mobile {
+      background: #fff3cd;
+      color: #856404;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 11px;
+    }
+    .status-completed {
+      background: #d4edda;
+      color: #155724;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 11px;
+    }
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .summary-card {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+    }
+    .summary-card h4 {
+      margin: 0 0 8px 0;
+      color: #6c757d;
+      font-size: 14px;
+    }
+    .summary-card .value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #1a73e8;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🚗 Nueva Vista - Últimas 30 Carreras del Conductor</h1>
+    
+    <div class="info">
+      <strong>Objetivo:</strong> Crear una vista administrativa que muestre las últimas 30 carreras de un conductor con detalles completos de pagos, efectivo recibido, vuelto y saldos de billetera.
+    </div>
+
+    <h2>📊 Análisis de Viabilidad</h2>
+    
+    <div class="success">
+      <strong>✅ RESULTADO:</strong> Es completamente posible crear esta vista con las tablas existentes en la base de datos.
+    </div>
+
+    <h3>🔍 Tablas Principales Identificadas:</h3>
+    <ul>
+      <li><strong>ride_requests</strong> - Información principal de las carreras</li>
+      <li><strong>payments</strong> - Detalles de pagos y transacciones</li>
+      <li><strong>users</strong> - Datos de conductores y pasajeros</li>
+      <li><strong>wallet_histories</strong> - Historial de movimientos de billetera</li>
+      <li><strong>wallets</strong> - Saldos actuales de billetera</li>
+    </ul>
+
+    <h2>🎯 Campos Clave Disponibles</h2>
+
+    <h3>En tabla `ride_requests`:</h3>
+    <table>
+      <tr>
+        <th>Campo</th>
+        <th>Descripción</th>
+        <th>Uso</th>
+      </tr>
+      <tr>
+        <td>id</td>
+        <td>ID único de la carrera</td>
+        <td>Identificación</td>
+      </tr>
+      <tr>
+        <td>driver_id</td>
+        <td>ID del conductor</td>
+        <td>Filtro por conductor</td>
+      </tr>
+      <tr>
+        <td>rider_id</td>
+        <td>ID del pasajero</td>
+        <td>Información del cliente</td>
+      </tr>
+      <tr>
+        <td>total_amount</td>
+        <td>Monto total de la carrera</td>
+        <td>Monto cobrado</td>
+      </tr>
+      <tr>
+        <td>payment_type</td>
+        <td>Tipo de pago</td>
+        <td>Método de pago</td>
+      </tr>
+      <tr>
+        <td>cash_in_hand</td>
+        <td>Efectivo recibido</td>
+        <td>Billete entregado</td>
+      </tr>
+      <tr>
+        <td>cash_collected</td>
+        <td>Efectivo cobrado</td>
+        <td>Monto efectivo</td>
+      </tr>
+      <tr>
+        <td>datetime</td>
+        <td>Fecha y hora</td>
+        <td>Ordenamiento</td>
+      </tr>
+      <tr>
+        <td>status</td>
+        <td>Estado de la carrera</td>
+        <td>Filtro completadas</td>
+      </tr>
+    </table>
+
+    <h3>En tabla `payments`:</h3>
+    <table>
+      <tr>
+        <th>Campo</th>
+        <th>Descripción</th>
+        <th>Uso</th>
+      </tr>
+      <tr>
+        <td>ride_request_id</td>
+        <td>ID de la carrera</td>
+        <td>Relación con carrera</td>
+      </tr>
+      <tr>
+        <td>total_amount</td>
+        <td>Monto del pago</td>
+        <td>Verificación de monto</td>
+      </tr>
+      <tr>
+        <td>payment_type</td>
+        <td>Tipo de pago</td>
+        <td>Método utilizado</td>
+      </tr>
+      <tr>
+        <td>collected_cash</td>
+        <td>Efectivo cobrado</td>
+        <td>Monto en efectivo</td>
+      </tr>
+      <tr>
+        <td>txn_id</td>
+        <td>ID de transacción</td>
+        <td>Referencia de pago</td>
+      </tr>
+      <tr>
+        <td>payment_status</td>
+        <td>Estado del pago</td>
+        <td>Confirmación</td>
+      </tr>
+    </table>
+
+    <h2>💻 Query SQL Principal</h2>
+
+    <div class="code-block">
+SELECT 
+    rr.id AS ride_id,
+    rr.datetime,
+    rr.total_amount,
+    rr.payment_type,
+    rr.cash_in_hand,
+    rr.cash_collected,
+    
+    -- Información del conductor
+    CONCAT(d.first_name, ' ', d.last_name) AS driver_name,
+    d.contact_number AS driver_phone,
+    
+    -- Información del pasajero
+    CONCAT(r.first_name, ' ', r.last_name) AS rider_name,
+    r.contact_number AS rider_phone,
+    
+    -- Detalles de pago
+    p.total_amount AS payment_amount,
+    p.payment_type AS payment_method,
+    p.collected_cash,
+    p.txn_id,
+    p.payment_status,
+    
+    -- Información de billetera
+    w.total_amount AS rider_wallet_balance,
+    
+    -- Cálculos de vuelto
+    CASE 
+        WHEN rr.payment_type = 'cash' THEN 
+            (rr.cash_in_hand - rr.total_amount)
+        ELSE 0 
+    END AS change_given,
+    
+    -- Estado de la carrera
+    rr.status AS ride_status
+    
+FROM ride_requests rr
+LEFT JOIN users d ON rr.driver_id = d.id
+LEFT JOIN users r ON rr.rider_id = r.id
+LEFT JOIN payments p ON rr.id = p.ride_request_id
+LEFT JOIN wallets w ON r.id = w.user_id
+WHERE rr.driver_id = ? -- ID del conductor
+  AND rr.status IN ('completed', 'finished')
+ORDER BY rr.datetime DESC
+LIMIT 30;
+    </div>
+
+    <h2>🎨 Vista de Interfaz Propuesta</h2>
+
+    <div class="interface-preview">
+      <div class="interface-header">
+        <h2 style="margin: 0;">📊 Panel de Carreras del Conductor</h2>
+        <span>Últimas 30 carreras completadas</span>
+      </div>
+
+      <div class="interface-controls">
+        <label><strong>Conductor:</strong></label>
+        <select>
+          <option>Seleccionar conductor...</option>
+          <option>Juan Pérez (ID: 123)</option>
+          <option>María García (ID: 456)</option>
+          <option>Carlos López (ID: 789)</option>
+        </select>
+
+        <label><strong>Período:</strong></label>
+        <input type="date" value="2025-01-01">
+        <span>a</span>
+        <input type="date" value="2025-01-20">
+
+        <label><strong>Tipo de pago:</strong></label>
+        <select>
+          <option>Todos</option>
+          <option>Efectivo</option>
+          <option>Billetera</option>
+          <option>Móvil</option>
+        </select>
+
+        <button>🔍 Buscar</button>
+        <button> Exportar</button>
+      </div>
+
+      <div class="summary-cards">
+        <div class="summary-card">
+          <h4>Total Carreras</h4>
+          <div class="value">30</div>
+        </div>
+        <div class="summary-card">
+          <h4>Total Cobrado</h4>
+          <div class="value">$1,250.75</div>
+        </div>
+        <div class="summary-card">
+          <h4>Efectivo Total</h4>
+          <div class="value">$850.50</div>
+        </div>
+        <div class="summary-card">
+          <h4>Billetera Total</h4>
+          <div class="value">$400.25</div>
+        </div>
+        <div class="summary-card">
+          <h4>Vuelto Total</h4>
+          <div class="value">$45.75</div>
+        </div>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Fecha/Hora</th>
+            <th>Pasajero</th>
+            <th>Monto</th>
+            <th>Método</th>
+            <th>Efectivo Recibido</th>
+            <th>Efectivo Cobrado</th>
+            <th>Vuelto</th>
+            <th>Saldo Billetera</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>#1234</td>
+            <td>20/01/2025<br>14:30</td>
+            <td>María García<br><small>+58 412-1234567</small></td>
+            <td><strong>$25.50</strong></td>
+            <td><span class="payment-cash">Efectivo</span></td>
+            <td>$30.00</td>
+            <td>$25.50</td>
+            <td>$4.50</td>
+            <td>$150.75</td>
+            <td><span class="status-completed">Completada</span></td>
+            <td>
+              <button style="background: #17a2b8; color: white; border: none; padding: 4px 8px; border-radius: 3px; font-size: 11px; cursor: pointer;">👁️ Ver</button>
+            </td>
+          </tr>
+          <tr>
+            <td>#1233</td>
+            <td>20/01/2025<br>13:15</td>
+            <td>Carlos López<br><small>+58 414-9876543</small></td>
+            <td><strong>$18.75</strong></td>
+            <td><span class="payment-wallet">Billetera</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>$125.25</td>
+            <td><span class="status-completed">Completada</span></td>
+            <td>
+              <button style="background: #17a2b8; color: white; border: none; padding: 4px 8px; border-radius: 3px; font-size: 11px; cursor: pointer;">👁️ Ver</button>
+            </td>
+          </tr>
+          <tr>
+            <td>#1232</td>
+            <td>20/01/2025<br>12:45</td>
+            <td>Ana Rodríguez<br><small>+58 416-5551234</small></td>
+            <td><strong>$32.00</strong></td>
+            <td><span class="payment-mobile">Móvil</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>$200.50</td>
+            <td><span class="status-completed">Completada</span></td>
+            <td>
+              <button style="background: #17a2b8; color: white; border: none; padding: 4px 8px; border-radius: 3px; font-size: 11px; cursor: pointer;">👁️ Ver</button>
+            </td>
+          </tr>
+          <tr>
+            <td>#1231</td>
+            <td>20/01/2025<br>11:20</td>
+            <td>Luis Martínez<br><small>+58 424-7778888</small></td>
+            <td><strong>$15.25</strong></td>
+            <td><span class="payment-cash">Efectivo</span></td>
+            <td>$20.00</td>
+            <td>$15.25</td>
+            <td>$4.75</td>
+            <td>$85.30</td>
+            <td><span class="status-completed">Completada</span></td>
+            <td>
+              <button style="background: #17a2b8; color: white; border: none; padding: 4px 8px; border-radius: 3px; font-size: 11px; cursor: pointer;">👁️ Ver</button>
+            </td>
+          </tr>
+          <tr>
+            <td>#1230</td>
+            <td>20/01/2025<br>10:55</td>
+            <td>Patricia Silva<br><small>+58 426-9990000</small></td>
+            <td><strong>$28.50</strong></td>
+            <td><span class="payment-wallet">Billetera</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>$175.80</td>
+            <td><span class="status-completed">Completada</span></td>
+            <td>
+              <button style="background: #17a2b8; color: white; border: none; padding: 4px 8px; border-radius: 3px; font-size: 11px; cursor: pointer;">👁️ Ver</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top: 16px; text-align: center; color: #6c757d; font-size: 12px;">
+        Mostrando 5 de 30 carreras | Página 1 de 6
+      </div>
+    </div>
+
+    <h2> Información que se puede mostrar</h2>
+
+    <div class="success">
+      <h3>✅ Datos Disponibles:</h3>
+      <ul>
+        <li><strong>ID y fecha de la carrera</strong></li>
+        <li><strong>Monto total cobrado</strong></li>
+        <li><strong>Tipo de pago</strong> (efectivo, billetera, móvil)</li>
+        <li><strong>Efectivo recibido</strong> (cash_in_hand)</li>
+        <li><strong>Efectivo cobrado</strong> (cash_collected)</li>
+        <li><strong>Vuelto calculado</strong> (efectivo recibido - monto total)</li>
+        <li><strong>Saldo de billetera del pasajero</strong></li>
+        <li><strong>Datos del conductor y pasajero</strong></li>
+        <li><strong>Estado del pago</strong></li>
+      </ul>
+    </div>
+
+    <div class="warning">
+      <h3>⚠️ Limitaciones Identificadas:</h3>
+      <ul>
+        <li>No hay campo específico para "billete recibido" (solo monto total)</li>
+        <li>No hay campo para "saldo deducido de billetera" (solo saldo actual)</li>
+        <li>El vuelto se calcula, no se almacena directamente</li>
+      </ul>
+    </div>
+
+    <h2>🔧 Recomendaciones de Mejora</h2>
+
+    <h3>1. Agregar campos adicionales a la tabla ride_requests:</h3>
+    <div class="code-block">
+ALTER TABLE ride_requests ADD COLUMN bill_received DECIMAL(10,2) DEFAULT 0;
+ALTER TABLE ride_requests ADD COLUMN change_amount DECIMAL(10,2) DEFAULT 0;
+ALTER TABLE ride_requests ADD COLUMN wallet_deduction DECIMAL(10,2) DEFAULT 0;
+    </div>
+
+    <h3>2. Crear una vista para facilitar consultas:</h3>
+    <div class="code-block">
+CREATE VIEW driver_ride_summary AS
+SELECT 
+    rr.id,
+    rr.datetime,
+    rr.total_amount,
+    rr.payment_type,
+    rr.cash_in_hand,
+    rr.cash_collected,
+    (rr.cash_in_hand - rr.total_amount) AS change_given,
+    CONCAT(d.first_name, ' ', d.last_name) AS driver_name,
+    CONCAT(r.first_name, ' ', r.last_name) AS rider_name,
+    p.payment_status,
+    w.total_amount AS rider_wallet_balance
+FROM ride_requests rr
+LEFT JOIN users d ON rr.driver_id = d.id
+LEFT JOIN users r ON rr.rider_id = r.id
+LEFT JOIN payments p ON rr.id = p.ride_request_id
+LEFT JOIN wallets w ON r.id = w.user_id
+WHERE rr.status IN ('completed', 'finished');
+    </div>
+
+    <h3>3. Query simplificado usando la vista:</h3>
+    <div class="code-block">
+SELECT * FROM driver_ride_summary 
+WHERE driver_id = ? 
+ORDER BY datetime DESC 
+LIMIT 30;
+    </div>
+
+    <h2>🎨 Implementación en el Frontend</h2>
+
+    <h3>Estructura de datos esperada:</h3>
+    <div class="code-block">
+{
+  "ride_id": 123,
+  "datetime": "2025-01-20 14:30:00",
+  "total_amount": 25.50,
+  "payment_type": "cash",
+  "cash_in_hand": 30.00,
+  "cash_collected": 25.50,
+  "change_given": 4.50,
+  "driver_name": "Juan Pérez",
+  "rider_name": "María García",
+  "payment_status": "paid",
+  "rider_wallet_balance": 150.75
+}
+    </div>
+
+    <h2>📊 Flujo de Datos</h2>
+    
+    <div class="flow-diagram">
+      <svg width="800" height="400" viewBox="0 0 800 400">
+        <!-- Fondo -->
+        <rect width="800" height="400" fill="#f8f9fa"/>
+        
+        <!-- Tablas -->
+        <rect x="50" y="50" width="120" height="60" fill="#e3f2fd" stroke="#1976d2" stroke-width="2"/>
+        <text x="110" y="85" text-anchor="middle" fill="#1976d2" font-weight="bold">ride_requests</text>
+        
+        <rect x="250" y="50" width="120" height="60" fill="#e8f5e8" stroke="#388e3c" stroke-width="2"/>
+        <text x="310" y="85" text-anchor="middle" fill="#388e3c" font-weight="bold">payments</text>
+        
+        <rect x="450" y="50" width="120" height="60" fill="#fff3e0" stroke="#f57c00" stroke-width="2"/>
+        <text x="510" y="85" text-anchor="middle" fill="#f57c00" font-weight="bold">users</text>
+        
+        <rect x="650" y="50" width="120" height="60" fill="#fce4ec" stroke="#c2185b" stroke-width="2"/>
+        <text x="710" y="85" text-anchor="middle" fill="#c2185b" font-weight="bold">wallets</text>
+        
+        <!-- Flechas -->
+        <line x1="170" y1="80" x2="250" y2="80" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+        <line x1="170" y1="80" x2="250" y2="80" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+        <line x1="170" y1="80" x2="250" y2="80" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+        
+        <!-- Query -->
+        <rect x="200" y="200" width="400" height="80" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" rx="10"/>
+        <text x="400" y="230" text-anchor="middle" fill="#7b1fa2" font-weight="bold">Query SQL Principal</text>
+        <text x="400" y="250" text-anchor="middle" fill="#7b1fa2">JOIN de todas las tablas</text>
+        <text x="400" y="270" text-anchor="middle" fill="#7b1fa2">Filtro por conductor + LIMIT 30</text>
+        
+        <!-- Resultado -->
+        <rect x="250" y="320" width="300" height="60" fill="#e0f2f1" stroke="#00695c" stroke-width="2" rx="10"/>
+        <text x="400" y="350" text-anchor="middle" fill="#00695c" font-weight="bold">Vista Administrativa</text>
+        <text x="400" y="370" text-anchor="middle" fill="#00695c">Últimas 30 carreras con detalles</text>
+        
+        <!-- Definición de flecha -->
+        <defs>
+          <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+
+    <h2>✅ Conclusión</h2>
+    
+    <div class="success">
+      <p><strong>La implementación es completamente viable</strong> con la estructura actual de la base de datos. Se puede crear una vista administrativa robusta que muestre:</p>
+      <ul>
+        <li>✅ Últimas 30 carreras de cualquier conductor</li>
+        <li>✅ Detalles completos de pagos y montos</li>
+        <li>✅ Información de efectivo recibido y vuelto</li>
+        <li>✅ Saldos de billetera de los pasajeros</li>
+        <li>✅ Datos de contacto de conductores y pasajeros</li>
+      </ul>
+    </div>
+
+    <div class="info">
+      <p><strong>Próximos pasos recomendados:</strong></p>
+      <ol>
+        <li>Implementar el query SQL principal</li>
+        <li>Crear la vista para optimizar consultas</li>
+        <li>Desarrollar la interfaz administrativa</li>
+        <li>Considerar agregar campos adicionales para mayor detalle</li>
+      </ol>
+    </div>
+  </div>
+</body>
+</html> 
