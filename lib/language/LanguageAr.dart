@@ -552,4 +552,7 @@ class LanguageAr extends BaseLanguage {
 
   @override
   String get tasaDeCambio => 'سعر الصرف';
+
+  @override
+  String get recargar => 'إعادة تحميل';
 }

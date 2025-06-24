@@ -566,4 +566,7 @@ class LanguageAf extends BaseLanguage {
 
   @override
   String get tasaDeCambio => 'Wisselkoers';
+
+  @override
+  String get recargar => 'Herlaai';
 }

@@ -551,5 +551,8 @@ class LanguageVi extends BaseLanguage {
   String get moneyDebit => 'Nợ tiền';
 
   @override
-  String get tasaDeCambio => 'Tỷ giá';
+  String get tasaDeCambio => 'Tỷ giá hối đoái';
+
+  @override
+  String get recargar => 'Tải lại';
 }

@@ -572,4 +572,7 @@ class LanguageFr extends BaseLanguage {
 
   @override
   String get tasaDeCambio => 'Taux de change';
+
+  @override
+  String get recargar => 'Recharger';
 }

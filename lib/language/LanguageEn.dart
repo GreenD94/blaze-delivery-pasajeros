@@ -564,4 +564,7 @@ class LanguageEn extends BaseLanguage {
 
   @override
   String get tasaDeCambio => 'Exchange rate';
+
+  @override
+  String get recargar => 'Reload';
 }
