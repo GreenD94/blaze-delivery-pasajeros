@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mejoras de UI Responsiva en Dashboard - Blaze Delivery Pasajeros</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📱 Mejoras de UI Responsiva en Dashboard</h1>
+            <p>Optimización de la interfaz del dashboard del rider para diferentes tamaños de pantalla</p>
+        </div>
+
+        <!-- Estándares de Documentación -->
+        <div class="section">
+            <h2>📋 Estándares de Documentación</h2>
+            <p>Consulta los <a href="../estandares-documentacion.html" target="_blank">estándares de documentación</a> para saber cómo documentar problemas y el uso del modal de formato Jira.</p>
+            <p>📋 <a href="../lista-problemas.html">Ver lista completa de problemas</a></p>
+        </div>
+
+        <!-- Lista de Problemas -->
+        <div class="section">
+            <h2>🔍 Problemas Identificados</h2>
+            
+            <!-- Problema: UI Responsiva -->
+            <div class="problem-card">
+                <div class="problem-header">
+                    <div class="problem-title">Mejoras de UI Responsiva en Dashboard del Rider</div>
+                    <div class="problem-status">LISTO</div>
+                </div>
+
+                <div class="problem-section">
+                    <h4>📍 Ubicación del Problema</h4>
+                    <div class="file-path">lib/screens/RiderDashBoardScreen.dart</div>
+                    <p><strong>Líneas:</strong> 323-374 (barra superior), 400-450 (campo de texto y botones), 500-550 (controles de mapa)</p>
+                    <p><strong>Función:</strong> build() method</p>
+                </div>
+
+                <div class="problem-section">
+                    <h4>📝 Descripción del Problema</h4>
+                    <p>La pantalla del dashboard del rider presentaba problemas de responsividad que afectaban la experiencia del usuario en diferentes tamaños de dispositivos:</p>
+                    
+                    <div class="rules-grid">
+                        <div class="rule-card">
+                            <h4>🔍 Campo de Texto</h4>
+                            <p>El campo de texto superior tendía a solaparse con otros elementos y no se ajustaba correctamente a pantallas pequeñas.</p>
+                        </div>
+                        <div class="rule-card">
+                            <h4>🎯 Centrado de Elementos</h4>
+                            <p>El campo de texto no estaba centrado correctamente en la pantalla, causando desbalance visual.</p>
+                        </div>
+                        <div class="rule-card">
+                            <h4>🧭 Brújula</h4>
+                            <p>La brújula nativa de Google Maps aparecía solapada o en posiciones inadecuadas.</p>
+                        </div>
+                        <div class="rule-card">
+                            <h4>📱 Responsividad</h4>
+                            <p>Los elementos no se adaptaban correctamente a diferentes tamaños de pantalla (pequeñas, medianas, grandes).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="problem-section">
+                    <h4>🔧 Solución Implementada</h4>
+                    <div class="solution-card">
+                        <p><strong>Implementación de cálculos responsivos y mejoras de UI adaptativa</strong></p>
+                    </div>
+                    
+                    <h5>1. Cálculos Responsivos Mejorados:</h5>
+                    <div class="code-block">
+// Dimensions in logical pixels (dp)
+Size size = MediaQuery.of(context).size;
+double width = size.width;
+double height = size.height;
+
+// Height (without SafeArea)
+final padding = MediaQuery.of(context).viewPadding;
+double height1 = height - padding.top - padding.bottom;
+
+// Height (without status bar)
+double height2 = height - padding.top;
+
+// Height (without status and toolbar)
+double height3 = height - padding.top - kToolbarHeight;
+
+// Breakpoints responsivos
+final isSmallScreen = width < 360;
+final isMediumScreen = width >= 360 && width < 600;
+final isLargeScreen = width >= 600;
+                    </div>
+
+                    <h5>2. Campo de Texto Adaptativo:</h5>
+                    <div class="code-block">
+// Altura del campo de texto adaptativa
+double textFieldHeight = (height2 * 0.06).clamp(40.0, 60.0);
+
+// Padding dinámico
+double textFieldPadding = (height2 * 0.01).clamp(8.0, 16.0);
+
+// Tamaño de fuente adaptativo
+double fontSize = isSmallScreen ? 14.0 : isMediumScreen ? 16.0 : 18.0;
+                    </div>
+
+                    <h5>3. Centrado Mejorado:</h5>
+                    <div class="code-block">
+Expanded(
+  child: Container(
+    height: 48,
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(16),
+      border: Border.all(color: Colors.grey[300]!, width: 1),
+    ),
+    alignment: Alignment.center,
+    child: TextField(
+      textAlignVertical: TextAlignVertical.center,
+      style: TextStyle(
+        fontSize: fontSize,
+        color: Colors.grey[800],
+      ),
+      // ... resto del código
+    ),
+  ),
+)
+                    </div>
+
+                    <h5>4. Brújula Personalizada:</h5>
+                    <div class="code-block">
+// Desactivar brújula nativa
+GoogleMap(
+  compassEnabled: false,
+  // ... resto de propiedades
+)
+
+// Brújula personalizada
+Positioned(
+  top: height2 * 0.5, // Altura media de la pantalla
+  right: 16,
+  child: Container(
+    width: isSmallScreen ? width * 0.12 : width * 0.08,
+    height: isSmallScreen ? width * 0.12 : width * 0.08,
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(8),
+      boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
+    ),
+    child: IconButton(
+      icon: Icon(Icons.compass_calibration, color: primaryColor),
+      onPressed: () {
+        // Rotar mapa al norte
+        _mapController?.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(
+              target: sourceLocation!,
+              zoom: cameraZoom,
+              bearing: 0,
+            ),
+          ),
+        );
+      },
+    ),
+  ),
+)
+                    </div>
+                </div>
+
+                <div class="problem-section">
+                    <h4>✅ Ventajas de la Solución</h4>
+                    <div class="advantages-list">
+                        <ul>
+                            <li><strong>Responsividad Completa:</strong> La interfaz se adapta perfectamente a cualquier tamaño de pantalla, desde móviles pequeños hasta tablets</li>
+                            <li><strong>Mejor UX:</strong> Los elementos están correctamente centrados y espaciados, mejorando la experiencia del usuario</li>
+                            <li><strong>Control de Brújula:</strong> La brújula personalizada está posicionada estratégicamente y mantiene la funcionalidad original</li>
+                            <li><strong>Rendimiento:</strong> Los cálculos responsivos son eficientes y no afectan el rendimiento de la aplicación</li>
+                            <li><strong>Mantenibilidad:</strong> El código está bien estructurado y es fácil de mantener</li>
+                            <li><strong>Consistencia Visual:</strong> Los elementos mantienen un diseño coherente en todos los tamaños de pantalla</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="problem-section">
+                    <h4>📊 Estados de Implementación</h4>
+                    <div class="status-grid">
+                        <div class="status-card status-done">
+                            <h4>✅ Campo de Texto</h4>
+                            <p>Responsivo y centrado correctamente</p>
+                        </div>
+                        <div class="status-card status-done">
+                            <h4>✅ Brújula Personalizada</h4>
+                            <p>Posicionada y funcional</p>
+                        </div>
+                        <div class="status-card status-done">
+                            <h4>✅ Cálculos Responsivos</h4>
+                            <p>Implementados y probados</p>
+                        </div>
+                        <div class="status-card status-done">
+                            <h4>✅ Centrado de Elementos</h4>
+                            <p>Optimizado para todos los tamaños</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="problem-section">
+                    <h4>📅 Fecha de Identificación</h4>
+                    <p>24 de Junio, 2025</p>
+                </div>
+
+                <div class="problem-section">
+                    <h4>👤 Reportado por</h4>
+                    <p>infinitemary (Desarrollador)</p>
+                </div>
+
+                <div class="problem-actions">
+                    <button class="jira-button" onclick="openJiraModal('responsive-ui')">
+                        📋 Formato de Jira
+                    </button>
+                </div>
+
+                <div class="problem-section">
+                    <h4>🔀 Estándares de Git para este Issue</h4>
+                    <ul>
+                        <li><strong>Nombre de la rama:</strong> <code>infinitemary/ui-responsive-rider-dashboard</code></li>
+                        <li><strong>Commit sugerido:</strong> <code>Mejora UI responsiva: campo de texto, botón recargar y tasa de cambio con bordes redondeados</code></li>
+                    </ul>
+                    <h5>Comandos recomendados:</h5>
+                    <div class="code-block"><pre>
+# Crear y cambiar a la nueva rama
+git checkout -b infinitemary/ui-responsive-rider-dashboard
+
+# Agregar los cambios y hacer commit
+git add .
+git commit -m "Mejora UI responsiva: campo de texto, botón recargar y tasa de cambio con bordes redondeados"
+# Subir los cambios a la rama remota
+git push --set-upstream origin infinitemary/ui-responsive-rider-dashboard
+                    </pre></div>
+                    <h5>Pasos para merge a develop:</h5>
+                    <div class="code-block"><pre>
+# 1. Cambia a develop y actualiza
+git checkout develop
+git pull origin develop
+
+# 2. Cambia a tu rama de trabajo
+git checkout infinitemary/ui-responsive-rider-dashboard
+
+# 3. Trae los últimos cambios de develop a tu rama
+git merge develop
+# o si prefieres rebase:
+# git rebase develop
+
+# 4. Resuelve conflictos si los hay, luego:
+git add .
+git commit -m "Resuelve conflictos con develop"
+
+# 5. Sube tu rama actualizada
+git push
+
+# 6. Haz el merge a develop (por PR/MR o desde consola)
+git checkout develop
+git merge infinitemary/ui-responsive-rider-dashboard
+git push
+                    </pre></div>
+                    <p>Consulta los <a href="../estandares-documentacion.html" target="_blank">estándares de documentación</a> para más detalles.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>📚 Documentación de Mejoras de UI Responsiva - Blaze Delivery Pasajeros</p>
+            <p>Última actualización: 24 de Junio, 2025</p>
+        </div>
+    </div>
+
+    <!-- Modal para Formato de Jira -->
+    <dialog id="jiraModal" closedby="any">
+        <div class="modal-header">
+            <h2>📋 Formato de Jira</h2>
+            <button class="close" onclick="closeJiraModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="jira-section">
+                <h3>📋 Campos Sugeridos para Jira</h3>
+                <div class="jira-fields">
+                    <div class="field-suggestion">
+                        <h4>👤 Persona Asignada</h4>
+                        <div class="suggested-value">infinitemary</div>
+                        <div class="field-description">Asignar al desarrollador responsable de la implementación</div>
+                    </div>
+                    
+                    <div class="field-suggestion">
+                        <h4>🏷️ Etiquetas</h4>
+                        <div class="suggested-value">responsive, ui-improvement, dashboard, flutter</div>
+                        <div class="field-description">Etiquetas para categorizar y filtrar la mejora</div>
+                    </div>
+                    
+                    <div class="field-suggestion">
+                        <h4>⏱️ Tiempo Estimado</h4>
+                        <div class="suggested-value">4h</div>
+                        <div class="field-description">Tiempo estimado para implementar la mejora</div>
+                    </div>
+                    
+                    <div class="field-suggestion">
+                        <h4>📅 Fecha de Vencimiento</h4>
+                        <div class="suggested-value">Próxima sprint</div>
+                        <div class="field-description">Fecha límite para completar la tarea</div>
+                    </div>
+                    
+                    <div class="field-suggestion">
+                        <h4>🎯 Prioridad</h4>
+                        <div class="suggested-value priority-medium">Media</div>
+                        <div class="field-description">Nivel de urgencia de la mejora</div>
+                    </div>
+                    
+                    <div class="field-suggestion">
+                        <h4>🏢 Equipo</h4>
+                        <div class="suggested-value">Desarrollo Frontend</div>
+                        <div class="field-description">Equipo responsable de la implementación</div>
+                    </div>
+                    
+                    <div class="field-suggestion">
+                        <h4>📂 Componente</h4>
+                        <div class="suggested-value">Rider Dashboard</div>
+                        <div class="field-description">Componente específico mejorado</div>
+                    </div>
+                    
+                    <div class="field-suggestion">
+                        <h4>🔧 Tipo de Issue</h4>
+                        <div class="suggested-value">Mejora</div>
+                        <div class="field-description">Tipo de trabajo realizado</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="jira-section">
+                <h3>📝 Contenido para Jira</h3>
+                <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px;">
+                    <div class="jira-title" id="jiraTitleContent"></div>
+                    <button class="copy-button" onclick="copyTitle()">📋 Copiar Título</button>
+                </div>
+                <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px;">
+                    <div class="jira-description" id="jiraDescriptionContent"></div>
+                    <button class="copy-button" onclick="copyDescription()">📋 Copiar Descripción</button>
+                </div>
+                <div class="copy-success" id="copySuccess">
+                    ✅ ¡Copiado al portapapeles!
+                </div>
+            </div>
+        </div>
+    </dialog>
+
+    <script>
+        // Datos de los problemas en formato Jira
+        const jiraData = {
+            'responsive-ui': {
+                title: 'Mejoras de UI Responsiva en Dashboard del Rider',
+                description: `**Ubicación del Problema:**
+Archivo: lib/screens/RiderDashBoardScreen.dart
+Líneas: 323-374 (barra superior), 400-450 (campo de texto y botones), 500-550 (controles de mapa)
+Función: build() method
+
+**Descripción Detallada:**
+La pantalla del dashboard del rider presentaba problemas de responsividad que afectaban la experiencia del usuario en diferentes tamaños de dispositivos:
+
+• El campo de texto superior tendía a solaparse con otros elementos
+• Los elementos no estaban correctamente centrados
+• La brújula nativa aparecía en posiciones inadecuadas
+• Falta de adaptación a diferentes tamaños de pantalla
+
+**Solución Implementada:**
+Implementación de cálculos responsivos y mejoras de UI adaptativa
+
+1. **Cálculos Responsivos Mejorados:**
+   - Uso de MediaQuery para obtener dimensiones precisas de la pantalla
+   - Cálculo de alturas considerando SafeArea y barras del sistema
+   - Breakpoints responsivos para diferentes tamaños de pantalla
+
+2. **Campo de Texto Adaptativo:**
+   - Altura del campo de texto adaptativa con límites mínimos y máximos
+   - Padding dinámico basado en la altura disponible
+   - Tamaño de fuente adaptativo según el tamaño de pantalla
+
+3. **Centrado Mejorado:**
+   - Uso de Expanded y Center para centrado correcto
+   - Bordes redondeados y estilos consistentes
+   - Alineación vertical y horizontal optimizada
+
+4. **Brújula Personalizada:**
+   - Desactivación de la brújula nativa de Google Maps
+   - Implementación de brújula personalizada posicionada estratégicamente
+   - Funcionalidad para rotar el mapa al norte
+
+**Ventajas de la Solución:**
+• Responsividad Completa: La interfaz se adapta perfectamente a cualquier tamaño de pantalla
+• Mejor UX: Los elementos están correctamente centrados y espaciados
+• Control de Brújula: La brújula personalizada está posicionada estratégicamente
+• Rendimiento: Los cálculos responsivos son eficientes
+• Mantenibilidad: El código está bien estructurado y es fácil de mantener
+• Consistencia Visual: Los elementos mantienen un diseño coherente
+
+**Código de Ejemplo:**
+Los cambios principales se implementaron en el método build() del archivo RiderDashBoardScreen.dart, incluyendo cálculos responsivos, campo de texto adaptativo, centrado mejorado y brújula personalizada.
+
+**Fecha de Identificación:** 24 de Junio, 2025
+**Reportado por:** infinitemary (Desarrollador)
+**Rama de Trabajo:** infinitemary/ui-responsive-rider-dashboard`,
+                fields: {
+                    assignee: 'infinitemary',
+                    labels: 'responsive, ui-improvement, dashboard, flutter',
+                    timeEstimate: '4h',
+                    dueDate: 'Próxima sprint',
+                    priority: 'Media',
+                    team: 'Desarrollo Frontend',
+                    component: 'Rider Dashboard',
+                    issueType: 'Mejora'
+                }
+            }
+        };
+
+        function openJiraModal(problemId) {
+            const modal = document.getElementById('jiraModal');
+            const titleDiv = document.getElementById('jiraTitleContent');
+            const descDiv = document.getElementById('jiraDescriptionContent');
+            const data = jiraData[problemId];
+            
+            if (data) {
+                // Actualizar campos sugeridos dinámicamente
+                updateSuggestedFields(data.fields);
+                
+                titleDiv.textContent = data.title;
+                descDiv.textContent = data.description;
+                modal.showModal();
+            }
+        }
+
+        function updateSuggestedFields(fields) {
+            if (!fields) return;
+            
+            // Actualizar cada campo sugerido
+            const fieldMappings = {
+                'assignee': '👤 Persona Asignada',
+                'labels': '🏷️ Etiquetas',
+                'timeEstimate': '⏱️ Tiempo Estimado',
+                'dueDate': '📅 Fecha de Vencimiento',
+                'priority': '🎯 Prioridad',
+                'team': '🏢 Equipo',
+                'component': '📂 Componente',
+                'issueType': '🔧 Tipo de Issue'
+            };
+
+            Object.keys(fieldMappings).forEach(fieldKey => {
+                const fieldElements = document.querySelectorAll('.field-suggestion h4');
+                fieldElements.forEach(element => {
+                    if (element.textContent === fieldMappings[fieldKey]) {
+                        const suggestedValue = element.nextElementSibling;
+                        if (suggestedValue && suggestedValue.classList.contains('suggested-value')) {
+                            suggestedValue.textContent = fields[fieldKey] || 'Sin especificar';
+                            
+                            // Aplicar clase de prioridad si es necesario
+                            if (fieldKey === 'priority') {
+                                suggestedValue.className = 'suggested-value';
+                                if (fields[fieldKey] === 'Alta') {
+                                    suggestedValue.classList.add('priority-high');
+                                } else if (fields[fieldKey] === 'Media') {
+                                    suggestedValue.classList.add('priority-medium');
+                                } else if (fields[fieldKey] === 'Baja') {
+                                    suggestedValue.classList.add('priority-low');
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+        }
+
+        function closeJiraModal() {
+            document.getElementById('jiraModal').close();
+        }
+
+        function copyTitle() {
+            const titleElement = document.querySelector('.jira-title');
+            const title = titleElement ? titleElement.textContent : '';
+            
+            navigator.clipboard.writeText(title).then(function() {
+                const success = document.getElementById('copySuccess');
+                success.style.display = 'block';
+                setTimeout(function() {
+                    success.style.display = 'none';
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Error al copiar: ', err);
+                // Fallback para navegadores que no soportan clipboard API
+                const textArea = document.createElement('textarea');
+                textArea.value = title;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                const success = document.getElementById('copySuccess');
+                success.style.display = 'block';
+                setTimeout(function() {
+                    success.style.display = 'none';
+                }, 2000);
+            });
+        }
+
+        function copyDescription() {
+            const descriptionElement = document.querySelector('.jira-description');
+            const description = descriptionElement ? descriptionElement.textContent : '';
+            
+            navigator.clipboard.writeText(description).then(function() {
+                const success = document.getElementById('copySuccess');
+                success.style.display = 'block';
+                setTimeout(function() {
+                    success.style.display = 'none';
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Error al copiar: ', err);
+                // Fallback para navegadores que no soportan clipboard API
+                const textArea = document.createElement('textarea');
+                textArea.value = description;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                const success = document.getElementById('copySuccess');
+                success.style.display = 'block';
+                setTimeout(function() {
+                    success.style.display = 'none';
+                }, 2000);
+            });
+        }
+
+        // Event listener para limpiar contenido cuando se cierra el modal
+        document.getElementById('jiraModal').addEventListener('close', function() {
+            // El modal se cierra automáticamente con Escape y clic fuera
+            // Aquí puedes agregar lógica adicional si es necesario
+        });
+    </script>
+</body>
+</html> 
