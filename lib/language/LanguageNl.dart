@@ -555,5 +555,5 @@ class LanguageNl extends BaseLanguage {
   String get tasaDeCambio => 'Wisselkoers';
 
   @override
-  String get recargar => 'Opwaarderen';
+  String get recargar => 'Herladen';
 }

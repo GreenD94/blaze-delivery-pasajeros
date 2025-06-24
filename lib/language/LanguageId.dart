@@ -566,8 +566,8 @@ class LanguageId extends BaseLanguage {
   String get moneyDebit => 'Debit Uang';
 
   @override
-  String get tasaDeCambio => 'Kurs';
+  String get tasaDeCambio => 'Kurs tukar';
 
   @override
-  String get recargar => 'Isi ulang';
+  String get recargar => 'Muat ulang';
 }

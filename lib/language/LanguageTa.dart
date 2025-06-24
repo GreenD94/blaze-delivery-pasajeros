@@ -552,7 +552,7 @@ class LanguageTa extends BaseLanguage {
   String get moneyDebit => 'Débito de dinheiro';
 
   @override
-  String get tasaDeCambio => 'மாற்று விகிதம்';
+  String get tasaDeCambio => 'பரிமாற்ற விகிதம்';
 
   @override
   String get recargar => 'மீண்டும் ஏற்று';

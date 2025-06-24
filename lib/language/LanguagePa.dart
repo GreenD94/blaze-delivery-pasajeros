@@ -551,8 +551,8 @@ class LanguagePa extends BaseLanguage {
   String get moneyDebit => 'ਪੈਸਾ ਡੈਬਿਟ';
 
   @override
-  String get tasaDeCambio => 'ਵਟਾਂਦਰੇ ਦੀ ਦਰ';
+  String get tasaDeCambio => 'ਵਿਨਿਮੇ ਦੀ ਦਰ';
 
   @override
-  String get recargar => 'ریچارج';
+  String get recargar => 'ਮੁੜ ਲੋਡ ਕਰੋ';
 }

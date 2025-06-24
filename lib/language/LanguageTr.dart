@@ -570,5 +570,5 @@ class LanguageTr extends BaseLanguage {
   String get tasaDeCambio => 'Döviz kuru';
 
   @override
-  String get recargar => 'Yenile';
+  String get recargar => 'Yeniden yükle';
 }

@@ -1,0 +1,705 @@
+/* ========================================
+   ESTILOS PARA DOCUMENTACIÓN DE PROBLEMAS
+   Blaze Delivery Pasajeros
+   ======================================== */
+
+/* Reset y configuración base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+}
+
+/* Contenedor principal */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header principal */
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.header p {
+    font-size: 1.1em;
+    text-align: center;
+    opacity: 0.9;
+}
+
+/* Secciones principales */
+.section {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.section h2 {
+    color: #667eea;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    border-bottom: 3px solid #667eea;
+    padding-bottom: 10px;
+}
+
+.section h3 {
+    color: #764ba2;
+    font-size: 1.4em;
+    margin: 25px 0 15px 0;
+}
+
+/* Grid de reglas */
+.rules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.rule-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.rule-card h4 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+/* Tarjetas de problemas */
+.problem-card {
+    background: #fff;
+    border-left: 5px solid #e74c3c;
+    padding: 25px;
+    margin: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.problem-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.problem-title {
+    color: #e74c3c;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.problem-status {
+    background: #e74c3c;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.problem-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+/* Botón de Jira */
+.jira-button {
+    background: linear-gradient(135deg, #0052cc 0%, #0065ff 100%);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.jira-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,82,204,0.3);
+}
+
+/* Secciones de problemas */
+.problem-section {
+    margin: 15px 0;
+}
+
+.problem-section h4 {
+    color: #667eea;
+    font-size: 1.1em;
+    margin-bottom: 10px;
+}
+
+/* Bloques de código */
+.code-block {
+    background: #2d3748;
+    color: #e2e8f0;
+    padding: 20px;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    overflow-x: auto;
+    margin: 10px 0;
+}
+
+/* Tarjeta de solución */
+.solution-card {
+    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 15px 0;
+}
+
+/* Lista de ventajas */
+.advantages-list {
+    background: #f8fafc;
+    border-left: 4px solid #4ade80;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 0 8px 8px 0;
+}
+
+.advantages-list ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.advantages-list li {
+    padding: 8px 0;
+    position: relative;
+    padding-left: 25px;
+}
+
+.advantages-list li:before {
+    content: "✓";
+    color: #4ade80;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+/* Rutas de archivos */
+.file-path {
+    background: #e2e8f0;
+    color: #4a5568;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    display: inline-block;
+    margin: 5px 0;
+}
+
+/* Mensajes de error */
+.error-message {
+    background: #fed7d7;
+    color: #c53030;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #e53e3e;
+    margin: 10px 0;
+    font-family: 'Courier New', monospace;
+}
+
+/* Diagramas */
+.diagram {
+    background: #f7fafc;
+    border: 2px dashed #cbd5e0;
+    padding: 30px;
+    text-align: center;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.diagram svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-size: 0.9em;
+}
+
+/* ========================================
+   ESTILOS DEL ELEMENTO DIALOG
+   ======================================== */
+
+/* Estilos base para el elemento dialog */
+dialog {
+    border: none;
+    border-radius: 15px;
+    padding: 0;
+    width: 95%;
+    max-width: 1200px;
+    max-height: 90vh;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    background-color: #fefefe;
+    margin: 3% auto;
+}
+
+/* Backdrop nativo del dialog */
+dialog::backdrop {
+    background-color: rgba(0,0,0,0.5);
+    backdrop-filter: blur(5px);
+}
+
+/* Animación de entrada */
+dialog[open] {
+    animation: dialog-show 0.3s ease-out;
+}
+
+@keyframes dialog-show {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Header del modal */
+.modal-header {
+    background: linear-gradient(135deg, #0052cc 0%, #0065ff 100%);
+    color: white;
+    padding: 25px 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 15px 15px 0 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.8em;
+}
+
+.close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.close:hover {
+    opacity: 0.7;
+    background-color: rgba(255,255,255,0.1);
+}
+
+.modal-body {
+    padding: 35px;
+    max-height: 75vh;
+    overflow-y: auto;
+}
+
+/* Contenido de Jira */
+.jira-content {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 25px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95em;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.jira-title {
+    background: #e3f2fd;
+    border: 1px solid #2196f3;
+    border-radius: 8px;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #1976d2;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+.jira-description {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 25px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95em;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+/* Secciones del modal */
+.jira-section {
+    margin-bottom: 25px;
+}
+
+.jira-section h3 {
+    color: #1976d2;
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Campos sugeridos */
+.jira-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.field-suggestion {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.field-suggestion h4 {
+    color: #495057;
+    font-size: 1em;
+    margin-bottom: 12px;
+    font-weight: bold;
+}
+
+.field-suggestion .suggested-value {
+    background: #e3f2fd;
+    border: 1px solid #2196f3;
+    border-radius: 4px;
+    padding: 10px 15px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    color: #1976d2;
+    display: inline-block;
+    margin: 8px 0;
+}
+
+.field-suggestion .field-description {
+    font-size: 0.85em;
+    color: #6c757d;
+    margin-top: 8px;
+    line-height: 1.4;
+}
+
+/* Prioridades */
+.priority-high {
+    background: #fff3cd;
+    border-color: #ffc107;
+    color: #856404;
+}
+
+.priority-medium {
+    background: #d1ecf1;
+    border-color: #17a2b8;
+    color: #0c5460;
+}
+
+.priority-low {
+    background: #d4edda;
+    border-color: #28a745;
+    color: #155724;
+}
+
+/* Botón de copiado */
+.copy-button {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.copy-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(40,167,69,0.3);
+}
+
+.copy-success {
+    background: #28a745;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    margin-top: 15px;
+    text-align: center;
+    display: none;
+    font-size: 1em;
+}
+
+/* ========================================
+   RESPONSIVIDAD
+   ======================================== */
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .header h1 {
+        font-size: 2em;
+    }
+    
+    .rules-grid {
+        grid-template-columns: 1fr;
+    }
+
+    dialog {
+        width: 98%;
+        margin: 5% auto;
+        max-height: 95vh;
+    }
+
+    .modal-header {
+        padding: 20px 25px;
+    }
+
+    .modal-header h2 {
+        font-size: 1.5em;
+    }
+
+    .modal-body {
+        padding: 25px;
+        max-height: 80vh;
+    }
+
+    .jira-fields {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .field-suggestion {
+        padding: 15px;
+    }
+
+    .jira-content, .jira-title, .jira-description {
+        padding: 20px;
+        font-size: 0.9em;
+    }
+}
+
+/* Estilos para estados de problemas */
+.status-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.status-card {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.status-card:hover {
+    transform: translateY(-3px);
+}
+
+.status-card h4 {
+    font-size: 1.1em;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.status-card p {
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+.status-pending {
+    background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
+    color: #c53030;
+}
+
+.status-todo {
+    background: linear-gradient(135deg, #fef5e7 0%, #fed7aa 100%);
+    color: #c05621;
+}
+
+.status-in-progress {
+    background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%);
+    color: #234e52;
+}
+
+.status-review {
+    background: linear-gradient(135deg, #faf5ff 0%, #e9d8fd 100%);
+    color: #553c9a;
+}
+
+.status-done {
+    background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+    color: #22543d;
+}
+
+/* Estilos para lista de problemas */
+.issues-list {
+    margin-top: 20px;
+}
+
+.issue-item {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.issue-item:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transform: translateY(-2px);
+}
+
+.issue-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.issue-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2d3748;
+    text-decoration: none;
+}
+
+.issue-title:hover {
+    color: #4299e1;
+}
+
+.issue-status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.issue-meta {
+    display: flex;
+    gap: 20px;
+    font-size: 14px;
+    color: #718096;
+}
+
+.issue-meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Estilos para estadísticas */
+.stats-section {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 15px;
+    border-radius: 8px;
+    background: #f7fafc;
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+}
+
+.stat-number {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #718096;
+    text-transform: uppercase;
+}
+
+.no-issues {
+    text-align: center;
+    padding: 40px;
+    color: #718096;
+}
+
+.no-issues h3 {
+    margin-bottom: 10px;
+    color: #4a5568;
+} 
