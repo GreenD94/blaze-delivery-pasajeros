@@ -8,6 +8,45 @@ import '../utils/Common.dart';
 import '../utils/Constants.dart';
 import 'RestApis.dart';
 
+// Función para logging de API calls
+void logApiCall(String url, Map<String, String> headers, Map? body, Map? params, Response response) {
+  // Códigos ANSI para colores
+  const String redColor = '\x1B[31m';
+  const String greenColor = '\x1B[32m';
+  const String resetColor = '\x1B[0m';
+  
+  print('----------- START [$url]--------');
+  print('--------------HEADER-----------');
+  print(jsonEncode(headers));
+  print('---------------------------');
+  
+  
+    print('----------body or param-----');
+    print('body:');
+    print(jsonEncode(body));
+  
+  
+  
+    print('param:');
+    print(jsonEncode(params));
+  
+  
+  // Determinar si es éxito o error y aplicar color
+  bool isSuccess = response.statusCode >= 200 && response.statusCode < 300;
+  String statusText = isSuccess ? "success" : "error";
+  String colorCode = isSuccess ? greenColor : redColor;
+  
+  print('${colorCode}-------------------$statusText response [${response.statusCode}]--------$resetColor');
+  try {
+    final responseJson = jsonDecode(response.body);
+    final encoder = JsonEncoder.withIndent('  ');
+    print('${colorCode}${encoder.convert(responseJson)}$resetColor');
+  } catch (e) {
+    print('${colorCode}${response.body}$resetColor');
+  }
+  print('${colorCode}----------------------$resetColor');
+}
+
 Map<String, String> buildHeaderTokens() {
   Map<String, String> header = {
     HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8',
@@ -37,8 +76,6 @@ Future<Response> buildHttpResponse(String endPoint, {HttpMethod method = HttpMet
     var headers = buildHeaderTokens();
     Uri url = buildBaseUrl(endPoint);
 
-    print('Header:${headers.toString()}');
-
     try {
       Response response;
 
@@ -54,7 +91,8 @@ Future<Response> buildHttpResponse(String endPoint, {HttpMethod method = HttpMet
         response = await get(url, headers: headers).timeout(Duration(seconds: 20), onTimeout: () => throw 'Timeout');
       }
 
-      log('Response ($method): ${url.toString()} ${response.statusCode} ${response.body}');
+      // Logging personalizado de API call
+      logApiCall(url.toString(), headers, request, null, response);
 
       return response;
     } catch (e) {
