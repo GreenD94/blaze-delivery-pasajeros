@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El saldo de la billetera no se muestra en la interfaz de pasajero</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💸 El saldo de la billetera no se muestra en la interfaz de pasajero</h1>
+            <span class="status-card status-todo">📝 Por Hacer</span>
+        </div>
+        <nav>
+            <a href="../lista-problemas.html">⬅️ Volver a la lista de problemas</a> |
+            <a href="../estandares-documentacion.html">📋 Estándares de Documentación</a>
+        </nav>
+        <section>
+            <h2>📍 Ubicación del problema</h2>
+            <ul>
+                <li>Archivo: <code>lib/model/WalletListModel.dart</code> y pantalla de billetera de pasajero</li>
+                <li>Función: Deserialización del modelo y renderizado del saldo</li>
+            </ul>
+        </section>
+        <section>
+            <h2>📝 Descripción detallada</h2>
+            <p>El saldo de la billetera no se muestra en la interfaz de pasajero, aunque la API responde correctamente con los datos. En los logs se observa el error: <code>type '_Map&lt;String, dynamic&gt;' is not a subtype of type 'String?'</code>. Esto indica que el modelo espera un <code>String?</code> pero la API puede enviar un objeto <code>Map</code>, causando un fallo en la deserialización y evitando que el saldo se muestre.</p>
+        </section>
+        <section>
+            <h2>💡 Solución recomendada</h2>
+            <ol>
+                <li>Revisar el modelo <code>WalletListModel</code> y cambiar los campos que pueden ser objeto a <code>dynamic</code> o <code>Map&lt;String, dynamic&gt;?</code> en vez de <code>String?</code>.</li>
+                <li>Ajustar el método <code>fromJson</code> para manejar ambos tipos de datos.</li>
+                <li>Verificar en la UI que el campo <code>wallet_balance</code> se muestre correctamente y que no haya errores de tipo.</li>
+            </ol>
+            <pre><code>// Ejemplo de ajuste en el modelo
+final dynamic data; // o Map<String, dynamic>? data;
+
+// En fromJson
+// data: json['data'] is String || json['data'] == null ? json['data'] : json['data'] as Map<String, dynamic>,
+</code></pre>
+        </section>
+        <section>
+            <h2>🚀 Ventajas de la solución</h2>
+            <ul>
+                <li>El usuario podrá ver correctamente su saldo de billetera.</li>
+                <li>Se evitan errores de tipo y posibles crashes en la app.</li>
+                <li>Mejora la experiencia y confianza del usuario.</li>
+            </ul>
+        </section>
+        <section>
+            <h2>📅 Fecha y autor</h2>
+            <p>Identificado el 3 de julio de 2025 por el equipo de desarrollo.</p>
+        </section>
+        <section>
+            <h2>✅ Solución aplicada</h2>
+            <ul>
+                <li>El campo <code>data</code> en <code>WalletModel</code> fue cambiado de <code>String?</code> a <code>dynamic</code> para aceptar tanto <code>String</code> como <code>Map</code>.</li>
+                <li>El método <code>fromJson</code> ahora verifica el tipo y asigna correctamente el valor.</li>
+                <li>En la UI (<code>MyWalletScreen.dart</code>), se accede correctamente al saldo usando <code>walletBalance!.totalAmount</code> y no hay errores de tipo.</li>
+            </ul>
+            <pre><code>// Antes
+String? data;
+// Después
+dynamic data;
+
+// En fromJson
+// data: json['data'] is String || json['data'] == null ? json['data'] : json['data'] as Map<String, dynamic>,
+</code></pre>
+            <p>Con este ajuste, el saldo de la billetera se muestra correctamente y se evitan errores de tipo en la app.</p>
+        </section>
+        <section>
+            <h2>🪟 Modal de Formato Jira</h2>
+            <button onclick="document.getElementById('jiraModal').showModal()">Ver formato Jira</button>
+            <dialog id="jiraModal">
+                <form method="dialog">
+                    <h3>💸 El saldo de la billetera no se muestra en la interfaz de pasajero</h3>
+                    <p><strong>Descripción:</strong> El saldo de la billetera no se muestra debido a un error de tipo en la deserialización del modelo. El backend puede enviar un objeto en vez de un string, causando un fallo en la UI.</p>
+                    <h4>Campos sugeridos para Jira</h4>
+                    <ul>
+                        <li><strong>Resumen:</strong> El saldo de la billetera no se muestra en la interfaz de pasajero</li>
+                        <li><strong>Descripción:</strong> El modelo espera un String pero la API puede enviar un objeto, lo que genera un error de tipo y evita que se muestre el saldo.</li>
+                        <li><strong>Ubicación:</strong> WalletListModel.dart y pantalla de billetera</li>
+                        <li><strong>Solución:</strong> Ajustar el modelo y la deserialización para aceptar ambos tipos</li>
+                        <li><strong>Estado:</strong> Por Hacer</li>
+                    </ul>
+                    <menu>
+                        <button onclick="navigator.clipboard.writeText('El saldo de la billetera no se muestra en la interfaz de pasajero')">Copiar título</button>
+                        <button onclick="navigator.clipboard.writeText('El saldo de la billetera no se muestra debido a un error de tipo en la deserialización del modelo. El backend puede enviar un objeto en vez de un string, causando un fallo en la UI.')">Copiar descripción</button>
+                        <button value="close">Cerrar</button>
+                    </menu>
+                </form>
+            </dialog>
+        </section>
+    </div>
+</body>
+</html> 

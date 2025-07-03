@@ -555,10 +555,11 @@ class RiderDashBoardScreenState extends State<RiderDashBoardScreen> {
                                 ],
                               ),
                               alignment: Alignment.center,
-                              child: TextField(
+                              child: AppTextField(
                                 controller: searchController,
+                                textFieldType: TextFieldType.OTHER,
                                 textAlignVertical: TextAlignVertical.center,
-                                style: TextStyle(
+                                textStyle: TextStyle(
                                   fontSize: 16,
                                   color: Colors.grey[800],
                                   fontWeight: FontWeight.normal,
@@ -575,45 +576,70 @@ class RiderDashBoardScreenState extends State<RiderDashBoardScreen> {
                                   suffixIcon: IconButton(
                                     icon: Icon(Icons.search, color: Colors.grey[600]),
                                     onPressed: () async {
-                              if (await checkPermission()) {
-                                showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(defaultRadius),
-                                                topRight: Radius.circular(defaultRadius)),
-                                  ),
-                                  context: context,
-                                  builder: (_) {
-                                    return RiderWidget(
-                                        title: sourceLocationTitle,
-                                                coordinates: sourceLocation,
-                                                destination: searchController.text);
+                                      if (await checkPermission()) {
+                                        showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(defaultRadius),
+                                              topRight: Radius.circular(defaultRadius),
+                                            ),
+                                          ),
+                                          context: context,
+                                          builder: (_) {
+                                            return RiderWidget(
+                                              title: sourceLocationTitle,
+                                              coordinates: sourceLocation,
+                                              destination: searchController.text,
+                                            );
                                           },
                                         );
                                       }
                                     },
                                   ),
                                 ),
-                                onSubmitted: (value) async {
+                                onFieldSubmitted: (value) async {
                                   if (await checkPermission()) {
                                     showModalBottomSheet(
                                       isScrollControlled: true,
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(defaultRadius),
-                                            topRight: Radius.circular(defaultRadius)),
+                                          topLeft: Radius.circular(defaultRadius),
+                                          topRight: Radius.circular(defaultRadius),
+                                        ),
                                       ),
                                       context: context,
                                       builder: (_) {
                                         return RiderWidget(
-                                            title: sourceLocationTitle,
-                                            coordinates: sourceLocation,
-                                            destination: value);
-                                  },
-                                );
-                              }
-                            },
+                                          title: sourceLocationTitle,
+                                          coordinates: sourceLocation,
+                                          destination: value,
+                                        );
+                                      },
+                                    );
+                                  }
+                                },
+                                onTap: () async {
+                                  if (await checkPermission()) {
+                                    showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(defaultRadius),
+                                          topRight: Radius.circular(defaultRadius),
+                                        ),
+                                      ),
+                                      context: context,
+                                      builder: (_) {
+                                        return RiderWidget(
+                                          title: sourceLocationTitle,
+                                          coordinates: sourceLocation,
+                                          destination: searchController.text,
+                                        );
+                                      },
+                                    );
+                                  }
+                                },
                               ),
                             ),
                           ),
