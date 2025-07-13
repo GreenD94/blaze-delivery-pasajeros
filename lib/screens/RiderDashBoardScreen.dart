@@ -107,18 +107,21 @@ class RiderDashBoardScreenState extends State<RiderDashBoardScreen> {
         if (value.walletSetting!
                 .firstWhere((element) => element.key == MIN_AMOUNT_TO_ADD)
                 .value !=
-            null)
+            null) {
           appStore.setMinAmountToAdd(int.parse(value.walletSetting!
               .firstWhere((element) => element.key == MIN_AMOUNT_TO_ADD)
               .value!));
+        }
         if (value.walletSetting!
                 .firstWhere((element) => element.key == MAX_AMOUNT_TO_ADD)
                 .value !=
-            null)
+            null) {
           appStore.setMaxAmountToAdd(int.parse(value.walletSetting!
               .firstWhere((element) => element.key == MAX_AMOUNT_TO_ADD)
               .value!));
+        }
       }
+      
       if (value.rideSetting!.isNotEmpty) {
         appStore.setWalletTipAmount(value.rideSetting!
                 .firstWhere((element) => element.key == PRESENT_TIP_AMOUNT)
@@ -136,6 +139,7 @@ class RiderDashBoardScreenState extends State<RiderDashBoardScreen> {
                     (element) => element.key == 'RIDE_MODALITY_EXPRESS')
                 .value == '1');
       }
+      
       if (value.currencySetting != null) {
         appStore
             .setCurrencyCode(value.currencySetting!.symbol ?? currencySymbol);
@@ -143,6 +147,7 @@ class RiderDashBoardScreenState extends State<RiderDashBoardScreen> {
             .setCurrencyName(value.currencySetting!.code ?? currencyNameConst);
         appStore.setCurrencyPosition(value.currencySetting!.position ?? LEFT);
       }
+      
       appStore.setEnabledReferrals(value.referralsEnabled ?? false);
       appStore.setExchangeRate(value.usdRate ?? 0.0);
       appStore.setCancellationReasons(value.cancellationReasons!);
@@ -154,7 +159,7 @@ class RiderDashBoardScreenState extends State<RiderDashBoardScreen> {
     }).catchError((error) {
       log('${error.toString()}');
     });
-    // getCurrentUserLocation();
+    
     loadBanners();
     polylinePoints = PolylinePoints();
   }
@@ -550,10 +555,11 @@ class RiderDashBoardScreenState extends State<RiderDashBoardScreen> {
                                 ],
                               ),
                               alignment: Alignment.center,
-                              child: TextField(
+                              child: AppTextField(
                                 controller: searchController,
+                                textFieldType: TextFieldType.OTHER,
                                 textAlignVertical: TextAlignVertical.center,
-                                style: TextStyle(
+                                textStyle: TextStyle(
                                   fontSize: 16,
                                   color: Colors.grey[800],
                                   fontWeight: FontWeight.normal,
@@ -570,45 +576,70 @@ class RiderDashBoardScreenState extends State<RiderDashBoardScreen> {
                                   suffixIcon: IconButton(
                                     icon: Icon(Icons.search, color: Colors.grey[600]),
                                     onPressed: () async {
-                              if (await checkPermission()) {
-                                showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(defaultRadius),
-                                                topRight: Radius.circular(defaultRadius)),
-                                  ),
-                                  context: context,
-                                  builder: (_) {
-                                    return RiderWidget(
-                                        title: sourceLocationTitle,
-                                                coordinates: sourceLocation,
-                                                destination: searchController.text);
+                                      if (await checkPermission()) {
+                                        showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(defaultRadius),
+                                              topRight: Radius.circular(defaultRadius),
+                                            ),
+                                          ),
+                                          context: context,
+                                          builder: (_) {
+                                            return RiderWidget(
+                                              title: sourceLocationTitle,
+                                              coordinates: sourceLocation,
+                                              destination: searchController.text,
+                                            );
                                           },
                                         );
                                       }
                                     },
                                   ),
                                 ),
-                                onSubmitted: (value) async {
+                                onFieldSubmitted: (value) async {
                                   if (await checkPermission()) {
                                     showModalBottomSheet(
                                       isScrollControlled: true,
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(defaultRadius),
-                                            topRight: Radius.circular(defaultRadius)),
+                                          topLeft: Radius.circular(defaultRadius),
+                                          topRight: Radius.circular(defaultRadius),
+                                        ),
                                       ),
                                       context: context,
                                       builder: (_) {
                                         return RiderWidget(
-                                            title: sourceLocationTitle,
-                                            coordinates: sourceLocation,
-                                            destination: value);
-                                  },
-                                );
-                              }
-                            },
+                                          title: sourceLocationTitle,
+                                          coordinates: sourceLocation,
+                                          destination: value,
+                                        );
+                                      },
+                                    );
+                                  }
+                                },
+                                onTap: () async {
+                                  if (await checkPermission()) {
+                                    showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(defaultRadius),
+                                          topRight: Radius.circular(defaultRadius),
+                                        ),
+                                      ),
+                                      context: context,
+                                      builder: (_) {
+                                        return RiderWidget(
+                                          title: sourceLocationTitle,
+                                          coordinates: sourceLocation,
+                                          destination: searchController.text,
+                                        );
+                                      },
+                                    );
+                                  }
+                                },
                               ),
                             ),
                           ),

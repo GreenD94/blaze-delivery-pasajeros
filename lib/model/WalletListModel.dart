@@ -31,7 +31,7 @@ class WalletListModel {
 }
 
 class WalletModel {
-  String? data;
+  dynamic data;
   num? amount;
   num? balance;
   String? createdAt;
@@ -67,7 +67,7 @@ class WalletModel {
 
   factory WalletModel.fromJson(Map<String, dynamic> json) {
     return WalletModel(
-      data: json['data'],
+      data: json['data'] is String || json['data'] == null ? json['data'] : json['data'] as Map<String, dynamic>,
       amount: json['amount'],
       balance: json['balance'],
       createdAt: json['created_at'],
